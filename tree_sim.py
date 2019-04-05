@@ -76,9 +76,10 @@ class Merger:
         self.first_toggle = False
 
     def update_stall_sig(self):
+        # children
         if self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
             self.stall = True
-        elif self.out_fifo.full():
+        elif self.out_fifo.full():   # Parent
             self.stall = True
         else:
             self.stall = False
@@ -115,6 +116,7 @@ class Merger:
         self.update_stall_sig()
         self.cycle += 1
         if not self.stall:
+            # PIPELINE STAGE 1
             bml_result = None
             if not self.first_toggle:
                 bml_result = sorted(self.R_A.data + self.R_B.data)[self.P:]
@@ -123,7 +125,8 @@ class Merger:
             bms_input_0 = None
 
             self.selector_logic()
-            
+
+            # PIPELINE STAGE 2
             if self.select_A:
                 bms_input_0 = self.internal_fifo_a.read().data
                 self.R_A = self.internal_fifo_a.pop()
