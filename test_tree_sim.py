@@ -87,9 +87,7 @@ class TestMerger(unittest.TestCase):
         for i in range(0, 109):
             merger.simulate()
             if not out_fifo.empty():
-                print(out_fifo.read().data)
                 result += out_fifo.pop().data
-        print(result)
         self.assertEqual([0,0,0,0, \
                           0,0,0,0, \
                           0,0,0,0, \
@@ -101,6 +99,70 @@ class TestMerger(unittest.TestCase):
                           5,6,7,8, \
                           9,10,11,12, \
                           13,14,15,16,
+                          0, 0, 0, 0], result)
+        
+    def test_merger_basic_global_reset(self):
+        in_fifo_1 = tree_sim.FIFO(10)
+
+        # first array
+        in_fifo_1.push(tree_sim.Tuple([21, 23, 25, 27]))
+        in_fifo_1.push(tree_sim.Tuple([29, 31, 33, 35]))
+
+        # global reset
+        in_fifo_1.push(tree_sim.Tuple([0, 0, 0, 0]));              
+
+        # second array
+        in_fifo_1.push(tree_sim.Tuple([1, 3, 5, 7]))
+        in_fifo_1.push(tree_sim.Tuple([9, 11, 13, 15]))        
+
+        # terminating zero padding
+        in_fifo_1.push(tree_sim.Tuple([0, 0, 0, 0]));
+        
+        in_fifo_2 = tree_sim.FIFO(10)
+
+        # first array
+        in_fifo_2.push(tree_sim.Tuple([22, 24, 26, 28]));
+        in_fifo_2.push(tree_sim.Tuple([30, 32, 34, 36]));        
+
+        # global reset
+        in_fifo_2.push(tree_sim.Tuple([0, 0, 0, 0]));
+
+        # second array
+        in_fifo_2.push(tree_sim.Tuple([2, 4, 6, 8]));
+        in_fifo_2.push(tree_sim.Tuple([10, 12, 14, 16]));
+
+        # terminating zero padding
+        in_fifo_2.push(tree_sim.Tuple([0, 0, 0, 0]));        
+
+        
+        out_fifo = tree_sim.FIFO(1)
+
+        throughput = 4
+
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+        result = []
+        for i in range(0, 109):
+            merger.simulate()
+            if not out_fifo.empty():
+                result += out_fifo.pop().data
+
+        self.assertEqual([0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          21,22,23,24, \
+                          25,26,27,28, \
+                          29,30,31,32, \
+                          33,34,35,36, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          1,2,3,4, \
+                          5,6,7,8, \
+                          9,10,11,12, \
+                          13,14,15,16, \
                           0, 0, 0, 0], result)
 
     def test_merger_global_reset(self):
