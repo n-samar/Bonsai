@@ -100,6 +100,41 @@ class TestMerger(unittest.TestCase):
                           9,10,11,12, \
                           13,14,15,16,
                           0, 0, 0, 0], result)
+
+    def test_merger_basic_reverse_input(self):
+        in_fifo_1 = tree_sim.FIFO(3)
+        in_fifo_1.push(tree_sim.Tuple([1, 3, 5, 7]))
+        in_fifo_1.push(tree_sim.Tuple([9, 11, 13, 15]))
+        in_fifo_1.push(tree_sim.Tuple([0, 0, 0, 0]));        
+
+        in_fifo_2 = tree_sim.FIFO(3)
+        in_fifo_2.push(tree_sim.Tuple([2, 4, 6, 8]));
+        in_fifo_2.push(tree_sim.Tuple([10, 12, 14, 16]));
+        in_fifo_2.push(tree_sim.Tuple([0, 0, 0, 0]));        
+        
+        out_fifo = tree_sim.FIFO(1)
+
+        throughput = 4
+
+        merger = tree_sim.Merger(throughput, in_fifo_2, in_fifo_1, out_fifo)
+        result = []
+        for i in range(0, 109):
+            merger.simulate()
+            if not out_fifo.empty():
+                result += out_fifo.pop().data
+        self.assertEqual([0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          1,2,3,4, \
+                          5,6,7,8, \
+                          9,10,11,12, \
+                          13,14,15,16,
+                          0, 0, 0, 0], result)
+
         
     def test_merger_basic_global_reset(self):
         in_fifo_1 = tree_sim.FIFO(10)
@@ -165,8 +200,42 @@ class TestMerger(unittest.TestCase):
                           13,14,15,16, \
                           0, 0, 0, 0], result)
 
-    def test_merger_global_reset(self):
-        pass
+    def test_merger_unbalanced_input(self):
+        in_fifo_1 = tree_sim.FIFO(10)
+
+        in_fifo_1.push(tree_sim.Tuple([1, 2, 3, 4]))
+        in_fifo_1.push(tree_sim.Tuple([5, 6, 7, 8]))        
+        in_fifo_1.push(tree_sim.Tuple([13, 14, 15, 16]))
+
+        # terminating zero padding
+        in_fifo_1.push(tree_sim.Tuple([0, 0, 0, 0]))
+        
+        in_fifo_2 = tree_sim.FIFO(10)
+        in_fifo_2.push(tree_sim.Tuple([9, 10, 11, 12]))        
+        in_fifo_2.push(tree_sim.Tuple([0, 0, 0, 0]))      
+        out_fifo = tree_sim.FIFO(1)
+
+        throughput = 4
+
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+        result = []
+        for i in range(0, 109):
+            merger.simulate()
+            if not out_fifo.empty():
+                result += out_fifo.pop().data
+        print(result)
+        self.assertEqual([0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          1,2,3,4, \
+                          5,6,7,8, \
+                          9,10,11,12, \
+                          13,14,15,16, \
+                          0, 0, 0, 0], result)        
 
     def test_selector_logic_on_global_reset(self):
         in_fifo_1 = tree_sim.FIFO(2)
@@ -239,9 +308,11 @@ class TestMerger(unittest.TestCase):
         throughput = 4
         merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
 
-        merger.internal_fifo_a = tree_sim.FIFO(1)
+        merger.internal_fifo_a = tree_sim.FIFO(3)
         merger.internal_fifo_b = tree_sim.FIFO(1)        
         merger.internal_fifo_a.push(tree_sim.Tuple([2,2,3,4]))
+        merger.internal_fifo_a.push(tree_sim.Tuple([5,6,7,8]))
+        merger.internal_fifo_a.push(tree_sim.Tuple([9,10,11,12]))                
         merger.select_A = False
         merger.selector_logic()
         self.assertTrue(merger.select_A)
