@@ -47,8 +47,230 @@ class TestFIFO(unittest.TestCase):
         fifo.pop()
         self.assertEqual(fifo.data, [])
 
-class TestMerger(unittest.TestCase):
+    def test_read(self):
+        fifo = tree_sim.FIFO(2)
+        with self.assertRaises(Exception):
+            fifo.read()
+        fifo.push(1)
+        self.assertEqual(fifo.read(), 1)
+        self.assertEqual(fifo.data, [1])
 
-    
+
+class TestTuple(unittest.TestCase):
+    def test_init(self):
+        with self.assertRaises(Exception):
+            tuple = tree_sim.Tuple([5, 4, 3, 2, 1])
+
+    def test_min_elem(self):
+        tuple = tree_sim.Tuple([1, 2, 3, 4, 5])
+        self.assertEqual(tuple.min_elem(), 1)
+        
+class TestMerger(unittest.TestCase):
+    # Example from FCCM '18 Tokyo paper
+    def test_merger_basic(self):
+        in_fifo_1 = tree_sim.FIFO(3)
+        in_fifo_1.push(tree_sim.Tuple([1, 3, 5, 7]))
+        in_fifo_1.push(tree_sim.Tuple([9, 11, 13, 15]))
+        in_fifo_1.push(tree_sim.Tuple([0, 0, 0, 0]));        
+
+        in_fifo_2 = tree_sim.FIFO(3)
+        in_fifo_2.push(tree_sim.Tuple([2, 4, 6, 8]));
+        in_fifo_2.push(tree_sim.Tuple([10, 12, 14, 16]));
+        in_fifo_2.push(tree_sim.Tuple([0, 0, 0, 0]));        
+        
+        out_fifo = tree_sim.FIFO(1)
+
+        throughput = 4
+
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+        result = []
+        for i in range(0, 109):
+            merger.simulate()
+            if not out_fifo.empty():
+                print(out_fifo.read().data)
+                result += out_fifo.pop().data
+        print(result)
+        self.assertEqual([0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          0,0,0,0, \
+                          1,2,3,4, \
+                          5,6,7,8, \
+                          9,10,11,12, \
+                          13,14,15,16,
+                          0, 0, 0, 0], result)
+
+    def test_merger_global_reset(self):
+        pass
+
+    def test_selector_logic_on_global_reset(self):
+        in_fifo_1 = tree_sim.FIFO(2)
+        in_fifo_2 = tree_sim.FIFO(2)
+        out_fifo = tree_sim.FIFO(1)
+        throughput = 4
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+
+        merger.internal_fifo_a = tree_sim.FIFO(1)
+        merger.internal_fifo_b = tree_sim.FIFO(1)        
+        merger.internal_fifo_a.push(tree_sim.Tuple([0,0,0,0]))
+        merger.internal_fifo_b.push(tree_sim.Tuple([0,0,0,0]))
+        merger.select_A = False
+        merger.selector_logic()
+        self.assertTrue(merger.select_A)
+        merger.selector_logic()
+        self.assertFalse(merger.select_A)
+        merger.selector_logic()
+        self.assertTrue(merger.select_A)
+        
+    def test_selector_logic_on_A_leq(self):
+        in_fifo_1 = tree_sim.FIFO(2)
+        in_fifo_2 = tree_sim.FIFO(2)
+        out_fifo = tree_sim.FIFO(1)
+        throughput = 4
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+
+        merger.internal_fifo_a = tree_sim.FIFO(1)
+        merger.internal_fifo_b = tree_sim.FIFO(1)        
+        merger.internal_fifo_a.push(tree_sim.Tuple([1,2,3,4]))
+        merger.internal_fifo_b.push(tree_sim.Tuple([2,2,2,2]))
+        merger.select_A = False
+        merger.selector_logic()
+        self.assertTrue(merger.select_A)
+
+
+    def test_selector_logic_on_B_lt(self):
+        in_fifo_1 = tree_sim.FIFO(2)
+        in_fifo_2 = tree_sim.FIFO(2)
+        out_fifo = tree_sim.FIFO(1)
+        throughput = 4
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+
+        merger.internal_fifo_a = tree_sim.FIFO(1)
+        merger.internal_fifo_b = tree_sim.FIFO(1)        
+        merger.internal_fifo_a.push(tree_sim.Tuple([2,2,3,4]))
+        merger.internal_fifo_b.push(tree_sim.Tuple([1,2,2,2]))
+        merger.select_A = False
+        merger.selector_logic()
+        self.assertFalse(merger.select_A)
+
+
+    def test_selector_logic_on_A_and_B_empty(self):
+        in_fifo_1 = tree_sim.FIFO(2)
+        in_fifo_2 = tree_sim.FIFO(2)
+        out_fifo = tree_sim.FIFO(1)
+        throughput = 4
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+
+        merger.internal_fifo_a = tree_sim.FIFO(1)
+        merger.internal_fifo_b = tree_sim.FIFO(1)        
+        merger.select_A = False
+        with self.assertRaises(Exception):
+            merger.selector_logic()
+        
+    def test_selector_logic_on_B_empty(self):
+        in_fifo_1 = tree_sim.FIFO(2)
+        in_fifo_2 = tree_sim.FIFO(2)
+        out_fifo = tree_sim.FIFO(1)
+        throughput = 4
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+
+        merger.internal_fifo_a = tree_sim.FIFO(1)
+        merger.internal_fifo_b = tree_sim.FIFO(1)        
+        merger.internal_fifo_a.push(tree_sim.Tuple([2,2,3,4]))
+        merger.select_A = False
+        merger.selector_logic()
+        self.assertTrue(merger.select_A)
+ 
+    def test_selector_logic_on_B_empty(self):
+        in_fifo_1 = tree_sim.FIFO(2)
+        in_fifo_2 = tree_sim.FIFO(2)
+        out_fifo = tree_sim.FIFO(1)
+        throughput = 4
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+
+        merger.internal_fifo_a = tree_sim.FIFO(1)
+        merger.internal_fifo_b = tree_sim.FIFO(1)        
+        merger.internal_fifo_b.push(tree_sim.Tuple([2,2,3,4]))
+        merger.select_A = False
+        merger.selector_logic()
+        self.assertFalse(merger.select_A)                    
+
+    def test_selector_logic_on_B_zero(self):
+        in_fifo_1 = tree_sim.FIFO(2)
+        in_fifo_2 = tree_sim.FIFO(2)
+        out_fifo = tree_sim.FIFO(1)
+        throughput = 4
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+
+        merger.internal_fifo_a = tree_sim.FIFO(1)
+        merger.internal_fifo_b = tree_sim.FIFO(1)        
+        merger.internal_fifo_a.push(tree_sim.Tuple([2,2,3,4]))
+        merger.internal_fifo_b.push(tree_sim.Tuple([0,0,0,0]))
+        merger.select_A = False
+        merger.selector_logic()
+        self.assertTrue(merger.select_A)             
+
+    def test_selector_logic_on_A_zero(self):
+        in_fifo_1 = tree_sim.FIFO(2)
+        in_fifo_2 = tree_sim.FIFO(2)
+        out_fifo = tree_sim.FIFO(1)
+        throughput = 4
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+
+        merger.internal_fifo_a = tree_sim.FIFO(1)
+        merger.internal_fifo_b = tree_sim.FIFO(1)        
+        merger.internal_fifo_a.push(tree_sim.Tuple([0,0,0,0]))
+        merger.internal_fifo_b.push(tree_sim.Tuple([1,2,3,3]))
+        merger.select_A = False
+        merger.selector_logic()
+        self.assertFalse(merger.select_A)
+
+    def test_selector_logic_toggle_behavior(self):
+        in_fifo_1 = tree_sim.FIFO(2)
+        in_fifo_2 = tree_sim.FIFO(2)
+        out_fifo = tree_sim.FIFO(20)
+        throughput = 4
+        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
+
+        merger.internal_fifo_a = tree_sim.FIFO(3)
+        merger.internal_fifo_b = tree_sim.FIFO(3)        
+        merger.internal_fifo_a.push(tree_sim.Tuple([0,0,0,1]))
+        merger.internal_fifo_b.push(tree_sim.Tuple([0,0,0,2]))        
+        merger.internal_fifo_a.push(tree_sim.Tuple([0,0,0,3]))
+        merger.internal_fifo_b.push(tree_sim.Tuple([0,0,0,4]))        
+        merger.internal_fifo_a.push(tree_sim.Tuple([1,1,1,1]))
+        merger.internal_fifo_b.push(tree_sim.Tuple([1,1,1,2]))
+        merger.select_A = False
+        merger.toggle = False
+        self.assertEqual(merger.internal_fifo_a.read().data, [0,0,0,1])
+        self.assertEqual(merger.internal_fifo_b.read().data, [0,0,0,2])        
+        merger.simulate()
+        self.assertEqual(merger.internal_fifo_a.read().data, [0,0,0,3])
+        self.assertEqual(merger.internal_fifo_b.read().data, [0,0,0,2])                
+        self.assertTrue(merger.select_A)
+        self.assertTrue(merger.toggle)
+        merger.simulate()
+        self.assertEqual(merger.internal_fifo_a.read().data, [0,0,0,3])
+        self.assertEqual(merger.internal_fifo_b.read().data, [0,0,0,4])                
+        self.assertFalse(merger.select_A)
+        self.assertTrue(merger.toggle)
+        merger.simulate()
+        self.assertEqual(merger.internal_fifo_a.read().data, [1,1,1,1])
+        self.assertEqual(merger.internal_fifo_b.read().data, [0,0,0,4])                
+        self.assertTrue(merger.select_A)
+        self.assertTrue(merger.toggle)
+        merger.simulate()
+        self.assertEqual(merger.internal_fifo_a.read().data, [1,1,1,1])
+        self.assertEqual(merger.internal_fifo_b.read().data, [1,1,1,2])        
+        self.assertFalse(merger.select_A)
+        self.assertFalse(merger.toggle)
+        merger.simulate()
+        self.assertTrue(merger.select_A)
+        self.assertFalse(merger.toggle)
+        
+        
 if __name__ == "__main__":
     unittest.main()
