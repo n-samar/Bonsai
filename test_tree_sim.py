@@ -57,10 +57,6 @@ class TestFIFO(unittest.TestCase):
 
 
 class TestTuple(unittest.TestCase):
-    def test_init(self):
-        with self.assertRaises(Exception):
-            tuple = tree_sim.Tuple([5, 4, 3, 2, 1])
-
     def test_min_elem(self):
         tuple = tree_sim.Tuple([1, 2, 3, 4, 5])
         self.assertEqual(tuple.min_elem(), 1)
@@ -223,7 +219,7 @@ class TestMerger(unittest.TestCase):
             merger.simulate()
             if not out_fifo.empty():
                 result += out_fifo.pop().data
-        print(result)
+
         self.assertEqual([0,0,0,0, \
                           0,0,0,0, \
                           0,0,0,0, \
@@ -408,6 +404,153 @@ class TestMerger(unittest.TestCase):
         self.assertFalse(merger.select_A)
         self.assertFalse(merger.toggle)
         
+class TestCoupler(unittest.TestCase):
+    def setUp(self):
+        self.in_fifo = tree_sim.FIFO(3)
+        self.out_fifo = tree_sim.FIFO(3)
+        self.coupler = tree_sim.Coupler(4, self.in_fifo, self.out_fifo)
         
+    def test_nominal_behavior(self):
+        self.in_fifo = tree_sim.FIFO(3)
+        self.out_fifo = tree_sim.FIFO(3)
+        self.coupler = tree_sim.Coupler(4, self.in_fifo, self.out_fifo)        
+        self.in_fifo.push(tree_sim.Tuple([1, 2, 3, 4]))
+        self.coupler.simulate()
+        self.coupler.simulate()
+        self.assertTrue(self.out_fifo.empty())
+        self.in_fifo.push(tree_sim.Tuple([5, 6, 7, 8]))
+        self.coupler.simulate()
+        self.assertFalse(self.out_fifo.empty())
+        self.assertEqual([1,2,3,4,5,6,7,8], self.out_fifo.pop().data)
+        self.coupler.simulate()
+        self.assertTrue(self.out_fifo.empty())
+
+    def test_out_fifo_full(self):
+        self.in_fifo = tree_sim.FIFO(3)
+        self.out_fifo = tree_sim.FIFO(3)        
+        self.coupler = tree_sim.Coupler(4, self.in_fifo, self.out_fifo)        
+        self.in_fifo.push(tree_sim.Tuple([1,2,3,4]))
+        self.in_fifo.push(tree_sim.Tuple([5,6,7,8]))
+        self.in_fifo.push(tree_sim.Tuple([9,10,11,12]))                          
+        self.out_fifo.push(tree_sim.Tuple([5,6,7,8]))
+        self.out_fifo.push(tree_sim.Tuple([5,6,7,8]))
+        self.out_fifo.push(tree_sim.Tuple([5,6,7,8]))        
+        self.coupler.simulate()
+        self.coupler.simulate()
+        self.coupler.simulate()
+        self.assertTrue(self.coupler.internal_fifo.pop().data, [1, 2, 3, 4])
+        self.assertTrue(self.coupler.internal_fifo.pop().data, [5, 6, 7, 8])
+
+    def test_in_fifo_empty(self):
+        self.in_fifo = tree_sim.FIFO(3)
+        self.out_fifo = tree_sim.FIFO(3)        
+        self.coupler = tree_sim.Coupler(4, self.in_fifo, self.out_fifo)
+        self.coupler.simulate()
+        self.coupler.simulate()
+        self.coupler.simulate()
+        self.assertTrue(self.coupler.internal_fifo.empty())
+        self.assertTrue(self.out_fifo.empty())
+
+    def test_first_input_zero(self):
+        self.in_fifo = tree_sim.FIFO(3)
+        self.out_fifo = tree_sim.FIFO(3)        
+        self.coupler = tree_sim.Coupler(4, self.in_fifo, self.out_fifo)
+        self.in_fifo.push(tree_sim.Tuple([0, 0, 0, 0]))
+        self.in_fifo.push(tree_sim.Tuple([1,2,3,4]))
+        self.coupler.simulate()
+        self.coupler.simulate()
+        self.assertFalse(self.out_fifo.empty())
+        self.assertEqual(self.out_fifo.pop().data, [0,0,0,0,0,0,0,0])
+        self.assertFalse(self.coupler.internal_fifo.empty())
+        self.assertEqual(self.coupler.internal_fifo.pop().data, [1,2,3,4])
+        
+    def test_second_input_zero(self):
+        self.in_fifo = tree_sim.FIFO(3)
+        self.out_fifo = tree_sim.FIFO(3)        
+        self.coupler = tree_sim.Coupler(4, self.in_fifo, self.out_fifo)
+        self.in_fifo.push(tree_sim.Tuple([1,2,3,4]))
+        self.in_fifo.push(tree_sim.Tuple([0, 0, 0, 0]))        
+        self.coupler.simulate()
+        self.coupler.simulate()
+        self.assertFalse(self.out_fifo.empty())
+        self.assertEqual(self.out_fifo.pop().data, [1,2,3,4,0,0,0,0])
+        self.assertTrue(self.coupler.internal_fifo.empty())
+
+class TestMergerTree(unittest.TestCase):
+    def test_init_2_2(self):               
+        merger_tree = tree_sim.MergerTree(2, 2)
+        
+        self.assertEqual(merger_tree.mergers[0][0].in_fifo_1, merger_tree.fifos[1][0][1])
+        self.assertEqual(merger_tree.mergers[0][0].in_fifo_2, merger_tree.fifos[1][1][1])
+        self.assertEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[0][0][0])
+        self.assertEqual(merger_tree.fifos[1][0][0], merger_tree.fifos[1][0][1], str(merger_tree.fifos))
+        self.assertEqual(merger_tree.fifos[1][1][0], merger_tree.fifos[1][1][1])
+        self.assertEqual(merger_tree.fifos[0][0][0], merger_tree.fifos[0][0][1])
+        self.assertNotEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[1][1][1],
+                            str(merger_tree.fifos))
+        self.assertNotEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[1][0][1])        
+        merger_tree.fifos[1][0][0].push(tree_sim.Tuple([1, 3]))
+        merger_tree.fifos[1][0][0].push(tree_sim.Tuple([5, 7]))
+        merger_tree.fifos[1][0][0].push(tree_sim.Tuple([0,0]))
+
+
+        merger_tree.fifos[1][1][0].push(tree_sim.Tuple([2, 4]))
+        merger_tree.fifos[1][1][0].push(tree_sim.Tuple([6, 8]))
+        merger_tree.fifos[1][1][0].push(tree_sim.Tuple([0,0]))
+        result = []
+        for i in range(0, 100):
+            merger_tree.simulate()
+            if not merger_tree.fifos[0][0][1].empty():
+                result+=merger_tree.fifos[0][0][1].pop().data
+        self.assertEqual(result, [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,3,4,5,6,7,8,0,0])
+        print("FIFOs 2x2: " + str(merger_tree.fifos))
+
+    def test_init_4_4(self):
+        merger_tree = tree_sim.MergerTree(4, 4)
+
+        print("FIFOs: " + str(merger_tree.fifos))
+        print("mergers: " + str(merger_tree.mergers))
+        
+        self.assertEqual(merger_tree.mergers[1][0].in_fifo_1, merger_tree.fifos[2][0][1])
+        self.assertEqual(merger_tree.mergers[1][0].in_fifo_2, merger_tree.fifos[2][1][1])
+        self.assertEqual(merger_tree.mergers[1][0].out_fifo, merger_tree.fifos[1][0][0])
+
+        self.assertEqual(merger_tree.mergers[1][1].in_fifo_1, merger_tree.fifos[2][2][1])
+        self.assertEqual(merger_tree.mergers[1][1].in_fifo_2, merger_tree.fifos[2][3][1])
+        self.assertEqual(merger_tree.mergers[1][1].out_fifo, merger_tree.fifos[1][1][0])
+
+        self.assertEqual(merger_tree.mergers[0][0].in_fifo_1, merger_tree.fifos[1][0][1])
+        self.assertEqual(merger_tree.mergers[0][0].in_fifo_2, merger_tree.fifos[1][1][1])
+        self.assertEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[0][0][0])                
+        
+        merger_tree.fifos[2][0][0].push(tree_sim.Tuple([1, 3]))
+        merger_tree.fifos[2][0][0].push(tree_sim.Tuple([5, 7]))
+        merger_tree.fifos[2][0][0].push(tree_sim.Tuple([0,0]))
+        merger_tree.fifos[2][1][0].push(tree_sim.Tuple([2, 4]))
+        merger_tree.fifos[2][1][0].push(tree_sim.Tuple([6, 8]))
+        merger_tree.fifos[2][1][0].push(tree_sim.Tuple([0,0]))
+        merger_tree.fifos[2][2][0].push(tree_sim.Tuple([10,10]))
+        merger_tree.fifos[2][3][0].push(tree_sim.Tuple([10,10]))                
+        
+        result = []
+        for i in range(0, 100):
+            merger_tree.simulate()
+            if not merger_tree.fifos[1][0][0].empty():
+                print("OUTPUT1: " + str(merger_tree.fifos[1][0][0].empty()))
+            if not merger_tree.couplers[1][0].internal_fifo.empty:
+                print("OUTPUT2: " + str(merger_tree.couplers[1][0].internal_fifo.read().data))
+            if not merger_tree.fifos[0][0][1].empty():
+                result+=merger_tree.fifos[0][0][1].pop().data
+        print(result)
+        
+    def test_init_8_8(self):
+        merger_tree = tree_sim.MergerTree(8, 8)
+
+    def test_init_16_16(self):
+        merger_tree = tree_sim.MergerTree(16, 16)
+
+    def test_init_32_32(self):
+        merger_tree = tree_sim.MergerTree(32, 32)        
+
 if __name__ == "__main__":
     unittest.main()
