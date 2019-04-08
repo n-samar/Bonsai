@@ -217,7 +217,7 @@ class MergerTree:
                 self.couplers[level] = self.couplers[level] + [None]
                 # input FIFOs need to be bigger
                 if level == math.log(L,2):
-                    self.fifos[level][index][0] = FIFO(10)
+                    self.fifos[level][index][0] = FIFO(100)
                 else:
                     self.fifos[level][index][0] = FIFO(3)
                 if level > 0 and level < math.log(L, 2):
