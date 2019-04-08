@@ -1,4 +1,6 @@
 import math
+import sys
+
 
 class FIFO:
     def __init__(self, capacity):
@@ -89,8 +91,10 @@ class Merger:
         if self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
             raise Exception("Cannot run selector logic when both FIFO_A and FIFO_B are empty!")
         if self.internal_fifo_a.empty():
+            self.first_toggle = True
             self.select_A = False
         elif self.internal_fifo_b.empty():
+            self.first_toggle = True            
             self.select_A = True
         elif self.toggle or \
              (self.internal_fifo_a.read().min_elem() == 0 and self.internal_fifo_b.read().min_elem() == 0):
@@ -191,8 +195,6 @@ class Coupler:
                         self.out_fifo.push(self.couple(tuple_1, self.internal_fifo.pop()))
                 else:
                     self.out_fifo.push(self.couple(tuple_1, self.internal_fifo.pop()))
-        if not self.in_fifo.empty() and not self.internal_fifo.full():
-            self.internal_fifo.push(self.in_fifo.pop())
 
 class MergerTree:
     def __init__(self, P, L):
@@ -213,7 +215,11 @@ class MergerTree:
             for index in range(0, 2**level):
                 self.fifos[level] = self.fifos[level] + [[None, None]]
                 self.couplers[level] = self.couplers[level] + [None]
-                self.fifos[level][index][0] = FIFO(3)
+                # input FIFOs need to be bigger
+                if level == math.log(L,2):
+                    self.fifos[level][index][0] = FIFO(10)
+                else:
+                    self.fifos[level][index][0] = FIFO(3)
                 if level > 0 and level < math.log(L, 2):
                     self.fifos[level][index][1] = FIFO(3)
                     self.couplers[level][index] = Coupler(P/2**(level-1),
