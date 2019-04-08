@@ -72,15 +72,19 @@ class Merger:
         self.cycle = 0
         self.toggle = False
         self.stall = False
-
+        self.final_tuple = False
+        
         self.select_A = True
         self.first_toggle = False
 
     def update_stall_sig(self):
-        # children
-        if self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
+        if self.final_tuple:
+            self.final_tuple = False
             self.stall = True
-        elif self.out_fifo.full():   # Parent
+        elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
+            if not self.stall:
+                self.final_tuple = True
+        elif self.out_fifo.full():
             self.stall = True
         else:
             self.stall = False
@@ -88,9 +92,12 @@ class Merger:
     # Note: This should probably be implemented as a finite state machine
     # This would make the logic simpler when implementing in HW
     def selector_logic(self):
-        if self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
+        if self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and not self.final_tuple:
             raise Exception("Cannot run selector logic when both FIFO_A and FIFO_B are empty!")
-        if self.internal_fifo_a.empty():
+        
+        if self.final_tuple:
+            self.select_A = True
+        elif self.internal_fifo_a.empty():
             self.first_toggle = True
             self.select_A = False
         elif self.internal_fifo_b.empty():
@@ -123,21 +130,23 @@ class Merger:
             bml_result = sorted(self.R_A.data + self.R_B.data)[:self.P]
         bms_input_0 = None
         self.selector_logic()            
-        if self.select_A:
+        if not self.final_tuple and self.select_A:
             bms_input_0 = self.internal_fifo_a.read().data
-        else:
+        elif not self.final_tuple:
             bms_input_0 = self.internal_fifo_b.read().data
+        else:
+            bms_input_0 = [0] * self.P
         if not self.first_toggle:
             self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[:self.P]))
         else:
             self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[self.P:]))
 
     def pipeline_stage_2(self):
-        if self.select_A:
+        if self.select_A and not self.final_tuple:
             self.R_A = self.internal_fifo_a.pop()
             if not self.in_fifo_1.empty():
                 self.internal_fifo_a.push(self.in_fifo_1.pop())
-        else:
+        elif not self.final_tuple:
             self.R_B = self.internal_fifo_b.pop()
             if not self.in_fifo_2.empty():            
                 self.internal_fifo_b.push(self.in_fifo_2.pop())
@@ -146,17 +155,14 @@ class Merger:
         self.pipeline_stage_1()
 
     def simulate_pipeline_else(self):
-        if not self.stall:        
+        if not self.stall:
             self.pipeline_stage_2()
-            # make sure not to run pipeline_stage_1 on the last clock cycle!
-            # otherwise do not need to check stall signal twice!
-            self.update_stall_sig()
-            if not self.stall:
-                self.pipeline_stage_1()
+        self.update_stall_sig()
+        if not self.stall:
+            self.pipeline_stage_1()
     
     # simulates merger for one clock cycle
     def simulate(self):
-        self.update_stall_sig()
         if self.cycle == 0:
             self.simulate_pipeline_init()
         else:
