@@ -1,7 +1,65 @@
 import unittest
 import tree_sim
+import random
+import math
 
-# Proper input means each leaf gets a non-zero even number of inputs AND a terminal zero tuple
+# DEFINITION:  Proper input means each leaf gets a non-zero even number of inputs AND a terminal zero tuple
+
+# Tests proper input for P == L tree
+def random_proper_input_test(P, array_size, num_tests):
+    random.seed(4)
+    assert(array_size % (4 * P) == 0)
+    out_prefix_zeros = [0] * int(P*(8*math.log(P, 2)-1))
+    out_suffix_zeros = [0] * (2*P)
+    out_array = [x for x in range(1, array_size+1)]
+
+    for test in range(0, num_tests):
+        in_array = [x for x in range(1, array_size+1)]
+        random.shuffle(in_array)
+        split_array = [0]
+        accu = 0
+        for i in range(0, P-1):
+            new_num = random.randrange(accu+1, min(array_size/4-1, accu + array_size/4/P * 2))
+            split_array.append(new_num)
+            accu = new_num
+        split_array.append(array_size / 4)            
+
+
+        input_list = []
+        for i in range(0, P):
+            print("range: " + str(split_array[i+1] * 4 - split_array[i] * 4))
+            input_list += [in_array[split_array[i]*4 : split_array[i+1]*4]]
+            input_list[i].sort()
+            input_list[i] += [0, 0]
+
+        input_tuples = [[]]
+        for i in range(0, P):
+            for tuple_index in range(0, len(input_list[i])/2):
+                input_tuples[i].append(tree_sim.Tuple(input_list[i][tuple_index*2:tuple_index*2+2]))
+            input_tuples.append([])        
+
+        merger_tree = tree_sim.MergerTree(P, P)
+        for i in range(0, P):
+            for tuple_index in range(0, len(input_list[i])/2):
+                merger_tree.fifos[int(math.log(P, 2))][i][0].push(input_tuples[i][tuple_index])
+                print(input_tuples[i][tuple_index].data)
+            print("=---------------------------------------------------------")
+
+        result = []
+        for i in range(0, int(P*(8*math.log(P, 2)-1)) + array_size):
+            merger_tree.simulate()
+            print(merger_tree.mergers[1][1])
+            if not merger_tree.fifos[0][0][1].empty():
+                new_tuple = merger_tree.fifos[0][0][1].pop().data
+                result += new_tuple
+                print("NEW TUPLE: " + str(new_tuple))
+            else:
+                print("ATTENTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print(result)
+        print(out_prefix_zeros + out_array + out_suffix_zeros)
+        return (result, out_prefix_zeros + out_array + out_suffix_zeros)
+
+        
 class TestFIFO(unittest.TestCase):
     def test_push_full(self):
         fifo = tree_sim.FIFO(0)
@@ -500,6 +558,10 @@ class TestCoupler(unittest.TestCase):
         self.assertTrue(self.in_fifo.empty())
 
 class TestMergerTree(unittest.TestCase):
+    def test_2_2_random_proper_input(self):
+        result_tuple = random_proper_input_test(4, 128, 100)
+        self.assertEqual(result_tuple[0], result_tuple[1])
+        
     def test_init_2_2_proper_input(self):               
         merger_tree = tree_sim.MergerTree(2, 2)
         
@@ -944,7 +1006,7 @@ class TestMergerTree(unittest.TestCase):
             merger_tree.simulate()                    
             if not merger_tree.fifos[0][0][1].empty():
                 result+=merger_tree.fifos[0][0][1].pop().data
-        print("result test_init_8_8_proper_input: " + str(result))
+        # print("result test_init_8_8_proper_input: " + str(result))
         self.assertEqual(result, [0, 0, 0, 0, 0, 0, 0, 0, \
                                   0, 0, 0, 0, 0, 0, 0, 0, \
                                   0, 0, 0, 0, 0, 0, 0, 0, \
@@ -1112,7 +1174,8 @@ class TestMergerTree(unittest.TestCase):
                                   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])                              
 
     def test_init_32_32(self):
-        merger_tree = tree_sim.MergerTree(32, 32)        
+        merger_tree = tree_sim.MergerTree(32, 32)
+        
 
 if __name__ == "__main__":
     unittest.main()

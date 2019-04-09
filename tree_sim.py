@@ -73,19 +73,22 @@ class Merger:
         self.toggle = False
         self.stall = False
         self.final_tuple = False
-        
+        self.done_A = False
+        self.done_B = False
         self.select_A = True
         self.first_toggle = False
 
     def update_stall_sig(self):
         if self.final_tuple:
             self.final_tuple = False
+            self.done_A = False
+            self.done_B = False
             self.stall = True
         elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
             if not self.stall:
                 self.final_tuple = True
         elif self.out_fifo.full():
-            self.stall = True
+            self.stall = True  
         else:
             self.stall = False
 
@@ -114,8 +117,10 @@ class Merger:
             else:
                 self.toggle = True
         elif self.internal_fifo_a.read().min_elem() == 0:
+            self.done_A = True
             self.select_A = False
         elif self.internal_fifo_b.read().min_elem() == 0:
+            self.done_B = True
             self.select_A = True
         elif self.internal_fifo_a.read().min_elem() <= self.internal_fifo_b.read().min_elem():
             self.select_A = True
@@ -176,6 +181,7 @@ class Merger:
         result += ("R_B = " + str(self.R_B) + "\n")
         result += ("FIFO_A = " + "\n" + str(self.internal_fifo_a) + "\n")
         result += ("FIFO_B = " + "\n" +  str(self.internal_fifo_b) + "\n")
+        result += ("select_A = " + str(self.select_A))
         return result
 
 class Coupler:
@@ -222,8 +228,8 @@ class MergerTree:
                 self.fifos[level] = self.fifos[level] + [[None, None]]
                 self.couplers[level] = self.couplers[level] + [None]
                 # input FIFOs need to be bigger
-                if level == math.log(L,2):
-                    self.fifos[level][index][0] = FIFO(100)
+                if level == int(math.log(L,2)):
+                    self.fifos[level][index][0] = FIFO(1000000)
                 else:
                     self.fifos[level][index][0] = FIFO(3)
                 if level > 0 and level < math.log(L, 2):
