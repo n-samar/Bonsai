@@ -7,8 +7,8 @@ import math
 
 # Tests proper input for P == L tree
 def random_proper_input_test(P, array_size, num_tests):
-    assert(array_size % 4 == 0)
-    assert(array_size  > 4*P)    
+    assert(array_size % (2*P) == 0)
+    assert(array_size > 2*P*P)
     out_prefix_zeros = [0] * int(P*(8*math.log(P, 2)-1))
     out_suffix_zeros = [0] * (2*P)
     out_array = [x for x in range(1, array_size+1)]
@@ -18,16 +18,24 @@ def random_proper_input_test(P, array_size, num_tests):
         random.shuffle(in_array)
         split_array = [0]
         accu = 0
-        for i in range(0, P-1):
-            new_num = random.randrange(accu+1, min(array_size/4-1, accu + array_size/4/P * 2))
-            split_array.append(new_num)
-            accu = new_num
-        split_array.append(array_size / 4)            
+        while True:
+            try:
+                for i in range(0, P-1):
+                    new_num = random.randrange(accu+1, min(array_size/(2*P), accu + array_size/(2*P)/P * 2))
+                    assert(new_num - accu > 0)
+                    split_array.append(new_num)
+                    accu = new_num
+                assert(array_size / (2*P) > accu)
+                split_array.append(array_size / (2*P))
+                break
+            except:
+                pass
+            
 
 
         input_list = []
         for i in range(0, P):
-            input_list += [in_array[split_array[i]*4 : split_array[i+1]*4]]
+            input_list += [in_array[split_array[i]*(2*P) : split_array[i+1]*(2*P)]]
             input_list[i].sort()
             input_list[i] += [0, 0]
 
@@ -47,7 +55,7 @@ def random_proper_input_test(P, array_size, num_tests):
         result = []
         for i in range(0, int(P*(8*math.log(P, 2)-1)) + array_size):
             merger_tree.simulate()
-            # print(merger_tree.mergers[1][1])
+            # print(merger_tree.mergers[0][0])
             if not merger_tree.fifos[0][0][1].empty():
                 new_tuple = merger_tree.fifos[0][0][1].pop().data
                 # print("NEW TUPLE: " + str(new_tuple))
@@ -565,10 +573,17 @@ class TestMergerTree(unittest.TestCase):
         self.assertEqual(result_tuple[0], result_tuple[1])
 
     def test_16_16_random_proper_input(self):
-        return
-        result_tuple = random_proper_input_test(16, 528, 10000)
-        self.assertEqual(result_tuple[0], result_tuple[1])        
+        result_tuple = random_proper_input_test(16, 16384, 10000000)
+        self.assertEqual(result_tuple[0], result_tuple[1])
 
+    def test_32_32_random_proper_input(self):
+        result_tuple = random_proper_input_test(32, 16384, 10000000)
+        self.assertEqual(result_tuple[0], result_tuple[1])
+
+    def test_64_64_random_proper_input(self):
+        result_tuple = random_proper_input_test(64, 65536, 10000000)
+        self.assertEqual(result_tuple[0], result_tuple[1])          
+        
         
     def test_init_2_2_proper_input(self):               
         merger_tree = tree_sim.MergerTree(2, 2)
