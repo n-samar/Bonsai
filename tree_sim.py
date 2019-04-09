@@ -84,11 +84,15 @@ class Merger:
             self.done_A = False
             self.done_B = False
             self.stall = True
-        elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
+        elif self.out_fifo.full():
+            self.stall = True                        
+        elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and self.done_A and self.done_B:
             if not self.stall:
                 self.final_tuple = True
-        elif self.out_fifo.full():
-            self.stall = True  
+        elif self.internal_fifo_a.empty() and not self.done_A:
+            self.stall = True
+        elif self.internal_fifo_b.empty() and not self.done_B:
+            self.stall = True
         else:
             self.stall = False
 
@@ -100,19 +104,25 @@ class Merger:
         
         if self.final_tuple:
             self.select_A = True
-        elif self.internal_fifo_a.empty():
+        elif self.internal_fifo_a.empty() and self.done_A:
             self.first_toggle = True
             self.select_A = False
-        elif self.internal_fifo_b.empty():
+        elif self.internal_fifo_b.empty() and self.done_B:
             self.first_toggle = True            
             self.select_A = True
+        elif (self.internal_fifo_b.empty() or self.internal_fifo_a.empty()) and not self.final_tuple:
+            raise Exception("These should not be empty!")
         elif self.toggle or \
              (self.internal_fifo_a.read().min_elem() == 0 and self.internal_fifo_b.read().min_elem() == 0):
             self.select_A = not self.select_A   # alternately dequeue from FIFO_A and FIFO_B instead of global reset
+            self.done_A = True
+            self.done_B = True
             self.first_toggle = False
             if not self.toggle:
                 self.first_toggle = True
             if self.internal_fifo_a.read().min_elem() != 0 or self.internal_fifo_b.read().min_elem() != 0:
+                self.done_A = False
+                self.done_B = False
                 self.toggle = False
             else:
                 self.toggle = True
@@ -141,27 +151,29 @@ class Merger:
             bms_input_0 = self.internal_fifo_b.read().data
         else:
             bms_input_0 = [0] * self.P
-        if not self.first_toggle:
-            self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[:self.P]))
-        else:
-            self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[self.P:]))
+        if not self.stall:
+            if not self.first_toggle:
+                self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[:self.P]))
+            else:
+                self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[self.P:]))
 
     def pipeline_stage_2(self):
         if self.select_A and not self.final_tuple:
-            self.R_A = self.internal_fifo_a.pop()
-            if not self.in_fifo_1.empty():
+            if not self.stall:
+                self.R_A = self.internal_fifo_a.pop()
+            if not self.in_fifo_1.empty() and not self.internal_fifo_a.full():
                 self.internal_fifo_a.push(self.in_fifo_1.pop())
         elif not self.final_tuple:
-            self.R_B = self.internal_fifo_b.pop()
-            if not self.in_fifo_2.empty():            
+            if not self.stall:
+                self.R_B = self.internal_fifo_b.pop()
+            if not self.in_fifo_2.empty() and not self.internal_fifo_b.full():            
                 self.internal_fifo_b.push(self.in_fifo_2.pop())
                 
     def simulate_pipeline_init(self):
         self.pipeline_stage_1()
 
     def simulate_pipeline_else(self):
-        if not self.stall:
-            self.pipeline_stage_2()
+        self.pipeline_stage_2()
         self.update_stall_sig()
         if not self.stall:
             self.pipeline_stage_1()
@@ -182,6 +194,9 @@ class Merger:
         result += ("FIFO_A = " + "\n" + str(self.internal_fifo_a) + "\n")
         result += ("FIFO_B = " + "\n" +  str(self.internal_fifo_b) + "\n")
         result += ("select_A = " + str(self.select_A))
+        result += ("\n first_toggle = " + str(self.first_toggle))
+        result += ("\n done_A = " + str(self.done_A))
+        result += ("\n done_B = " + str(self.done_B))                
         return result
 
 class Coupler:
@@ -249,11 +264,13 @@ class MergerTree:
 
 
     def simulate(self):
-        for level in range(0, len(self.mergers)):
-            for merger_index in range(0, len(self.mergers[level])):
-                self.mergers[level][merger_index].simulate()
-
         for level in range(0, len(self.couplers)):
             for index in range(0, len(self.couplers[level])):
                 if level > 0 and level < math.log(self.L, 2):
                     self.couplers[level][index].simulate()
+                    
+        for level in range(0, len(self.mergers)):
+            for merger_index in range(0, len(self.mergers[level])):
+                self.mergers[level][merger_index].simulate()
+
+

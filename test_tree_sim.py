@@ -7,7 +7,6 @@ import math
 
 # Tests proper input for P == L tree
 def random_proper_input_test(P, array_size, num_tests):
-    random.seed(4)
     assert(array_size % (4 * P) == 0)
     out_prefix_zeros = [0] * int(P*(8*math.log(P, 2)-1))
     out_suffix_zeros = [0] * (2*P)
@@ -27,7 +26,6 @@ def random_proper_input_test(P, array_size, num_tests):
 
         input_list = []
         for i in range(0, P):
-            print("range: " + str(split_array[i+1] * 4 - split_array[i] * 4))
             input_list += [in_array[split_array[i]*4 : split_array[i+1]*4]]
             input_list[i].sort()
             input_list[i] += [0, 0]
@@ -42,21 +40,15 @@ def random_proper_input_test(P, array_size, num_tests):
         for i in range(0, P):
             for tuple_index in range(0, len(input_list[i])/2):
                 merger_tree.fifos[int(math.log(P, 2))][i][0].push(input_tuples[i][tuple_index])
-                print(input_tuples[i][tuple_index].data)
-            print("=---------------------------------------------------------")
 
         result = []
         for i in range(0, int(P*(8*math.log(P, 2)-1)) + array_size):
             merger_tree.simulate()
-            print(merger_tree.mergers[1][1])
             if not merger_tree.fifos[0][0][1].empty():
                 new_tuple = merger_tree.fifos[0][0][1].pop().data
                 result += new_tuple
-                print("NEW TUPLE: " + str(new_tuple))
-            else:
-                print("ATTENTION ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print(result)
-        print(out_prefix_zeros + out_array + out_suffix_zeros)
+        if result != out_prefix_zeros + out_array + out_suffix_zeros:
+            print(result)
         return (result, out_prefix_zeros + out_array + out_suffix_zeros)
 
         
@@ -394,8 +386,9 @@ class TestMerger(unittest.TestCase):
         merger.internal_fifo_b = tree_sim.FIFO(1)        
         merger.internal_fifo_b.push(tree_sim.Tuple([2,2,3,4]))
         merger.select_A = False
-        merger.selector_logic()
-        self.assertFalse(merger.select_A)                    
+        with self.assertRaises(Exception):
+            merger.selector_logic()            
+
 
     def test_selector_logic_on_B_zero(self):
         in_fifo_1 = tree_sim.FIFO(2)
@@ -469,9 +462,6 @@ class TestMerger(unittest.TestCase):
         self.assertEqual(merger.internal_fifo_a.read().data, [1,1,1,1])
         self.assertEqual(merger.internal_fifo_b.read().data, [1,1,1,2])        
         self.assertTrue(merger.select_A)
-        self.assertFalse(merger.toggle)
-        merger.simulate()
-        self.assertFalse(merger.select_A)
         self.assertFalse(merger.toggle)
         
 class TestCoupler(unittest.TestCase):
@@ -559,8 +549,23 @@ class TestCoupler(unittest.TestCase):
 
 class TestMergerTree(unittest.TestCase):
     def test_2_2_random_proper_input(self):
-        result_tuple = random_proper_input_test(4, 128, 100)
+        result_tuple = random_proper_input_test(2, 2048, 1000)
         self.assertEqual(result_tuple[0], result_tuple[1])
+
+    def test_4_4_random_proper_input(self):
+        result_tuple = random_proper_input_test(4, 2048, 1000)
+        self.assertEqual(result_tuple[0], result_tuple[1])
+
+    def test_8_8_random_proper_input(self):
+        return
+        result_tuple = random_proper_input_test(8, 16384, 1000)
+        self.assertEqual(result_tuple[0], result_tuple[1])
+
+    def test_16_16_random_proper_input(self):
+        return
+        result_tuple = random_proper_input_test(16, 16384, 1000)
+        self.assertEqual(result_tuple[0], result_tuple[1])        
+
         
     def test_init_2_2_proper_input(self):               
         merger_tree = tree_sim.MergerTree(2, 2)
