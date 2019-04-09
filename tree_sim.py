@@ -75,6 +75,7 @@ class Merger:
         self.final_tuple = False
         self.done_A = False
         self.done_B = False
+        self.done = False
         self.select_A = True
         self.first_toggle = False
 
@@ -86,9 +87,10 @@ class Merger:
             self.stall = True
         elif self.out_fifo.full():
             self.stall = True                        
-        elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and self.done_A and self.done_B:
-            if not self.stall:
-                self.final_tuple = True
+        elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and self.done_A and self.done_B and not self.done:
+            self.stall = False
+            self.final_tuple = True
+            self.done = True
         elif self.internal_fifo_a.empty() and not self.done_A:
             self.stall = True
         elif self.internal_fifo_b.empty() and not self.done_B:
@@ -110,8 +112,6 @@ class Merger:
         elif self.internal_fifo_b.empty() and self.done_B:
             self.first_toggle = True            
             self.select_A = True
-        elif (self.internal_fifo_b.empty() or self.internal_fifo_a.empty()) and not self.final_tuple:
-            raise Exception("These should not be empty!")
         elif self.toggle or \
              (self.internal_fifo_a.read().min_elem() == 0 and self.internal_fifo_b.read().min_elem() == 0):
             self.select_A = not self.select_A   # alternately dequeue from FIFO_A and FIFO_B instead of global reset
@@ -196,7 +196,11 @@ class Merger:
         result += ("select_A = " + str(self.select_A))
         result += ("\n first_toggle = " + str(self.first_toggle))
         result += ("\n done_A = " + str(self.done_A))
-        result += ("\n done_B = " + str(self.done_B))                
+        result += ("\n done_B = " + str(self.done_B))
+        result += ("\n stall = " + str(self.stall))
+        result += ("\n final tuple = " + str(self.final_tuple))
+        result += ("\n out_fifo.full() = " + str(self.out_fifo.full()))        
+        
         return result
 
 class Coupler:

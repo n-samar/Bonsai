@@ -7,7 +7,8 @@ import math
 
 # Tests proper input for P == L tree
 def random_proper_input_test(P, array_size, num_tests):
-    assert(array_size % (4 * P) == 0)
+    assert(array_size % 4 == 0)
+    assert(array_size  > 4*P)    
     out_prefix_zeros = [0] * int(P*(8*math.log(P, 2)-1))
     out_suffix_zeros = [0] * (2*P)
     out_array = [x for x in range(1, array_size+1)]
@@ -32,6 +33,8 @@ def random_proper_input_test(P, array_size, num_tests):
 
         input_tuples = [[]]
         for i in range(0, P):
+            # print(input_list[i])
+            # print("-------------------------------------------------")
             for tuple_index in range(0, len(input_list[i])/2):
                 input_tuples[i].append(tree_sim.Tuple(input_list[i][tuple_index*2:tuple_index*2+2]))
             input_tuples.append([])        
@@ -44,11 +47,12 @@ def random_proper_input_test(P, array_size, num_tests):
         result = []
         for i in range(0, int(P*(8*math.log(P, 2)-1)) + array_size):
             merger_tree.simulate()
+            # print(merger_tree.mergers[1][1])
             if not merger_tree.fifos[0][0][1].empty():
                 new_tuple = merger_tree.fifos[0][0][1].pop().data
+                # print("NEW TUPLE: " + str(new_tuple))
                 result += new_tuple
-        if result != out_prefix_zeros + out_array + out_suffix_zeros:
-            print(result)
+
         return (result, out_prefix_zeros + out_array + out_suffix_zeros)
 
         
@@ -549,21 +553,20 @@ class TestCoupler(unittest.TestCase):
 
 class TestMergerTree(unittest.TestCase):
     def test_2_2_random_proper_input(self):
-        result_tuple = random_proper_input_test(2, 2048, 1000)
+        result_tuple = random_proper_input_test(2, 16384, 10000000)
         self.assertEqual(result_tuple[0], result_tuple[1])
 
     def test_4_4_random_proper_input(self):
-        result_tuple = random_proper_input_test(4, 2048, 1000)
+        result_tuple = random_proper_input_test(4, 16384, 10000000)
         self.assertEqual(result_tuple[0], result_tuple[1])
 
     def test_8_8_random_proper_input(self):
-        return
-        result_tuple = random_proper_input_test(8, 16384, 1000)
+        result_tuple = random_proper_input_test(8, 16384, 10000000)
         self.assertEqual(result_tuple[0], result_tuple[1])
 
     def test_16_16_random_proper_input(self):
         return
-        result_tuple = random_proper_input_test(16, 16384, 1000)
+        result_tuple = random_proper_input_test(16, 528, 10000)
         self.assertEqual(result_tuple[0], result_tuple[1])        
 
         
