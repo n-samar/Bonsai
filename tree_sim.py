@@ -245,8 +245,6 @@ class MergerTree:
     def __init__(self, P, L):
         self.P = P
         self.L = L
-        if P != L:
-            raise Exception("This class only works for P == L for now!")
         if 2**math.log(L, 2) != L:
             raise Exception("L must be a power of two!")
         if 2**math.log(P, 2) != P:
@@ -265,7 +263,7 @@ class MergerTree:
                     self.fifos[level][index][0] = FIFO(1000000)
                 else:
                     self.fifos[level][index][0] = FIFO(3)
-                if level > 0 and level < math.log(L, 2):
+                if level > 0 and level < math.log(P, 2):
                     self.fifos[level][index][1] = FIFO(3)
                     self.couplers[level][index] = Coupler(P/2**(level-1),
                                                           self.fifos[level][index][0],
@@ -276,7 +274,7 @@ class MergerTree:
             self.mergers = self.mergers + [[]]
             for merger_index in range(0, 2**level):
                 self.mergers[level] = self.mergers[level] + [None]
-                self.mergers[level][merger_index] = Merger(P/(2**level), self.fifos[level+1][merger_index*2][1],
+                self.mergers[level][merger_index] = Merger(max(2, P/(2**level)), self.fifos[level+1][merger_index*2][1],
                                                   self.fifos[level+1][merger_index*2+1][1],
                                                   self.fifos[level][merger_index][0])
 
@@ -284,7 +282,7 @@ class MergerTree:
     def simulate(self):
         for level in range(0, len(self.couplers)):
             for index in range(0, len(self.couplers[level])):
-                if level > 0 and level < math.log(self.L, 2):
+                if level > 0 and level < math.log(self.P, 2):
                     self.couplers[level][index].simulate()
                     
         for level in range(0, len(self.mergers)):
