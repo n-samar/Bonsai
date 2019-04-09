@@ -70,6 +70,8 @@ class Merger:
         self.R_B = Tuple([0] * self.P)
 
         self.cycle = 0
+
+        # State signals (Can this be simplified?)
         self.toggle = False
         self.stall = False
         self.final_tuple = False
@@ -78,6 +80,7 @@ class Merger:
         self.done = False
         self.select_A = True
         self.first_toggle = False
+        self.stall_countdown = 5
 
     def update_stall_sig(self):
         if self.final_tuple:
@@ -89,13 +92,23 @@ class Merger:
             self.stall = True                        
         elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and self.done_A and self.done_B and not self.done:
             self.stall = False
+            self.stall_countdown = 5
             self.final_tuple = True
             self.done = True
         elif self.internal_fifo_a.empty() and not self.done_A:
             self.stall = True
         elif self.internal_fifo_b.empty() and not self.done_B:
             self.stall = True
+        elif self.internal_fifo_a.empty() and self.done_A and self.stall_countdown > 0:
+            # and not self.stall:
+            self.stall_countdown -= 1
+            self.stall = True
+        elif self.internal_fifo_b.empty() and self.done_B and self.stall_countdown > 0:
+            # and not self.stall:
+            self.stall_countdown -= 1
+            self.stall = True            
         else:
+            self.stall_countdown = 5
             self.stall = False
 
     # Note: This should probably be implemented as a finite state machine
@@ -199,7 +212,8 @@ class Merger:
         result += ("\n done_B = " + str(self.done_B))
         result += ("\n stall = " + str(self.stall))
         result += ("\n final tuple = " + str(self.final_tuple))
-        result += ("\n out_fifo.full() = " + str(self.out_fifo.full()))        
+        result += ("\n out_fifo.full() = " + str(self.out_fifo.full()))
+        result += ("\n toggle = " + str(self.toggle))                
         
         return result
 
