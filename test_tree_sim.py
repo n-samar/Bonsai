@@ -505,6 +505,111 @@ class TestCoupler(unittest.TestCase):
 
 class TestMergerTree(unittest.TestCase):
 
+    # Same as random_proper_input_test but adds an additional array to test the global reset dummy values
+    def random_proper_input_global_reset_test(self, P, array_size, num_tests, num_arrays = 2, L = -1):
+        if L == -1:
+            L = P
+        assert(array_size % (2*P) == 0)
+        assert(array_size > 2*P*L)
+        out_prefix_zeros = [0] * int(P*(8*math.log(P, 2) - 1) + 2*7*L-2*7*P)
+        out_suffix_zeros = [0] * (2*L)
+        out_array = [x for x in range(1, array_size+1)]
+        
+        for test in range(0, num_tests):
+            # print test
+            random.seed(test)
+            in_array = [x for x in range(1, array_size+1)]
+            random.shuffle(in_array)
+            split_array = []
+            accu = 0
+            while True:
+                split_array = []
+                accu = 0            
+                try:
+                    for array_indx in range(0, num_arrays):
+                        split_array.append([0])
+                        accu = 0                        
+                        for i in range(0, L-1):
+                            new_num = random.randrange(accu+1, min(array_size/(2*P), accu + array_size/(2*P)/L * 2))
+                            assert(new_num - accu > 0)
+                            split_array[array_indx].append(new_num)
+                            accu = new_num
+                        assert(array_size / (2*P) > accu)
+                        split_array[array_indx].append(array_size / (2*P))
+                    break
+                except:
+                    print "Another one!"                    
+
+            input_list = []
+
+            for i in range(0, L):
+                input_array = []
+                for array_indx in range(0, num_arrays):
+                    input_array += (sorted(in_array[split_array[array_indx][i]*(2*P) : split_array[array_indx][i+1]*(2*P)]) \
+                                    + [0, 0])
+                input_list += [input_array]
+
+            # print(input_list)
+            input_tuples = [[]]
+            for i in range(0, L):
+                # print(input_list[i])
+                # print("-------------------------------------------------")
+                for tuple_index in range(0, len(input_list[i])/2):
+                    input_tuples[i].append(tree_sim.Tuple(input_list[i][tuple_index*2:tuple_index*2+2]))
+                input_tuples.append([])        
+
+            merger_tree = tree_sim.MergerTree(P, L)
+            for i in range(0, L):
+                for tuple_index in range(0, len(input_list[i])/2):
+                    merger_tree.fifos[int(math.log(L, 2))][i][0].push(input_tuples[i][tuple_index])
+
+            result = []
+            stall_counter = 0
+            while stall_counter < 50:
+                merger_tree.simulate()
+                # print(merger_tree.mergers[0][0])
+                if not merger_tree.fifos[0][0][1].empty():
+                    new_tuple = merger_tree.fifos[0][0][1].pop().data
+                    # print("NEW TUPLE: " + str(new_tuple))
+                    stall_counter = 0
+                    result += new_tuple
+                else:
+                    stall_counter += 1
+
+            self.assertEqual(result, out_prefix_zeros + num_arrays * (out_array + out_suffix_zeros))
+
+    
+    def test_4_2_random_proper_input_global(self):
+        print("4_2_proper_global")        
+        result_tuple = self.random_proper_input_global_reset_test(2, 1024, 10, 3, 4)
+
+    def test_8_2_random_proper_input_global(self):
+        print("8_2_proper_global")        
+        result_tuple = self.random_proper_input_global_reset_test(2, 1024, 10, 3, 8)
+
+    def test_16_2_random_proper_input_global(self):
+        print("16_2_proper_global")        
+        result_tuple = self.random_proper_input_global_reset_test(2, 1024, 10, 3, 16)
+
+    def test_32_2_random_proper_input_global(self):
+        print("32_2_proper_global")        
+        result_tuple = self.random_proper_input_global_reset_test(2, 1024, 10, 3, 32)                         
+
+
+    def test_1024_2_random_proper_input_global(self):
+        print("1024_2_proper_global")        
+        result_tuple = self.random_proper_input_global_reset_test(2, 8*1024, 1, 2, 1024)                         
+
+    def test_1024_4_random_proper_input_global(self):
+        print("1024_4_proper_global")        
+        result_tuple = self.random_proper_input_global_reset_test(4, 16*1024, 1, 2, 1024)                         
+
+
+    def test_512_8_random_proper_input_global(self):
+        print("512_8_proper_global")        
+        result_tuple = self.random_proper_input_global_reset_test(8, 16*1024, 1, 2, 512)                         
+        
+
     def test_init_4_2_proper_input(self):
         merger_tree = tree_sim.MergerTree(2, 4)
         
@@ -878,7 +983,7 @@ class TestMergerTree(unittest.TestCase):
             merger_tree.simulate()
             if not merger_tree.fifos[0][0][1].empty():
                 result+=merger_tree.fifos[0][0][1].pop().data
-        print result
+        # print result
         self.assertEqual(result, [0, 0, 0, 0, \
                                   0, 0, 0, 0, \
                                   0, 0, 0, 0, \
@@ -962,77 +1067,11 @@ class TestMergerTree(unittest.TestCase):
                                   0, 0, 0, 0])        
         
     
-    # Same as random_proper_input_test but adds an additional array to test the global reset dummy values
-    def random_proper_input_global_reset_test(self, P, array_size, num_tests, num_arrays = 2, L = -1):
-        if L == -1:
-            L = P
-        assert(array_size % (2*P) == 0)
-        assert(array_size > 2*P*L)
-        out_prefix_zeros = [0] * int(P*(8*math.log(P, 2)-1))
-        out_suffix_zeros = [0] * (2*P)
-        out_array = [x for x in range(1, array_size+1)]
-        
-        for test in range(0, num_tests):
-            # print test
-            random.seed(test)
-            in_array = [x for x in range(1, array_size+1)]
-            random.shuffle(in_array)
-            split_array = []
-            accu = 0
-            while True:
-                split_array = []
-                accu = 0            
-                try:
-                    for array_indx in range(0, num_arrays):
-                        split_array.append([0])
-                        accu = 0                        
-                        for i in range(0, P-1):
-                            new_num = random.randrange(accu+1, min(array_size/(2*P), accu + array_size/(2*P)/P * 2))
-                            assert(new_num - accu > 0)
-                            split_array[array_indx].append(new_num)
-                            accu = new_num
-                        assert(array_size / (2*P) > accu)
-                        split_array[array_indx].append(array_size / (2*P))
-                    break
-                except:
-                    print "Another one!"                    
-
-            input_list = []
-
-            for i in range(0, P):
-                input_array = []
-                for array_indx in range(0, num_arrays):
-                    input_array += (sorted(in_array[split_array[array_indx][i]*(2*P) : split_array[array_indx][i+1]*(2*P)]) \
-                                    + [0, 0])
-                input_list += [input_array]
-
-            # print(input_list)
-            input_tuples = [[]]
-            for i in range(0, P):
-                # print(input_list[i])
-                # print("-------------------------------------------------")
-                for tuple_index in range(0, len(input_list[i])/2):
-                    input_tuples[i].append(tree_sim.Tuple(input_list[i][tuple_index*2:tuple_index*2+2]))
-                input_tuples.append([])        
-
-            merger_tree = tree_sim.MergerTree(P, P)
-            for i in range(0, P):
-                for tuple_index in range(0, len(input_list[i])/2):
-                    merger_tree.fifos[int(math.log(P, 2))][i][0].push(input_tuples[i][tuple_index])
-
-            result = []
-            for i in range(0, num_arrays*int(P*(8*math.log(P, 2)-1)) + num_arrays*array_size):
-                merger_tree.simulate()
-                # print(merger_tree.mergers[0][0])
-                if not merger_tree.fifos[0][0][1].empty():
-                    new_tuple = merger_tree.fifos[0][0][1].pop().data
-                    # print("NEW TUPLE: " + str(new_tuple))
-                    result += new_tuple
-
-            self.assertEqual(result, out_prefix_zeros + num_arrays * (out_array + out_suffix_zeros), str(result))
     
 
-    
+
+
+            
     def test_2_2_random_proper_input_global_reset_10_arrays(self):
         print("2_2_global_10")        
         result_tuple = self.random_proper_input_global_reset_test(2, 256, 100, 10)
