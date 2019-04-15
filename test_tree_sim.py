@@ -1106,7 +1106,7 @@ class TestMergerTree(unittest.TestCase):
     def test_8_8_random_proper_input_global_reset_10_arrays(self):
         if FULL_TEST:
             print("8_8_global_10")
-            self.random_proper_input_global_reset_test(8, 256*32, 10, 10)
+            self.random_proper_input_global_reset_test(8, 256*64, 10, 3)
 
     def test_16_16_random_proper_input_global_reset_10_arrays(self):
         if FULL_TEST:

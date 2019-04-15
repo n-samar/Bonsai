@@ -16,6 +16,7 @@ STATE_STALL_COUNTDOWN_3 = 7
 STATE_STALL_COUNTDOWN_2 = 8
 STATE_STALL_COUNTDOWN_1 = 9
 
+
 class FIFO:
     def __init__(self, capacity):
         self.capacity = capacity
