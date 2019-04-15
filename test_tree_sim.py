@@ -2,7 +2,7 @@ import unittest
 import tree_sim
 import random
 import math
-FULL_TEST = False
+FULL_TEST = True
 # DEFINITION:  Proper input means each leaf gets a non-zero multiple of 2*P of inputs AND a terminal zero tuple
 
 
@@ -580,35 +580,53 @@ class TestMergerTree(unittest.TestCase):
 
     
     def test_4_2_random_proper_input_global(self):
-        print("4_2_proper_global")        
-        result_tuple = self.random_proper_input_global_reset_test(2, 1024, 10, 3, 4)
+        print("4_2_proper_global")
+        if not FULL_TEST:
+            self.random_proper_input_global_reset_test(2, 1024, 10, 3, 4)
+        else:
+            self.random_proper_input_global_reset_test(2, 1024, 100, 3, 4)            
 
     def test_8_2_random_proper_input_global(self):
-        print("8_2_proper_global")        
-        result_tuple = self.random_proper_input_global_reset_test(2, 1024, 10, 3, 8)
+        print("8_2_proper_global")
+        if not FULL_TEST:
+            self.random_proper_input_global_reset_test(2, 1024, 10, 3, 8)
+        else:
+            self.random_proper_input_global_reset_test(2, 1024, 100, 3, 8)            
 
     def test_16_2_random_proper_input_global(self):
-        print("16_2_proper_global")        
-        result_tuple = self.random_proper_input_global_reset_test(2, 1024, 10, 3, 16)
+        print("16_2_proper_global")
+        if not FULL_TEST:
+            self.random_proper_input_global_reset_test(2, 1024, 10, 3, 16)
+        else:
+            self.random_proper_input_global_reset_test(2, 1024, 100, 3, 16)            
 
     def test_32_2_random_proper_input_global(self):
-        print("32_2_proper_global")        
-        result_tuple = self.random_proper_input_global_reset_test(2, 1024, 10, 3, 32)                         
-
+        print("32_2_proper_global")
+        if not FULL_TEST:
+            self.random_proper_input_global_reset_test(2, 1024, 10, 3, 32)
+        else:
+            self.random_proper_input_global_reset_test(2, 1024, 100, 3, 32)            
 
     def test_1024_2_random_proper_input_global(self):
-        print("1024_2_proper_global")        
-        result_tuple = self.random_proper_input_global_reset_test(2, 8*1024, 1, 2, 1024)                         
-
+        print("1024_2_proper_global")
+        if not FULL_TEST:
+            self.random_proper_input_global_reset_test(2, 8*1024, 1, 2, 1024)
+        else:
+            self.random_proper_input_global_reset_test(2, 8*1024, 100, 2, 1024)
+            
     def test_1024_4_random_proper_input_global(self):
-        print("1024_4_proper_global")        
-        result_tuple = self.random_proper_input_global_reset_test(4, 16*1024, 1, 2, 1024)                         
-
+        print("1024_4_proper_global")
+        if not FULL_TEST:
+            self.random_proper_input_global_reset_test(4, 16*1024, 1, 2, 1024)
+        else:
+            self.random_proper_input_global_reset_test(4, 16*1024, 100, 2, 1024)
 
     def test_512_8_random_proper_input_global(self):
-        print("512_8_proper_global")        
-        result_tuple = self.random_proper_input_global_reset_test(8, 16*1024, 1, 2, 512)                         
-        
+        print("512_8_proper_global")
+        if not FULL_TEST:
+            self.random_proper_input_global_reset_test(8, 16*1024, 1, 2, 512)
+        else:
+            self.random_proper_input_global_reset_test(8, 16*1024, 100, 2, 512)        
 
     def test_init_4_2_proper_input(self):
         merger_tree = tree_sim.MergerTree(2, 4)
@@ -916,6 +934,8 @@ class TestMergerTree(unittest.TestCase):
         merger_tree.fifos[4][0][0].push(tree_sim.Tuple([1, 3]))
         merger_tree.fifos[4][0][0].push(tree_sim.Tuple([5, 7]))
         merger_tree.fifos[4][0][0].push(tree_sim.Tuple([0,0]))
+        
+        
 
         merger_tree.fifos[4][1][0].push(tree_sim.Tuple([2, 4]))
         merger_tree.fifos[4][1][0].push(tree_sim.Tuple([6, 8]))
@@ -1074,68 +1094,71 @@ class TestMergerTree(unittest.TestCase):
             
     def test_2_2_random_proper_input_global_reset_10_arrays(self):
         print("2_2_global_10")        
-        result_tuple = self.random_proper_input_global_reset_test(2, 256, 100, 10)
+        self.random_proper_input_global_reset_test(2, 256, 100, 10)
 
     def test_4_4_random_proper_input_global_reset_10_arrays(self):
-        print("4_4_global_10")        
-        result_tuple = self.random_proper_input_global_reset_test(4, 256, 1, 10)        
+        print("4_4_global_10")
+        if not FULL_TEST:
+            self.random_proper_input_global_reset_test(4, 256, 10, 10)
+        else:
+            self.random_proper_input_global_reset_test(4, 256, 100, 10)            
 
     def test_8_8_random_proper_input_global_reset_10_arrays(self):
         if FULL_TEST:
             print("8_8_global_10")
-            result_tuple = self.random_proper_input_global_reset_test(8, 256*16, 1, 10)
+            self.random_proper_input_global_reset_test(8, 256*32, 10, 10)
 
     def test_16_16_random_proper_input_global_reset_10_arrays(self):
         if FULL_TEST:
             print("16_16_global_10")
-            result_tuple = self.random_proper_input_global_reset_test(16, 4*4096, 1, 10)                
+            self.random_proper_input_global_reset_test(16, 4*4096, 1, 10)                
         
             
     def test_2_2_random_proper_input(self):
         print("2_2")
-        result_tuple = self.random_proper_input_global_reset_test(2, 256, 100, 1)
+        self.random_proper_input_global_reset_test(2, 256, 100, 1)
 
     def test_2_2_random_proper_input_global_reset(self):
         print("2_2_global")        
-        result_tuple = self.random_proper_input_global_reset_test(2, 256, 100, 2)    
+        self.random_proper_input_global_reset_test(2, 256, 100, 2)    
 
     def test_4_4_random_proper_input_global_reset(self):
         print("4_4_global")
-        result_tuple = self.random_proper_input_global_reset_test(4, 256, 100, 2)
+        self.random_proper_input_global_reset_test(4, 256, 100, 2)
 
     def test_8_8_random_proper_input_global_reset(self):
         print("8_8_global")
         if not FULL_TEST:
-            result_tuple = self.random_proper_input_global_reset_test(8, 256, 10, 2)
+            self.random_proper_input_global_reset_test(8, 256, 10, 2)
         else:
-            result_tuple = self.random_proper_input_global_reset_test(8, 256, 100, 2)            
+            self.random_proper_input_global_reset_test(8, 256, 100, 2)            
 
     def test_4_4_random_proper_input(self):
         print("4_4")                        
-        result_tuple = self.random_proper_input_global_reset_test(4, 2*256, 100, 1)
+        self.random_proper_input_global_reset_test(4, 2*256, 100, 1)
 
     def test_8_8_random_proper_input(self):
         print("8_8")
         if not FULL_TEST:
-            result_tuple = self.random_proper_input_global_reset_test(8, 4*256, 10, 1)
+            self.random_proper_input_global_reset_test(8, 4*256, 10, 1)
         else:
-            result_tuple = self.random_proper_input_global_reset_test(8, 4*256, 100, 1)
+            self.random_proper_input_global_reset_test(8, 4*256, 100, 1)
 
     def test_16_16_random_proper_input(self):
         print("16_16")
         if not FULL_TEST:
-            result_tuple = self.random_proper_input_global_reset_test(16, 4*256, 10, 1)
+            self.random_proper_input_global_reset_test(16, 4*256, 10, 1)
         else:
-            result_tuple = self.random_proper_input_global_reset_test(16, 4*256, 100, 1)        
+            self.random_proper_input_global_reset_test(16, 4*256, 100, 1)        
 
     def test_32_32_random_proper_input(self):
         print("32_32")                                
-        result_tuple = self.random_proper_input_global_reset_test(32, 4*4096, 1, 1)
+        self.random_proper_input_global_reset_test(32, 4*4096, 1, 1)
 
     def test_64_64_random_proper_input(self):
         if FULL_TEST:
             print("64_64")            
-            result_tuple = self.random_proper_input_global_reset_test(64, 8*4096, 1, 1)
+            self.random_proper_input_global_reset_test(64, 8*4096, 1, 1)
 
 
 

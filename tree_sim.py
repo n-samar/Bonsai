@@ -1,6 +1,9 @@
 import math
 import sys
 
+STALL_AMOUNT = 5
+INTERNAL_FIFO_DEPTH = 3
+INPUT_FIFO_DEPTH = 100000
 
 class FIFO:
     def __init__(self, capacity):
@@ -56,8 +59,8 @@ class Merger:
         self.in_fifo_1 = in_fifo_1
         self.in_fifo_2 = in_fifo_2
         self.out_fifo = out_fifo
-        self.internal_fifo_a = FIFO(3)  # simulating the delay between output/input
-        self.internal_fifo_b = FIFO(3)  # simulating the delay between output/input
+        self.internal_fifo_a = FIFO(INTERNAL_FIFO_DEPTH)  # simulating the delay between output/input
+        self.internal_fifo_b = FIFO(INTERNAL_FIFO_DEPTH)  # simulating the delay between output/input
 
         self.internal_fifo_a.push(Tuple([0] * self.P))
         self.internal_fifo_b.push(Tuple([0] * self.P))
@@ -71,16 +74,15 @@ class Merger:
 
         self.cycle = 0
 
-        # State signals (Can this be simplified?)
-        self.toggle = False
-        self.stall = False
-        self.final_tuple = False
-        self.done_A = False
-        self.done_B = False
-        self.done = False
+        # State signals 
+        self.toggle = False    # True when we want to toggle outputs from FIFO_A and FIFO_B on global reset
+        self.stall = False    # True when the merger is stalled
+        self.final_tuple = False    # True when we want to push a final  0-tuple out of the merger on the last list
+        self.done_A = False    # True when all inputs for current list are read from FIFO_A
+        self.done_B = False    # True when all inputs for current list are read from FIFO_B
         self.select_A = True
-        self.first_toggle = False
-        self.stall_countdown = 5
+        self.switch_output = False
+        self.stall_countdown = STALL_AMOUNT
 
     def update_stall_sig(self):
         if self.final_tuple:
@@ -90,25 +92,22 @@ class Merger:
             self.stall = True
         elif self.out_fifo.full():
             self.stall = True                        
-        elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and self.done_A and self.done_B and not self.done:
+        elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and self.done_A and self.done_B:
             self.stall = False
-            self.stall_countdown = 5
+            self.stall_countdown = STALL_AMOUNT
             self.final_tuple = True
-            self.done = True
         elif self.internal_fifo_a.empty() and not self.done_A:
             self.stall = True
         elif self.internal_fifo_b.empty() and not self.done_B:
             self.stall = True
         elif self.internal_fifo_a.empty() and self.done_A and self.stall_countdown > 0:
-            # and not self.stall:
             self.stall_countdown -= 1
             self.stall = True
         elif self.internal_fifo_b.empty() and self.done_B and self.stall_countdown > 0:
-            # and not self.stall:
             self.stall_countdown -= 1
             self.stall = True            
         else:
-            self.stall_countdown = 5
+            self.stall_countdown = STALL_AMOUNT
             self.stall = False
 
     # Note: This should probably be implemented as a finite state machine
@@ -118,21 +117,21 @@ class Merger:
             raise Exception("Cannot run selector logic when both FIFO_A and FIFO_B are empty!")
         
         if self.final_tuple:
-            self.select_A = True
+            pass
         elif self.internal_fifo_a.empty() and self.done_A:
-            self.first_toggle = True
+            self.switch_output = True
             self.select_A = False
         elif self.internal_fifo_b.empty() and self.done_B:
-            self.first_toggle = True            
+            self.switch_output = True            
             self.select_A = True
         elif self.toggle or \
              (self.internal_fifo_a.read().min_elem() == 0 and self.internal_fifo_b.read().min_elem() == 0):
             self.select_A = not self.select_A   # alternately dequeue from FIFO_A and FIFO_B instead of global reset
             self.done_A = True
             self.done_B = True
-            self.first_toggle = False
+            self.switch_output = False
             if not self.toggle:
-                self.first_toggle = True
+                self.switch_output = True
             if self.internal_fifo_a.read().min_elem() != 0 or self.internal_fifo_b.read().min_elem() != 0:
                 self.done_A = False
                 self.done_B = False
@@ -152,20 +151,21 @@ class Merger:
 
     def pipeline_stage_1(self):
         bml_result = None
-        if not self.first_toggle:
+        if not self.switch_output:
             bml_result = sorted(self.R_A.data + self.R_B.data)[self.P:]
         else:
             bml_result = sorted(self.R_A.data + self.R_B.data)[:self.P]
         bms_input_0 = None
-        self.selector_logic()            
-        if not self.final_tuple and self.select_A:
+        self.selector_logic()
+        if self.final_tuple:
+            bms_input_0 = [0] * self.P            
+        elif self.select_A:
             bms_input_0 = self.internal_fifo_a.read().data
-        elif not self.final_tuple:
-            bms_input_0 = self.internal_fifo_b.read().data
         else:
-            bms_input_0 = [0] * self.P
+            bms_input_0 = self.internal_fifo_b.read().data
+
         if not self.stall:
-            if not self.first_toggle:
+            if not self.switch_output:
                 self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[:self.P]))
             else:
                 self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[self.P:]))
@@ -207,13 +207,15 @@ class Merger:
         result += ("FIFO_A = " + "\n" + str(self.internal_fifo_a) + "\n")
         result += ("FIFO_B = " + "\n" +  str(self.internal_fifo_b) + "\n")
         result += ("select_A = " + str(self.select_A))
-        result += ("\n first_toggle = " + str(self.first_toggle))
+        result += ("\n switch_output = " + str(self.switch_output))
         result += ("\n done_A = " + str(self.done_A))
         result += ("\n done_B = " + str(self.done_B))
         result += ("\n stall = " + str(self.stall))
-        result += ("\n final tuple = " + str(self.final_tuple))
+        result += ("\n final_tuple = " + str(self.final_tuple))
         result += ("\n out_fifo.full() = " + str(self.out_fifo.full()))
         result += ("\n toggle = " + str(self.toggle))                
+        result += ("\n done = " + str(self.done))
+        result += ("\n stall_countdown = " + str(self.done))        
         
         return result
 
@@ -260,11 +262,11 @@ class MergerTree:
                 self.couplers[level] = self.couplers[level] + [None]
                 # input FIFOs need to be bigger
                 if level == int(math.log(L,2)):
-                    self.fifos[level][index][0] = FIFO(1000000)
+                    self.fifos[level][index][0] = FIFO(INPUT_FIFO_DEPTH)
                 else:
-                    self.fifos[level][index][0] = FIFO(3)
+                    self.fifos[level][index][0] = FIFO(INTERNAL_FIFO_DEPTH)
                 if level > 0 and level < math.log(P, 2):
-                    self.fifos[level][index][1] = FIFO(3)
+                    self.fifos[level][index][1] = FIFO(INTERNAL_FIFO_DEPTH)
                     self.couplers[level][index] = Coupler(P/2**(level-1),
                                                           self.fifos[level][index][0],
                                                           self.fifos[level][index][1])
