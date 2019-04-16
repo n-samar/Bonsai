@@ -513,6 +513,7 @@ class TestMergerTree(unittest.TestCase):
             self.random_proper_input_global_reset_test(2, 1024, 100, 3, 32)            
 
     def test_1024_2_random_proper_input_global(self):
+        return
         print("1024_2_proper_global")
         if not FULL_TEST:
             self.random_proper_input_global_reset_test(2, 8*1024, 1, 2, 1024)
@@ -520,6 +521,7 @@ class TestMergerTree(unittest.TestCase):
             self.random_proper_input_global_reset_test(2, 8*1024, 100, 2, 1024)
             
     def test_1024_4_random_proper_input_global(self):
+        return
         print("1024_4_proper_global")
         if not FULL_TEST:
             self.random_proper_input_global_reset_test(4, 16*1024, 1, 2, 1024)
