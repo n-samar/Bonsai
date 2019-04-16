@@ -3,7 +3,7 @@ import tree_sim
 import random
 import math
 FULL_TEST = False
-# DEFINITION:  Proper input means each leaf gets a non-zero multiple of 2*P of inputs AND a terminal zero tuple
+# DEFINITION:  Proper input means each leaf gets a non-zero multiple of 2*P of inputs AND a terminal zero tuple [0, 0]
 
 
 
@@ -99,6 +99,7 @@ class TestMerger(unittest.TestCase):
                           0,0,0,0, \
                           0,0,0,0, \
                           0,0,0,0, \
+                          0,0,0,0, \
                           1,2,3,4, \
                           5,6,7,8, \
                           9,10,11,12, \
@@ -130,6 +131,7 @@ class TestMerger(unittest.TestCase):
             if not out_fifo.empty():
                 result += out_fifo.pop().data
         self.assertEqual([0,0,0,0, \
+                          0,0,0,0, \
                           0,0,0,0, \
                           0,0,0,0, \
                           0,0,0,0, \
@@ -196,6 +198,7 @@ class TestMerger(unittest.TestCase):
                           0,0,0,0, \
                           0,0,0,0, \
                           0,0,0,0, \
+                          0,0,0,0, \
                           21,22,23,24, \
                           25,26,27,28, \
                           29,30,31,32, \
@@ -236,6 +239,7 @@ class TestMerger(unittest.TestCase):
                 result += out_fifo.pop().data
 
         self.assertEqual([0,0,0,0, \
+                          0,0,0,0, \
                           0,0,0,0, \
                           0,0,0,0, \
                           0,0,0,0, \
@@ -301,124 +305,6 @@ class TestMerger(unittest.TestCase):
         merger.selector_logic()
         self.assertFalse(merger.select_A)
 
-
-    def test_selector_logic_on_A_and_B_empty(self):
-        in_fifo_1 = tree_sim.FIFO(2)
-        in_fifo_2 = tree_sim.FIFO(2)
-        out_fifo = tree_sim.FIFO(1)
-        throughput = 4
-        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
-
-        merger.internal_fifo_a = tree_sim.FIFO(1)
-        merger.internal_fifo_b = tree_sim.FIFO(1)        
-        merger.select_A = False
-        with self.assertRaises(Exception):
-            merger.selector_logic()
-        
-    def test_selector_logic_on_B_empty(self):
-        in_fifo_1 = tree_sim.FIFO(2)
-        in_fifo_2 = tree_sim.FIFO(2)
-        out_fifo = tree_sim.FIFO(1)
-        throughput = 4
-        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
-
-        merger.internal_fifo_a = tree_sim.FIFO(3)
-        merger.internal_fifo_b = tree_sim.FIFO(1)        
-        merger.internal_fifo_a.push(tree_sim.Tuple([2,2,3,4]))
-        merger.internal_fifo_a.push(tree_sim.Tuple([5,6,7,8]))
-        merger.internal_fifo_a.push(tree_sim.Tuple([9,10,11,12]))                
-        merger.select_A = False
-        merger.selector_logic()
-        self.assertTrue(merger.select_A)
- 
-    def test_selector_logic_on_B_empty(self):
-        in_fifo_1 = tree_sim.FIFO(2)
-        in_fifo_2 = tree_sim.FIFO(2)
-        out_fifo = tree_sim.FIFO(1)
-        throughput = 4
-        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
-
-        merger.internal_fifo_a = tree_sim.FIFO(1)
-        merger.internal_fifo_b = tree_sim.FIFO(1)        
-        merger.internal_fifo_b.push(tree_sim.Tuple([2,2,3,4]))
-        merger.select_A = False
-        with self.assertRaises(Exception):
-            merger.selector_logic()            
-
-
-    def test_selector_logic_on_B_zero(self):
-        in_fifo_1 = tree_sim.FIFO(2)
-        in_fifo_2 = tree_sim.FIFO(2)
-        out_fifo = tree_sim.FIFO(1)
-        throughput = 4
-        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
-
-        merger.internal_fifo_a = tree_sim.FIFO(1)
-        merger.internal_fifo_b = tree_sim.FIFO(1)        
-        merger.internal_fifo_a.push(tree_sim.Tuple([2,2,3,4]))
-        merger.internal_fifo_b.push(tree_sim.Tuple([0,0,0,0]))
-        merger.select_A = False
-        merger.selector_logic()
-        self.assertTrue(merger.select_A)             
-
-    def test_selector_logic_on_A_zero(self):
-        in_fifo_1 = tree_sim.FIFO(2)
-        in_fifo_2 = tree_sim.FIFO(2)
-        out_fifo = tree_sim.FIFO(1)
-        throughput = 4
-        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
-
-        merger.internal_fifo_a = tree_sim.FIFO(1)
-        merger.internal_fifo_b = tree_sim.FIFO(1)        
-        merger.internal_fifo_a.push(tree_sim.Tuple([0,0,0,0]))
-        merger.internal_fifo_b.push(tree_sim.Tuple([1,2,3,3]))
-        merger.select_A = False
-        merger.selector_logic()
-        self.assertFalse(merger.select_A)
-
-    def test_selector_logic_toggle_behavior(self):
-        in_fifo_1 = tree_sim.FIFO(2)
-        in_fifo_2 = tree_sim.FIFO(2)
-        out_fifo = tree_sim.FIFO(20)
-        throughput = 4
-        merger = tree_sim.Merger(throughput, in_fifo_1, in_fifo_2, out_fifo)
-
-        merger.internal_fifo_a = tree_sim.FIFO(3)
-        merger.internal_fifo_b = tree_sim.FIFO(3)        
-        merger.internal_fifo_a.push(tree_sim.Tuple([0,0,0,1]))
-        merger.internal_fifo_b.push(tree_sim.Tuple([0,0,0,2]))        
-        merger.internal_fifo_a.push(tree_sim.Tuple([0,0,0,3]))
-        merger.internal_fifo_b.push(tree_sim.Tuple([0,0,0,4]))        
-        merger.internal_fifo_a.push(tree_sim.Tuple([1,1,1,1]))
-        merger.internal_fifo_b.push(tree_sim.Tuple([1,1,1,2]))
-        merger.select_A = False
-        merger.toggle = False
-        self.assertEqual(merger.internal_fifo_a.read().data, [0,0,0,1])
-        self.assertEqual(merger.internal_fifo_b.read().data, [0,0,0,2])        
-        merger.simulate()
-        self.assertTrue(merger.toggle)
-        self.assertTrue(merger.first_toggle)
-        self.assertTrue(merger.select_A)
-        merger.simulate()        
-        self.assertEqual(merger.internal_fifo_a.read().data, [0,0,0,3])
-        self.assertEqual(merger.internal_fifo_b.read().data, [0,0,0,2])                
-        self.assertFalse(merger.select_A)
-        self.assertTrue(merger.toggle)
-        merger.simulate()
-        self.assertEqual(merger.internal_fifo_a.read().data, [0,0,0,3])
-        self.assertEqual(merger.internal_fifo_b.read().data, [0,0,0,4])                
-        self.assertTrue(merger.select_A)
-        self.assertTrue(merger.toggle)
-        merger.simulate()
-        self.assertEqual(merger.internal_fifo_a.read().data, [1,1,1,1])
-        self.assertEqual(merger.internal_fifo_b.read().data, [0,0,0,4])                
-        self.assertFalse(merger.select_A)
-        self.assertFalse(merger.toggle)
-        merger.simulate()
-        self.assertEqual(merger.internal_fifo_a.read().data, [1,1,1,1])
-        self.assertEqual(merger.internal_fifo_b.read().data, [1,1,1,2])        
-        self.assertTrue(merger.select_A)
-        self.assertFalse(merger.toggle)
         
 class TestCoupler(unittest.TestCase):
     def setUp(self):
@@ -510,7 +396,7 @@ class TestMergerTree(unittest.TestCase):
             L = P
         assert(array_size % (2*P) == 0)
         assert(array_size > 2*P*L)
-        out_prefix_zeros = [0] * int(P*(8*math.log(P, 2) - 1) + 2*7*L-2*7*P+L+P)
+        out_prefix_zeros = [0] * int(P*(8*math.log(P, 2) - 1) + 2*7*L-2*7*P+L+P+L-2*P)
         out_suffix_zeros = [0] * (2*L)
         out_array = [x for x in range(1, array_size+1)]
         
@@ -535,6 +421,7 @@ class TestMergerTree(unittest.TestCase):
                             accu = new_num
                         assert(array_size / (2*P) > accu)
                         split_array[array_indx].append(array_size / (2*P))
+                        # print(split_array[array_indx])
                     break
                 except:
                     print "Another one!"                    
@@ -544,7 +431,7 @@ class TestMergerTree(unittest.TestCase):
             for i in range(0, L):
                 input_array = []
                 for array_indx in range(0, num_arrays):
-                    input_array += (sorted(in_array[split_array[array_indx][i]*(2*P) : split_array[array_indx][i+1]*(2*P)]) \
+                    input_array += (sorted(in_array[ split_array[array_indx][i]*(2*P):split_array[array_indx][i+1]*(2*P) ]) \
                                     + [0, 0])
                 input_list += [input_array]
 
@@ -567,7 +454,9 @@ class TestMergerTree(unittest.TestCase):
             while stall_counter < 50:
                 merger_tree.simulate()
                 # print("merger_tree.mergers[0][0]")
-                # print(merger_tree.mergers[0][0])
+                # print(merger_tree.mergers[2][3])
+                # if not merger_tree.mergers[2][3].out_fifo.empty():
+                #    print("NEW OUTPUT: " + str(merger_tree.mergers[2][3].out_fifo.read().data))
                 '''                                
                 print("merger_tree.mergers[1][0]")                                
                 print(merger_tree.mergers[1][0])
@@ -589,7 +478,7 @@ class TestMergerTree(unittest.TestCase):
                 else:
                     stall_counter += 1
 
-            print(result)
+            # print(result)
             # print(test)
             # print(out_prefix_zeros + num_arrays * (out_array + out_suffix_zeros))
             self.assertEqual(result, out_prefix_zeros + num_arrays * (out_array + out_suffix_zeros))
@@ -681,7 +570,7 @@ class TestMergerTree(unittest.TestCase):
             if not merger_tree.fifos[0][0][1].empty():
                 # print("NEW TUPLE: " + str(merger_tree.fifos[0][0][1].read().data))
                 result+=merger_tree.fifos[0][0][1].pop().data
-        print(result)
+        # print(result)
         self.assertEqual(result, [0, 0, \
                                   0, 0, \
                                   0, 0, \
@@ -721,399 +610,6 @@ class TestMergerTree(unittest.TestCase):
 
 
 
-    def test_init_8_2_proper_input(self):
-        merger_tree = tree_sim.MergerTree(2, 8)
-        
-        self.assertEqual(merger_tree.mergers[0][0].in_fifo_1, merger_tree.fifos[1][0][1])
-        self.assertEqual(merger_tree.mergers[0][0].in_fifo_2, merger_tree.fifos[1][1][1])
-        self.assertEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[0][0][0])
-        self.assertEqual(merger_tree.fifos[1][0][0], merger_tree.fifos[1][0][1], str(merger_tree.fifos))
-        self.assertEqual(merger_tree.fifos[1][1][0], merger_tree.fifos[1][1][1])
-        self.assertEqual(merger_tree.fifos[0][0][0], merger_tree.fifos[0][0][1])
-        self.assertNotEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[1][1][1],
-                            str(merger_tree.fifos))
-        self.assertNotEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[1][0][1])
-        
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([1, 3]))
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([5, 7]))
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([2, 4]))
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([6, 8]))
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][2][0].push(tree_sim.Tuple([29, 30]))
-        merger_tree.fifos[3][2][0].push(tree_sim.Tuple([31, 32]))
-        merger_tree.fifos[3][2][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][3][0].push(tree_sim.Tuple([9, 10]))
-        merger_tree.fifos[3][3][0].push(tree_sim.Tuple([12, 15]))
-        merger_tree.fifos[3][3][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][4][0].push(tree_sim.Tuple([11, 16]))
-        merger_tree.fifos[3][4][0].push(tree_sim.Tuple([19, 21]))
-        merger_tree.fifos[3][4][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][5][0].push(tree_sim.Tuple([13, 18]))
-        merger_tree.fifos[3][5][0].push(tree_sim.Tuple([22, 23]))
-        merger_tree.fifos[3][5][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][6][0].push(tree_sim.Tuple([14, 17]))
-        merger_tree.fifos[3][6][0].push(tree_sim.Tuple([20, 24]))
-        merger_tree.fifos[3][6][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][7][0].push(tree_sim.Tuple([25, 26]))
-        merger_tree.fifos[3][7][0].push(tree_sim.Tuple([27, 28]))
-        merger_tree.fifos[3][7][0].push(tree_sim.Tuple([0,0]))        
-        
-        result = []
-        for i in range(0, 1000):
-            merger_tree.simulate()
-            if not merger_tree.fifos[0][0][1].empty():
-                result+=merger_tree.fifos[0][0][1].pop().data
-        self.assertEqual(result, [0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  1, 2, \
-                                  3, 4, \
-                                  5, 6, \
-                                  7, 8, \
-                                  9, 10, \
-                                  11, 12, \
-                                  13, 14, \
-                                  15, 16, \
-                                  17, 18, \
-                                  19, 20, \
-                                  21, 22, \
-                                  23, 24, \
-                                  25, 26, \
-                                  27, 28, \
-                                  29, 30, \
-                                  31, 32, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0, \
-                                  0, 0])        
-
-    def test_init_8_4_proper_input(self):
-        merger_tree = tree_sim.MergerTree(4, 8)
-        
-        self.assertEqual(merger_tree.mergers[0][0].in_fifo_1, merger_tree.fifos[1][0][1])
-        self.assertEqual(merger_tree.mergers[0][0].in_fifo_2, merger_tree.fifos[1][1][1])
-        self.assertEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[0][0][0])
-        self.assertEqual(merger_tree.fifos[2][0][0], merger_tree.fifos[2][0][1], str(merger_tree.fifos))
-        self.assertEqual(merger_tree.fifos[2][1][0], merger_tree.fifos[2][1][1])
-        self.assertEqual(merger_tree.fifos[0][0][0], merger_tree.fifos[0][0][1])
-        self.assertNotEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[1][1][1],
-                            str(merger_tree.fifos))
-        self.assertNotEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[1][0][1])
-        
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([1, 3]))
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([5, 7]))
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([2, 4]))
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([6, 8]))
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][2][0].push(tree_sim.Tuple([29, 30]))
-        merger_tree.fifos[3][2][0].push(tree_sim.Tuple([31, 32]))
-        merger_tree.fifos[3][2][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][3][0].push(tree_sim.Tuple([9, 10]))
-        merger_tree.fifos[3][3][0].push(tree_sim.Tuple([12, 15]))
-        merger_tree.fifos[3][3][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][4][0].push(tree_sim.Tuple([11, 16]))
-        merger_tree.fifos[3][4][0].push(tree_sim.Tuple([19, 21]))
-        merger_tree.fifos[3][4][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][5][0].push(tree_sim.Tuple([13, 18]))
-        merger_tree.fifos[3][5][0].push(tree_sim.Tuple([22, 23]))
-        merger_tree.fifos[3][5][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][6][0].push(tree_sim.Tuple([14, 17]))
-        merger_tree.fifos[3][6][0].push(tree_sim.Tuple([20, 24]))
-        merger_tree.fifos[3][6][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[3][7][0].push(tree_sim.Tuple([25, 26]))
-        merger_tree.fifos[3][7][0].push(tree_sim.Tuple([27, 28]))
-        merger_tree.fifos[3][7][0].push(tree_sim.Tuple([0,0]))        
-        
-        result = []
-        for i in range(0, 1000):
-            merger_tree.simulate()
-            print(merger_tree.mergers[0][0])
-            if not merger_tree.fifos[0][0][1].empty():
-                print("NEW TUPLE: " + str(merger_tree.fifos[0][0][1].read().data))
-                result+=merger_tree.fifos[0][0][1].pop().data
-        print(result)
-        self.assertEqual(result, [0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  1, 2, 3, 4, \
-                                  5, 6, 7, 8, \
-                                  9, 10, 11, 12, \
-                                  13, 14, 15, 16, \
-                                  17, 18, 19, 20, \
-                                  21, 22, 23, 24, \
-                                  25, 26, 27, 28, \
-                                  29, 30, 31, 32, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0])        
-
-
-    def test_init_16_4_proper_input(self):
-        merger_tree = tree_sim.MergerTree(4, 16)
-        
-        self.assertEqual(merger_tree.mergers[0][0].in_fifo_1, merger_tree.fifos[1][0][1])
-        self.assertEqual(merger_tree.mergers[0][0].in_fifo_2, merger_tree.fifos[1][1][1])
-        self.assertEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[0][0][0])
-        self.assertEqual(merger_tree.fifos[2][0][0], merger_tree.fifos[2][0][1], str(merger_tree.fifos))
-        self.assertEqual(merger_tree.fifos[2][1][0], merger_tree.fifos[2][1][1])
-        self.assertEqual(merger_tree.fifos[0][0][0], merger_tree.fifos[0][0][1])
-        self.assertNotEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[1][1][1],
-                            str(merger_tree.fifos))
-        self.assertNotEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[1][0][1])
-        
-        merger_tree.fifos[4][0][0].push(tree_sim.Tuple([1, 3]))
-        merger_tree.fifos[4][0][0].push(tree_sim.Tuple([5, 7]))
-        merger_tree.fifos[4][0][0].push(tree_sim.Tuple([0,0]))
-        
-        
-
-        merger_tree.fifos[4][1][0].push(tree_sim.Tuple([2, 4]))
-        merger_tree.fifos[4][1][0].push(tree_sim.Tuple([6, 8]))
-        merger_tree.fifos[4][1][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][2][0].push(tree_sim.Tuple([29, 30]))
-        merger_tree.fifos[4][2][0].push(tree_sim.Tuple([31, 32]))
-        merger_tree.fifos[4][2][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][3][0].push(tree_sim.Tuple([9, 10]))
-        merger_tree.fifos[4][3][0].push(tree_sim.Tuple([12, 15]))
-        merger_tree.fifos[4][3][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][4][0].push(tree_sim.Tuple([11, 16]))
-        merger_tree.fifos[4][4][0].push(tree_sim.Tuple([19, 21]))
-        merger_tree.fifos[4][4][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][5][0].push(tree_sim.Tuple([13, 18]))
-        merger_tree.fifos[4][5][0].push(tree_sim.Tuple([22, 23]))
-        merger_tree.fifos[4][5][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][6][0].push(tree_sim.Tuple([14, 17]))
-        merger_tree.fifos[4][6][0].push(tree_sim.Tuple([20, 24]))
-        merger_tree.fifos[4][6][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][7][0].push(tree_sim.Tuple([25, 26]))
-        merger_tree.fifos[4][7][0].push(tree_sim.Tuple([27, 28]))
-        merger_tree.fifos[4][7][0].push(tree_sim.Tuple([0,0]))        
-
-        merger_tree.fifos[4][8][0].push(tree_sim.Tuple([1, 3]))
-        merger_tree.fifos[4][8][0].push(tree_sim.Tuple([5, 7]))
-        merger_tree.fifos[4][8][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][9][0].push(tree_sim.Tuple([2, 4]))
-        merger_tree.fifos[4][9][0].push(tree_sim.Tuple([6, 8]))
-        merger_tree.fifos[4][9][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][10][0].push(tree_sim.Tuple([29, 30]))
-        merger_tree.fifos[4][10][0].push(tree_sim.Tuple([31, 32]))
-        merger_tree.fifos[4][10][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][11][0].push(tree_sim.Tuple([9, 10]))
-        merger_tree.fifos[4][11][0].push(tree_sim.Tuple([12, 15]))
-        merger_tree.fifos[4][11][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][12][0].push(tree_sim.Tuple([11, 16]))
-        merger_tree.fifos[4][12][0].push(tree_sim.Tuple([19, 21]))
-        merger_tree.fifos[4][12][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][13][0].push(tree_sim.Tuple([13, 18]))
-        merger_tree.fifos[4][13][0].push(tree_sim.Tuple([22, 23]))
-        merger_tree.fifos[4][13][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][14][0].push(tree_sim.Tuple([14, 17]))
-        merger_tree.fifos[4][14][0].push(tree_sim.Tuple([20, 24]))
-        merger_tree.fifos[4][14][0].push(tree_sim.Tuple([0,0]))
-
-        merger_tree.fifos[4][15][0].push(tree_sim.Tuple([25, 26]))
-        merger_tree.fifos[4][15][0].push(tree_sim.Tuple([27, 28]))
-        merger_tree.fifos[4][15][0].push(tree_sim.Tuple([0,0]))        
-
-        
-        result = []
-        for i in range(0, 1000):
-            merger_tree.simulate()
-            if not merger_tree.fifos[0][0][1].empty():
-                result+=merger_tree.fifos[0][0][1].pop().data
-        # print result
-        self.assertEqual(result, [0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  1, 1, 2, 2, \
-                                  3, 3, 4, 4, \
-                                  5, 5, 6, 6, \
-                                  7, 7, 8, 8, \
-                                  9, 9, 10, 10, \
-                                  11, 11, 12, 12, \
-                                  13, 13, 14, 14, \
-                                  15, 15, 16, 16, \
-                                  17, 17, 18, 18, \
-                                  19, 19, 20, 20, \
-                                  21, 21, 22, 22, \
-                                  23, 23, 24, 24, \
-                                  25, 25, 26, 26, \
-                                  27, 27, 28, 28, \
-                                  29, 29, 30, 30, \
-                                  31, 31, 32, 32, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0, \
-                                  0, 0, 0, 0])        
-        
-    
-    
 
 
 
@@ -1384,74 +880,6 @@ class TestMergerTree(unittest.TestCase):
                                   0, 0, 0, 0])        
 
     
-    def test_init_8_8_unbalanced(self):
-        merger_tree = tree_sim.MergerTree(8, 8)
-
-        self.assertEqual(merger_tree.mergers[1][0].in_fifo_1, merger_tree.fifos[2][0][1])
-        self.assertEqual(merger_tree.mergers[1][0].in_fifo_2, merger_tree.fifos[2][1][1])
-        self.assertEqual(merger_tree.mergers[1][0].out_fifo, merger_tree.fifos[1][0][0])
-
-        self.assertEqual(merger_tree.mergers[1][1].in_fifo_1, merger_tree.fifos[2][2][1])
-        self.assertEqual(merger_tree.mergers[1][1].in_fifo_2, merger_tree.fifos[2][3][1])
-        self.assertEqual(merger_tree.mergers[1][1].out_fifo, merger_tree.fifos[1][1][0])
-
-        self.assertEqual(merger_tree.mergers[0][0].in_fifo_1, merger_tree.fifos[1][0][1])
-        self.assertEqual(merger_tree.mergers[0][0].in_fifo_2, merger_tree.fifos[1][1][1])
-        self.assertEqual(merger_tree.mergers[0][0].out_fifo, merger_tree.fifos[0][0][0])                
-        
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([1, 3]))
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([5, 7]))
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([19, 20]))
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([22, 23]))                
-        merger_tree.fifos[3][0][0].push(tree_sim.Tuple([0, 0]))        
-        
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([2, 4]))
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([6, 8]))
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([17, 18]))
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([21, 24]))                
-        merger_tree.fifos[3][1][0].push(tree_sim.Tuple([0, 0]))      
-
-        merger_tree.fifos[3][2][0].push(tree_sim.Tuple([9, 11]))
-        merger_tree.fifos[3][2][0].push(tree_sim.Tuple([13, 14]))
-        merger_tree.fifos[3][2][0].push(tree_sim.Tuple([0, 0]))        
-
-        merger_tree.fifos[3][3][0].push(tree_sim.Tuple([10, 12]))
-        merger_tree.fifos[3][3][0].push(tree_sim.Tuple([15, 16]))                        
-        merger_tree.fifos[3][3][0].push(tree_sim.Tuple([0, 0]))        
-        
-        result = []
-        for i in range(0, 100):
-            merger_tree.simulate()
-            if not merger_tree.fifos[0][0][1].empty():
-                result+=merger_tree.fifos[0][0][1].pop().data
-        # print("result test_init_8_8_unbalanced: " + str(result))
-        self.assertEqual(result, [0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  1, 2, 3, 4, 5, 6, 7, 8, \
-                                  9, 10, 11, 12, 13, 14, 15, 16, \
-                                  17, 18, 19, 20, 21, 22, 23, 24, \
-                                  0, 0, 0, 0, 0, 0, 0, 0, \
-                                  0, 0, 0, 0, 0, 0, 0, 0])
-
 
 
             

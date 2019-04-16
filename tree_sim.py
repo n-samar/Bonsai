@@ -134,8 +134,6 @@ class Merger:
         self.stall = (self.curr_state == STATE_FINAL_FINAL_TUPLE) or \
                      (self.out_fifo.full()) or \
                      (self.curr_state == STATE_NOMINAL and (self.internal_fifo_a.empty() or self.internal_fifo_b.empty())) or \
-                     (self.curr_state == STATE_DONE_B and not self.stall) or \
-                     (self.curr_state == STATE_DONE_A and not self.stall) or \
                      (self.curr_state >= STATE_STALL_COUNTDOWN_5)  # checks if we are in one of the STALL_COUNTDOWN_X states
         if  self.curr_state == STATE_STALL_COUNTDOWN_5:
             self.curr_state = STATE_STALL_COUNTDOWN_4
@@ -170,18 +168,24 @@ class Merger:
             elif self.internal_fifo_b.read().min_elem() == 0:
                 self.curr_state = STATE_DONE_B
         elif self.curr_state == STATE_DONE_A:
-            if self.internal_fifo_b.empty():
-                self.curr_state = STATE_STALL_COUNTDOWN_5
+            self.stall = False
+            if self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and self.R_A.data == [0] * self.P and self.R_B.data == [0] * self.P:
+                self.curr_state = STATE_FINAL_FINAL_TUPLE            
+            elif self.internal_fifo_b.empty():
+                # self.curr_state = STATE_STALL_COUNTDOWN_5
                 self.stall = True
             elif self.internal_fifo_b.read().min_elem() == 0:
                 self.curr_state = STATE_TOGGLE
         elif self.curr_state == STATE_DONE_B:
-            if self.internal_fifo_a.empty():
-                self.curr_state = STATE_STALL_COUNTDOWN_5
+            self.stall = False
+            if self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and self.R_A.data == [0] * self.P and self.R_B.data == [0] * self.P:
+                self.curr_state = STATE_FINAL_FINAL_TUPLE
+            elif self.internal_fifo_a.empty():
+                # self.curr_state = STATE_STALL_COUNTDOWN_5
                 self.stall = True
             elif self.internal_fifo_a.read().min_elem() == 0:
                 self.curr_state = STATE_TOGGLE
-        elif self.curr_state == STATE_TOGGLE:        
+        elif self.curr_state == STATE_TOGGLE:
             if self.internal_fifo_a.empty():
                 self.curr_state = STATE_DONE_A
             elif self.internal_fifo_b.empty():
@@ -197,16 +201,13 @@ class Merger:
                         (self.curr_state == STATE_DONE_B) or \
                         (self.curr_state == STATE_TOGGLE and (not self.select_A)) or \
                         (self.curr_state == STATE_FINAL_TUPLE and (not self.internal_fifo_a.empty()))
-        self.final_tuple = (self.curr_state == STATE_FINAL_FINAL_TUPLE)
-
-
-                        
+        self.final_tuple = (self.curr_state == STATE_FINAL_FINAL_TUPLE)                        
 
     def pipeline_stage_1(self):
         bml_result = sorted(self.R_A.data + self.R_B.data)[self.P:]
         bms_input_0 = None
         if not self.stall:
-            if self.final_tuple and self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
+            if self.final_tuple:
                 bms_input_0 = [0] * self.P            
             elif self.select_A:
                 bms_input_0 = self.internal_fifo_a.read().data
@@ -220,7 +221,7 @@ class Merger:
                 self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[self.P:]))
 
     def pipeline_stage_2(self):
-        if not (self.final_tuple and self.internal_fifo_a.empty() and self.internal_fifo_b.empty()):
+        if not self.final_tuple:
             if self.select_A:
                 if not self.stall:
                     self.new_R_A = True
