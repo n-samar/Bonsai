@@ -5,6 +5,7 @@ STALL_AMOUNT = 5
 INTERNAL_FIFO_DEPTH = 3
 INPUT_FIFO_DEPTH = 100000
 
+STATE_FINAL_FINAL_TUPLE = -1
 STATE_TOGGLE = 0
 STATE_NOMINAL = 1
 STATE_DONE_A = 2
@@ -15,6 +16,33 @@ STATE_STALL_COUNTDOWN_4 = 6
 STATE_STALL_COUNTDOWN_3 = 7
 STATE_STALL_COUNTDOWN_2 = 8
 STATE_STALL_COUNTDOWN_1 = 9
+
+def get_state(state):
+    if state == STATE_TOGGLE:
+        return "TOGGLE"
+    elif state == STATE_DONE_A:
+        return "DONE_A"
+    elif state == STATE_DONE_B:
+        return "DONE_B"
+    elif state == STATE_FINAL_TUPLE:
+        return "FINAL_TUPLE"
+    elif state == STATE_NOMINAL:
+        return "NOMINAL"
+    elif state == STATE_FINAL_TUPLE:
+        return "FINAL_TUPLE"
+    elif state == STATE_STALL_COUNTDOWN_5:
+        return "STALL_COUNTDOWN_5"
+    elif state == STATE_STALL_COUNTDOWN_4:
+        return "STALL_COUNTDOWN_4"    
+    elif state == STATE_STALL_COUNTDOWN_3:
+        return "STALL_COUNTDOWN_3"
+    elif state == STATE_STALL_COUNTDOWN_2:
+        return "STALL_COUNTDOWN_2"    
+    elif state == STATE_STALL_COUNTDOWN_1:
+        return "STALL_COUNTDOWN_1"
+    elif state == STATE_FINAL_FINAL_TUPLE:
+        return "FINAL_FINAL_TUPLE"
+    return "<NO STATE!>"
 
 class FIFO:
     def __init__(self, capacity):
@@ -93,112 +121,124 @@ class Merger:
         self.done_B = False    # True when all inputs for current list are read from FIFO_B
         self.select_A = True
         self.switch_output = False
+        self.curr_state = STATE_TOGGLE
         self.stall_countdown = STALL_AMOUNT
 
+        # used to simulate pipelining
+        self.pop_1 = False
+        self.pop_2 = False
+        self.new_R_A = False
+        self.new_R_B = False
+
     def update_stall_sig(self):
-        if self.final_tuple:
-            self.final_tuple = False
-            self.done_A = False
-            self.done_B = False
-            self.stall = True
-        elif self.out_fifo.full():
-            self.stall = True                        
-        elif self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and self.done_A and self.done_B:
-            self.stall = False
-            self.stall_countdown = STALL_AMOUNT
-            self.final_tuple = True
-        elif self.internal_fifo_a.empty() and not self.done_A:
-            self.stall = True
-        elif self.internal_fifo_b.empty() and not self.done_B:
-            self.stall = True
-        elif self.internal_fifo_a.empty() and self.done_A and self.stall_countdown > 0:
-            self.stall_countdown -= 1
-            self.stall = True
-        elif self.internal_fifo_b.empty() and self.done_B and self.stall_countdown > 0:
-            self.stall_countdown -= 1
-            self.stall = True            
-        else:
-            self.stall_countdown = STALL_AMOUNT
-            self.stall = False
+        self.stall = (self.curr_state == STATE_FINAL_FINAL_TUPLE) or \
+                     (self.out_fifo.full()) or \
+                     (self.curr_state == STATE_NOMINAL and (self.internal_fifo_a.empty() or self.internal_fifo_b.empty())) or \
+                     (self.curr_state == STATE_DONE_B and not self.stall) or \
+                     (self.curr_state == STATE_DONE_A and not self.stall) or \
+                     (self.curr_state >= STATE_STALL_COUNTDOWN_5)  # checks if we are in one of the STALL_COUNTDOWN_X states
+        if  self.curr_state == STATE_STALL_COUNTDOWN_5:
+            self.curr_state = STATE_STALL_COUNTDOWN_4
+        elif  self.curr_state == STATE_STALL_COUNTDOWN_4:
+            self.curr_state = STATE_STALL_COUNTDOWN_3
+        elif  self.curr_state == STATE_STALL_COUNTDOWN_3:
+            self.curr_state = STATE_STALL_COUNTDOWN_2
+        elif  self.curr_state == STATE_STALL_COUNTDOWN_2:
+            self.curr_state = STATE_STALL_COUNTDOWN_1
+        elif  self.curr_state == STATE_STALL_COUNTDOWN_1:
+            if self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
+                self.curr_state = STATE_FINAL_FINAL_TUPLE
+                self.stall = False                
+            elif self.internal_fifo_a.empty() or self.internal_fifo_b.empty():
+                self.curr_state = STATE_FINAL_TUPLE
+                self.stall = False
+            elif not self.internal_fifo_a.empty() and self.internal_fifo_a.read().min_elem() == 0:
+                self.curr_state = STATE_DONE_A
+            elif not self.internal_fifo_b.empty() and self.internal_fifo_b.read().min_elem() == 0:
+                self.curr_state = STATE_DONE_B
+            else:
+                self.curr_state = STATE_NOMINAL
+        if not self.stall:
+            self.selector_logic()
 
     # Note: This should probably be implemented as a finite state machine
     # This would make the logic simpler when implementing in HW
     def selector_logic(self):
-        if self.internal_fifo_a.empty() and self.internal_fifo_b.empty() and not self.final_tuple:
-            raise Exception("Cannot run selector logic when both FIFO_A and FIFO_B are empty!")
-        
-        if self.final_tuple:
-            pass
-        elif self.internal_fifo_a.empty() and self.done_A:
-            self.switch_output = True
-            self.select_A = False
-        elif self.internal_fifo_b.empty() and self.done_B:
-            self.switch_output = True            
-            self.select_A = True
-        elif self.toggle or \
-             (self.internal_fifo_a.read().min_elem() == 0 and self.internal_fifo_b.read().min_elem() == 0):
-            self.select_A = not self.select_A   # alternately dequeue from FIFO_A and FIFO_B instead of global reset
-            self.done_A = True
-            self.done_B = True
-            self.switch_output = False
-            if not self.toggle:
-                self.switch_output = True
-            if self.internal_fifo_a.read().min_elem() != 0 or self.internal_fifo_b.read().min_elem() != 0:
-                self.done_A = False
-                self.done_B = False
-                self.toggle = False
-            else:
-                self.toggle = True
-        elif self.internal_fifo_a.read().min_elem() == 0:
-            self.done_A = True
-            self.select_A = False
-        elif self.internal_fifo_b.read().min_elem() == 0:
-            self.done_B = True
-            self.select_A = True
-        elif self.internal_fifo_a.read().min_elem() <= self.internal_fifo_b.read().min_elem():
-            self.select_A = True
-        else:
-            self.select_A = False
+        if self.curr_state == STATE_NOMINAL:
+            if self.internal_fifo_a.read().min_elem() == 0:
+                self.curr_state = STATE_DONE_A
+            elif self.internal_fifo_b.read().min_elem() == 0:
+                self.curr_state = STATE_DONE_B
+        elif self.curr_state == STATE_DONE_A:
+            if self.internal_fifo_b.empty():
+                self.curr_state = STATE_STALL_COUNTDOWN_5
+                self.stall = True
+            elif self.internal_fifo_b.read().min_elem() == 0:
+                self.curr_state = STATE_TOGGLE
+        elif self.curr_state == STATE_DONE_B:
+            if self.internal_fifo_a.empty():
+                self.curr_state = STATE_STALL_COUNTDOWN_5
+                self.stall = True
+            elif self.internal_fifo_a.read().min_elem() == 0:
+                self.curr_state = STATE_TOGGLE
+        elif self.curr_state == STATE_TOGGLE:        
+            if self.internal_fifo_a.empty():
+                self.curr_state = STATE_DONE_A
+            elif self.internal_fifo_b.empty():
+                self.curr_state = STATE_DONE_B
+            elif self.internal_fifo_a.read().min_elem() != 0 or self.internal_fifo_b.read().min_elem() != 0:
+                self.curr_state = STATE_NOMINAL
+        elif self.curr_state == STATE_FINAL_TUPLE:
+            if self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
+                self.curr_state = STATE_FINAL_FINAL_TUPLE
+        self.switch_output = (self.curr_state == STATE_TOGGLE) and (not self.switch_output)
+        self.select_A = (self.curr_state == STATE_NOMINAL and \
+                         self.internal_fifo_a.read().min_elem() <= self.internal_fifo_b.read().min_elem()) or \
+                        (self.curr_state == STATE_DONE_B) or \
+                        (self.curr_state == STATE_TOGGLE and (not self.select_A)) or \
+                        (self.curr_state == STATE_FINAL_TUPLE and (not self.internal_fifo_a.empty()))
+        self.final_tuple = (self.curr_state == STATE_FINAL_FINAL_TUPLE)
+
+
+                        
 
     def pipeline_stage_1(self):
-        bml_result = None
-        if not self.switch_output:
-            bml_result = sorted(self.R_A.data + self.R_B.data)[self.P:]
-        else:
-            bml_result = sorted(self.R_A.data + self.R_B.data)[:self.P]
+        bml_result = sorted(self.R_A.data + self.R_B.data)[self.P:]
         bms_input_0 = None
-        self.selector_logic()
-        if self.final_tuple:
-            bms_input_0 = [0] * self.P            
-        elif self.select_A:
-            bms_input_0 = self.internal_fifo_a.read().data
-        else:
-            bms_input_0 = self.internal_fifo_b.read().data
-
         if not self.stall:
+            if self.final_tuple and self.internal_fifo_a.empty() and self.internal_fifo_b.empty():
+                bms_input_0 = [0] * self.P            
+            elif self.select_A:
+                bms_input_0 = self.internal_fifo_a.read().data
+            else:
+                bms_input_0 = self.internal_fifo_b.read().data
+
+
             if not self.switch_output:
                 self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[:self.P]))
             else:
                 self.out_fifo.push(Tuple(sorted(bml_result + bms_input_0)[self.P:]))
 
     def pipeline_stage_2(self):
-        if self.select_A and not self.final_tuple:
-            if not self.stall:
-                self.R_A = self.internal_fifo_a.pop()
-            if not self.in_fifo_1.empty() and not self.internal_fifo_a.full():
-                self.internal_fifo_a.push(self.in_fifo_1.pop())
-        elif not self.final_tuple:
-            if not self.stall:
-                self.R_B = self.internal_fifo_b.pop()
-            if not self.in_fifo_2.empty() and not self.internal_fifo_b.full():            
-                self.internal_fifo_b.push(self.in_fifo_2.pop())
+        if not (self.final_tuple and self.internal_fifo_a.empty() and self.internal_fifo_b.empty()):
+            if self.select_A:
+                if not self.stall:
+                    self.new_R_A = True
+            else:
+                if not self.stall:
+                    self.new_R_B = True
+                    
+        if not self.in_fifo_2.empty() and not self.internal_fifo_b.full():
+            self.pop_2 = True
+        if not self.in_fifo_1.empty() and not self.internal_fifo_a.full():
+            self.pop_1 = True
                 
     def simulate_pipeline_init(self):
         self.pipeline_stage_1()
-
+        
     def simulate_pipeline_else(self):
-        self.pipeline_stage_2()
         self.update_stall_sig()
+        self.pipeline_stage_2()                                
         if not self.stall:
             self.pipeline_stage_1()
     
@@ -208,6 +248,23 @@ class Merger:
             self.simulate_pipeline_init()
         else:
             self.simulate_pipeline_else()
+
+        ########################## SIMULATING PIPELINING
+
+        if self.pop_2:
+            self.internal_fifo_b.push(self.in_fifo_2.pop())
+        if self.pop_1:
+            self.internal_fifo_a.push(self.in_fifo_1.pop())
+        if self.new_R_A:
+            self.R_A = self.internal_fifo_a.pop()
+        if self.new_R_B:
+            self.R_B = self.internal_fifo_b.pop()
+
+        self.new_R_B = False
+        self.new_R_A = False
+        self.pop_1 = False
+        self.pop_2 = False
+        
         self.cycle += 1
 
                 
@@ -218,15 +275,9 @@ class Merger:
         result += ("FIFO_A = " + "\n" + str(self.internal_fifo_a) + "\n")
         result += ("FIFO_B = " + "\n" +  str(self.internal_fifo_b) + "\n")
         result += ("select_A = " + str(self.select_A))
-        result += ("\n switch_output = " + str(self.switch_output))
-        result += ("\n done_A = " + str(self.done_A))
-        result += ("\n done_B = " + str(self.done_B))
-        result += ("\n stall = " + str(self.stall))
-        result += ("\n final_tuple = " + str(self.final_tuple))
-        result += ("\n out_fifo.full() = " + str(self.out_fifo.full()))
-        result += ("\n toggle = " + str(self.toggle))                
-        result += ("\n done = " + str(self.done))
-        result += ("\n stall_countdown = " + str(self.done))        
+        result += ("\nstall = " + str(self.stall))        
+        result += ("\ncurr_state = " + str(get_state(self.curr_state)))
+        result += ("\nswitch_output = " + str(self.switch_output))        
         
         return result
 
