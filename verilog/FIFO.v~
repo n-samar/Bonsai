@@ -1,0 +1,43 @@
+module FIFO();
+   always @(posedge i_clk)
+	mem[wraddr] <= i_item;
+
+   always @(posedge i_clk)
+	o_item <= mem[wraddr];
+
+   always @(posedge i_clk)
+	if (i_reset)
+	begin
+		wraddr <= 0;
+		overrun  <= 0;
+	end else if (i_write)
+	begin
+		// Update the FIFO write address any time a write is made to
+		// the FIFO and it's not FULL.
+		//
+		// OR any time a write is made to the FIFO at the same time a
+		// read is made from the FIFO.
+		if ((!full)||(i_read))
+			wraddr <= (wraddr + 1'b1);
+		else
+			overrun <= 1'b1;
+	end // if (i_write)
+
+   // Set wraddr and underrun
+   always @(posedge i_clk)
+	if (i_reset)
+	begin
+		rdaddr <= 0;
+		underrun <= 0;
+	end else if (i_read)
+	begin
+		// On any read request, increment the pointer if the FIFO isn't
+		// empty--independent of whether a write operation is taking
+		// place at the same time.
+		if (!empty)
+			rdaddr <= rdaddr + 1'b1;
+		else
+			// If a read is requested, but the FIFO was full, set
+			// an underrun error flag.
+			underrun <= 1'b1;
+	end

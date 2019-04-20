@@ -1,0 +1,71 @@
+`timescale 1 ns/10 ps
+
+module CONTROL(input i_clk,
+	       input  i_fifo_out_full, 
+	       input  i_a_min_zero,
+	       input  i_b_min_zero,
+	       input  i_a_lte_b,
+	       input  i_a_empty,
+	       input  i_b_empty,
+	       input  i_r_a_min_zero,
+	       input  i_r_b_min_zero,
+	       output reg select_A,
+	       output stall,
+	       output reg switch_output);
+   
+   parameter NOMINAL = 3'b000;
+   parameter TOGGLE = 3'b001;
+   parameter DONE_A = 3'b010;
+   parameter DONE_B = 3'b011;
+   parameter FINISHED = 3'b100;
+   
+   reg [2:0] 	      state;
+   reg [2:0] 	      new_state;
+   
+   assign #1 stall = (state == FINISHED) | (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty);
+   initial
+     begin
+	state = TOGGLE;
+	select_A = 1'b0;
+	switch_output = 1'b0;
+     end
+
+   always @(posedge i_clk)
+     begin
+	casez(state)
+	  TOGGLE: begin
+	     if (i_a_empty) 
+	       #1 new_state <= DONE_A;
+	     else if (i_b_empty)
+	       #1 new_state <= DONE_B;
+	     else if (~i_a_min_zero & ~i_b_min_zero)
+	       #1 new_state <= NOMINAL;	 
+	  end
+	  DONE_A: begin
+	     if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
+	       #1 new_state <= FINISHED;
+	     else if (i_b_min_zero)
+	       #1 new_state <= TOGGLE;
+	  end
+	  DONE_B: begin
+	     if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
+	       #1 new_state <= FINISHED;
+	     else if (i_a_min_zero)
+	       #1 new_state <= TOGGLE;	  
+	  end       
+	  FINISHED: begin end       
+	  NOMINAL: begin
+	     if (i_a_min_zero)
+	       #1 new_state <= DONE_A;
+	     else if (i_a_min_zero)
+	       #1 new_state <= DONE_B;			 
+	  end    
+	  default: begin end
+	endcase
+	#2;
+	if (~stall)
+	  #1 state = new_state;	       
+	#1 select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & (~select_A));
+	#1 switch_output <= state == TOGGLE & ~switch_output;
+     end // always @ (posedge i_clk)
+endmodule
