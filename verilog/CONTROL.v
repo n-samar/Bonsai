@@ -18,6 +18,9 @@ module CONTROL(input i_clk,
    parameter DONE_A = 3'b010;
    parameter DONE_B = 3'b011;
    parameter FINISHED = 3'b100;
+
+   parameter period = 4;
+   
    
    reg [2:0] 	      state;
    reg [2:0] 	      new_state;
@@ -31,7 +34,7 @@ module CONTROL(input i_clk,
      end
 
    always @(posedge i_clk)
-     begin
+     begin	
 	casez(state)
 	  TOGGLE: begin
 	     if (i_a_empty) 
@@ -39,7 +42,10 @@ module CONTROL(input i_clk,
 	     else if (i_b_empty)
 	       #1 new_state <= DONE_B;
 	     else if (~i_a_min_zero & ~i_b_min_zero)
-	       #1 new_state <= NOMINAL;	 
+	       #1 new_state <= NOMINAL;
+	     else
+	       new_state <= TOGGLE;
+	     
 	  end
 	  DONE_A: begin
 	     if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
@@ -63,7 +69,7 @@ module CONTROL(input i_clk,
 	  default: begin end
 	endcase
 	#2;
-	if (~stall)
+	if (~stall | new_state == FINISHED | new_state == TOGGLE)
 	  #1 state = new_state;	       
 	#1 select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & (~select_A));
 	#1 switch_output <= state == TOGGLE & ~switch_output;
