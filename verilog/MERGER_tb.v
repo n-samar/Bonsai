@@ -56,8 +56,7 @@ module merger_tb;
 	       .o_fifo_1_read(o_fifo_1_read),
 	       .o_fifo_2_read(o_fifo_2_read),
 	       .o_out_fifo_write(o_out_fifo_write),
-	       .o_data(o_data)
-	       );	       
+	       .o_data(o_data));	       
    
    
    initial

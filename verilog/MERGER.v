@@ -1,7 +1,7 @@
 `timescale 1 ns/10 ps
 
 /* NOTE: The size of FIFO_C should be at least log(P)*(log(P)+1)/2 + 1 */
-module MERGER(input i_clk,
+module MERGER (input i_clk,
 	      input [31:0] 	 i_fifo_1,
 	      input 		 i_fifo_1_empty,
 	      input [31:0] 	 i_fifo_2,
@@ -13,14 +13,14 @@ module MERGER(input i_clk,
 	      output wire [31:0] o_data);
 
    reg 				 i_write_a, i_write_b;
-   reg 				 i_write_c;
+   reg 				 i_c_read;
    wire 			 select_A;
    wire 			 stall;
    reg [31:0] 			 R_A;
    reg [31:0] 			 R_B;
    wire 			 fifo_a_empty, fifo_b_empty, fifo_c_empty, fifo_a_full, fifo_b_full, fifo_c_full;
    wire 			 overrun_a, overrun_b, overrun_c, underrun_a, underrun_b, underrun_c;
-   reg 				 i_read_c; 			 
+   reg 				 i_c_write; 			 
    reg [31:0] 			 i_fifo_c;
    wire [31:0] 			 fifo_a_out;
    wire [31:0] 			 fifo_b_out;
@@ -67,8 +67,8 @@ module MERGER(input i_clk,
 
    FIFO fifo_c(.i_clk(i_clk), 
 	       .i_item(i_fifo_c), 
-	       .i_write(i_read_c), 
-	       .i_read(i_write_c),
+	       .i_write(i_c_write), 
+	       .i_read(i_c_read),
 	       .o_item(o_data), 
 	       .empty(fifo_c_empty), 
 	       .full(fifo_c_full), 
@@ -104,15 +104,16 @@ module MERGER(input i_clk,
    /* Advance the pipelined data stage 1->2 */
    always @(posedge i_clk)
      begin
+	#2;   /* We must wait for the control logic to finish and fifos to update */	
 	stall_2 <= stall;	
 	if (~stall) begin
 	   if (select_A) begin
 	     data_2_top <= fifo_a_out;
-	      #1 R_A <= fifo_a_out;	      
+	      #0.1 R_A <= fifo_a_out;	      
 	     end
 	   else begin
 	      data_2_top <= fifo_b_out;
-	      #1 R_B <= fifo_b_out;	      
+	      #0.1 R_B <= fifo_b_out;	      
 	   end
 	   switch_output_2 <= switch_output;
 	   if (R_A <= R_B)
@@ -148,9 +149,9 @@ module MERGER(input i_clk,
 	   end
 	   else
 	     i_fifo_c <= data_3_bigger;
-	   #1 i_read_c <= 1'b1;	   
-	   if (~fifo_c_full | i_read_c)
-	     i_write_c <= 1'b1;
+	   #0.1 i_c_write <= 1'b1;	   
+	   if (~fifo_c_full | i_c_write)
+	     i_c_read <= 1'b1;
 	   else
 	     $display("ERROR!");
 	end // if (~stall_3)
@@ -159,6 +160,7 @@ module MERGER(input i_clk,
    /* Writting into FIFO_A if possible */
    always @(posedge i_clk)
      begin
+	#0.1; /* Wait for FIFO info to update */	
 	if (~i_fifo_1_empty & (~fifo_a_full | (select_A & ~stall))) begin	  
 	   i_write_a <= 1'b1;
 	   o_fifo_1_read <= 1'b1;	   
@@ -172,6 +174,7 @@ module MERGER(input i_clk,
    /* Writting into FIFO_B if possible */
    always @(posedge i_clk)
      begin
+	#0.1; /* Wait for FIFO info to update */     	
 	if (~i_fifo_2_empty & (~fifo_b_full | (~select_A & ~stall))) begin
 	   i_write_b <= 1'b1;
 	   o_fifo_2_read <= 1'b1;
@@ -184,15 +187,16 @@ module MERGER(input i_clk,
 
 
    /* Writting into out_fifo if possible */
-   always @(posedge i_clk)
+   always @(posedge i_clk) 
      begin
+	#0.1; /* Wait for FIFO info to update */          	
 	if (i_fifo_out_ready & ~fifo_c_empty) begin
 	   o_out_fifo_write <= 1'b1;
-	   i_write_c <= 1'b1;	   
+	   i_c_read <= 1'b1;	   
 	end
 	else begin
 	  o_out_fifo_write <= 1'b0;
-	   i_write_c <= 1'b0;
+	   i_c_read <= 1'b0;
 	end
      end
 endmodule // MERGER
