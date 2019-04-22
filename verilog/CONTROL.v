@@ -64,7 +64,7 @@ module CONTROL(input i_clk,
 	  NOMINAL: begin
 	     if (i_a_min_zero)
 	       new_state <= DONE_A;
-	     else if (i_a_min_zero)
+	     else if (i_b_min_zero)
 	       new_state <= DONE_B;			 
 	  end    
 	  default: begin end
