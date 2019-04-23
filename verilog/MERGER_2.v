@@ -36,11 +36,11 @@ module MERGER_2 (input i_clk,
 
    parameter period = 4;
    
-   assign a_min_zero = (fifo_a_out == 0);
-   assign b_min_zero = (fifo_b_out == 0);
+   assign a_min_zero = (fifo_a_out[31:0] == 0);
+   assign b_min_zero = (fifo_b_out[31:0] == 0);
    assign a_lte_b = (fifo_a_out[31:0] <= fifo_b_out[31:0]);
-   assign r_a_min_zero = (R_A == 0);
-   assign r_b_min_zero = (R_B == 0);
+   assign r_a_min_zero = (R_A[31:0] == 0);
+   assign r_b_min_zero = (R_B[31:0] == 0);
    
    
    FIFO_2 fifo_a(.i_clk(i_clk), 
@@ -92,8 +92,8 @@ module MERGER_2 (input i_clk,
 				   .top_tuple(i_data_2_top),
 				   .i_elems_0(R_A),
 				   .i_elems_1(R_B),
-				   .o_elems_0(data_2_bottom),
-				   .o_elems_1(),
+				   .o_elems_0(),
+				   .o_elems_1(data_2_bottom),
 				   .o_switch_output(switch_output_2),
 				   .o_stall(stall_2),
 				   .o_top_tuple(o_data_2_top));
@@ -136,7 +136,7 @@ module MERGER_2 (input i_clk,
    always @(posedge i_clk)
      begin	
 	if (~stall_3) begin
-	   if (switch_output_3) begin
+	   if (~switch_output_3) begin
 	      i_fifo_c <= data_3_smaller;
 	   end
 	   else

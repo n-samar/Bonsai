@@ -47,7 +47,7 @@ module merger_tb;
 	       .overrun(fifo_out_overrun),
 	       .underrun(fifo_out_underrun));
 
-   MERGER dut (.i_clk(clk),
+   MERGER_1 dut (.i_clk(clk),
 	       .i_fifo_1(out_fifo_1),
 	       .i_fifo_1_empty(fifo_1_empty),
 	       .i_fifo_2(out_fifo_2),

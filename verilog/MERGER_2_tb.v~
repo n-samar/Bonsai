@@ -1,4 +1,4 @@
- `timescale 1 ns/10 ps
+`timescale 1 ns/10 ps
 
 module merger_tb;
    reg write_fifo_1, write_fifo_2, write_fifo_out;
@@ -47,7 +47,7 @@ module merger_tb;
 	       .overrun(fifo_out_overrun),
 	       .underrun(fifo_out_underrun));
 
-   MERGER_1 dut (.i_clk(clk),
+   MERGER dut (.i_clk(clk),
 	       .i_fifo_1(out_fifo_1),
 	       .i_fifo_1_empty(fifo_1_empty),
 	       .i_fifo_2(out_fifo_2),
@@ -64,89 +64,41 @@ module merger_tb;
 	write_fifo_out <= 1'b1;
 	
 	clk <= 0;
-	in_fifo_1 <= 0;	
+	
+	in_fifo_1 <= 0;
 	in_fifo_2 <= 0;
 	write_fifo_1 <= 1'b1;
 	write_fifo_2 <= 1'b1;
-	
+
 	#period;
 	in_fifo_1 <= 1;	
 	in_fifo_2 <= 2;
+ 
+	#period;
+	in_fifo_1 <= 3;	
+	in_fifo_2 <= 4;
 
 	#period;
-	in_fifo_1 <= 7;	
-	in_fifo_2 <= 3;	
-
-	#period;
-	in_fifo_1 <= 8;
-	in_fifo_2 <= 4;	
-
-	#period;
-	in_fifo_1 <= 9;
-	in_fifo_2 <= 5;
-
-	#period;
-	in_fifo_1 <= 11;
+	in_fifo_1 <= 5;	
 	in_fifo_2 <= 6;
-
-	#period;
-	in_fifo_1 <= 12;
-	in_fifo_2 <= 10;			
-
-	#period;
-	in_fifo_1 <= 14;
-	in_fifo_2 <= 13;
-
-	#period;
-	in_fifo_1 <= 15;
-	in_fifo_2 <= 17;			
-
-	#period;
-	in_fifo_1 <= 16;
-	in_fifo_2 <= 18;	
-
-	#period;
-	in_fifo_1 <= 20;
-	in_fifo_2 <= 19;
-
-	#period;
-	in_fifo_1 <= 22;
-	in_fifo_2 <= 21;
-
-	#period;
-	in_fifo_1 <= 23;
-	in_fifo_2 <= 24;			
-
-	#period;
-	in_fifo_1 <= 26;
-	in_fifo_2 <= 25;	
-
-	#period;
-	in_fifo_1 <= 27;
-	in_fifo_2 <= 30;	
-
-	#period;
-	in_fifo_1 <= 28;
-	in_fifo_2 <= 31;	
-
-	#period;
-	in_fifo_1 <= 29;
-	in_fifo_2 <= 32;	
 	
-	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-
 
 	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
+	in_fifo_1 <= 7;
+	in_fifo_2 <= 8;
 
 	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;	
-	
-	
+	in_fifo_1 <= 0;
+	in_fifo_2 <= 0;
+
+	#period;
+	in_fifo_1 <= 0;
+	in_fifo_2 <= 0;
+
+	#period;
+	in_fifo_1 <= 0;
+	in_fifo_2 <= 0;	
+
 	#period;
 	write_fifo_1 <= 1'b0;
 	write_fifo_2 <= 1'b0;

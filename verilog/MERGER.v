@@ -95,8 +95,8 @@ module MERGER_1 (input i_clk,
 				   .top_tuple(i_data_2_top),
 				   .i_elems_0(R_A),
 				   .i_elems_1(R_B),
-				   .o_elems_0(data_2_bottom),
-				   .o_elems_1(),
+				   .o_elems_0(),
+				   .o_elems_1(data_2_bottom),
 				   .o_switch_output(switch_output_2),
 				   .o_stall(stall_2),
 				   .o_top_tuple(o_data_2_top));
@@ -142,7 +142,7 @@ module MERGER_1 (input i_clk,
    always @(posedge i_clk)
      begin	
 	if (~stall_3) begin
-	   if (switch_output_3) begin
+	   if (~switch_output_3) begin
 	      i_fifo_c <= data_3_smaller;
 	   end
 	   else

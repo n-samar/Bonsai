@@ -1,7 +1,7 @@
 `timescale 1ns/10ps
 
 /* 2-element tuples as input */
-module FIFO_2(
+module FIFO_2 (
 	    input 		      i_clk,
 	    input [(DATA_WIDTH-1):0]  i_item,
 	    input 		      i_write,
