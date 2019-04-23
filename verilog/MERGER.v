@@ -151,7 +151,7 @@ module MERGER (input i_clk,
 	   end
 	   else
 	     i_fifo_c <= data_3_bigger;
-	   #0.1 i_c_write <= 1'b1;	   
+	   i_c_write <= 1'b1;	   
 	   if (~fifo_c_full | i_c_write)
 	     i_c_read <= 1'b1;
 	   else
@@ -164,7 +164,6 @@ module MERGER (input i_clk,
    /* Writting into FIFO_A if possible */
    always @(posedge i_clk)
      begin
-	#0.1; /* Wait for FIFO info to update */	
 	if (~i_fifo_1_empty & (~fifo_a_full | (select_A & ~stall))) begin	  
 	   i_write_a <= 1'b1;
 	   o_fifo_1_read <= 1'b1;	   
@@ -178,7 +177,6 @@ module MERGER (input i_clk,
    /* Writting into FIFO_B if possible */
    always @(posedge i_clk)
      begin
-	#0.1; /* Wait for FIFO info to update */     	
 	if (~i_fifo_2_empty & (~fifo_b_full | (~select_A & ~stall))) begin
 	   i_write_b <= 1'b1;
 	   o_fifo_2_read <= 1'b1;
@@ -191,9 +189,8 @@ module MERGER (input i_clk,
 
 
    /* Writting into out_fifo if possible */
-   always @(posedge i_clk) 
+   always @(posedge i_clk)
      begin
-	#0.1; /* Wait for FIFO info to update */          	
 	if (i_fifo_out_ready & ~fifo_c_empty) begin
 	   o_out_fifo_write <= 1'b1;
 	   i_c_read <= 1'b1;	   
