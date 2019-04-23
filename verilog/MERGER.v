@@ -1,7 +1,7 @@
 `timescale 1 ns/10 ps
 
 /* NOTE: The size of FIFO_C should be at least log(P)*(log(P)+1)/2 + 1 */
-module MERGER (input i_clk,
+module MERGER_1 (input i_clk,
 	      input [31:0] 	 i_fifo_1,
 	      input 		 i_fifo_1_empty,
 	      input [31:0] 	 i_fifo_2,
@@ -41,7 +41,7 @@ module MERGER (input i_clk,
    
    assign a_min_zero = (fifo_a_out == 0);
    assign b_min_zero = (fifo_b_out == 0);
-   assign a_lte_b = (fifo_a_out <= fifo_b_out);
+   assign a_lte_b = (fifo_a_out[31:0] <= fifo_b_out[31:0]);
    assign r_a_min_zero = (R_A == 0);
    assign r_b_min_zero = (R_B == 0);
    
@@ -196,7 +196,6 @@ module MERGER (input i_clk,
 	   i_c_read <= 1'b0;
 	end
      end
-endmodule // MERGER
+endmodule // MERGER_1
 
 
-	      
