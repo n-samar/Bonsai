@@ -100,27 +100,29 @@ module MERGER (input i_clk,
       stall_2 <= 0;
       stall_3 <= 0;
    end
+
+
    
-   /* Advance the pipelined data stage 1->2 */
+   /* We must wait for the control logic to finish and fifos FIFO_A and FIFO_B to update */	   
    always @(posedge i_clk)
-     begin	
-	#2;   /* We must wait for the control logic to finish and fifos FIFO_A and FIFO_B to update */	
-	stall_2 <= stall;	
+     begin
+	stall_2 <= stall;	      
 	if (~stall) begin
 	   if (select_A) begin
 	      data_2_top <= fifo_a_out;
-	      #0.1 R_A <= fifo_a_out;	      
-	     end
+	      R_A <= fifo_a_out;	      
+	   end
 	   else begin
 	      data_2_top <= fifo_b_out;
-	      #0.1 R_B <= fifo_b_out;	      
+	      R_B <= fifo_b_out;	      
 	   end
 	   switch_output_2 <= switch_output;
 	   if (R_A <= R_B)
 	     data_2_bottom <= R_A;
 	   else
-	     data_2_bottom <= R_B;
+	     data_2_bottom <= R_B;      	   
 	end // if (~stall)
+	
      end // always @ (posedge i_clk)
 
    /* Advance the pipelined data stage 2->3 */
