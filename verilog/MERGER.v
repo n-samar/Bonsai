@@ -103,12 +103,12 @@ module MERGER (input i_clk,
    
    /* Advance the pipelined data stage 1->2 */
    always @(posedge i_clk)
-     begin
-	#2;   /* We must wait for the control logic to finish and fifos to update */	
+     begin	
+	#2;   /* We must wait for the control logic to finish and fifos FIFO_A and FIFO_B to update */	
 	stall_2 <= stall;	
 	if (~stall) begin
 	   if (select_A) begin
-	     data_2_top <= fifo_a_out;
+	      data_2_top <= fifo_a_out;
 	      #0.1 R_A <= fifo_a_out;	      
 	     end
 	   else begin
