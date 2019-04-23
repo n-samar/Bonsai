@@ -64,31 +64,42 @@ module merger_tb;
 	write_fifo_out <= 1'b1;
 	
 	clk <= 0;
-	in_fifo_1 <= 1;	
-	in_fifo_2 <= 2;
+	in_fifo_1 <= 0;	
+	in_fifo_2 <= 0;
 	write_fifo_1 <= 1'b1;
 	write_fifo_2 <= 1'b1;
 	
 	#period;
+	in_fifo_1 <= 1;	
+	in_fifo_2 <= 2;
+
+	#period;
 	in_fifo_1 <= 3;	
 	in_fifo_2 <= 4;
 
+	
 	#period;
 	write_fifo_2 <= 1'b0;	
 	in_fifo_1 <= 5;
 
 	#period;
 	in_fifo_1 <= 6;
-
-	#period;
-	write_fifo_2 <= 1'b1;	
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-
-
+	write_fifo_2 <= 1'b1;
+	
 	#period;
 	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
 	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
+
+
+	#period;
+	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
+	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
+
+	#period;
+	#period;
+	#period;	
+	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
+	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;	
 	/*	
 	#period;
 	in_fifo_1 <= 1;

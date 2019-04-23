@@ -23,24 +23,26 @@ module FIFO(
    initial
      begin
 	/* Fill FIFO with zeros */
-	mem[0] <= 0;
 	mem[1] <= 0;	
 	mem[2] <= 0;
 	mem[3] <= 0;	
-	rdaddr <= 0;
-	wraddr <= 4;
 	overrun  <= 0;
 	underrun <= 0;
 	full <= 0;
 	empty <= 0;
+
+	wraddr <= 4;
+	mem[wraddr] <= 0;
+	rdaddr <= 0;		
+	mem[0] <= 0;	
+	o_item <= 0;
      end
-   
-   always @(posedge i_clk) begin
-     #1;   /* wait for read and write signals to be updated */
+   /* wait for read and write signals to be updated */   
+   always @(i_write or i_read or rdaddr or wraddr) begin
      casez({ i_write, i_read, !full, !empty })
        4'b01?1: begin	// A successful read
 	  full  <= 1'b0;
-	  empty <= (rdaddr == wraddr);
+	  empty <= (nxtread == wraddr);
        end
        4'b101?: begin	// A successful write
 	  full <= (dblnext == rdaddr);
@@ -57,11 +59,11 @@ module FIFO(
        default: begin end
      endcase // casez ({ i_write, i_read, !full, !empty })
    end // always @ (posedge i_clk)
-   
+
+   always @(i_item or wraddr)
+     mem[wraddr] <= i_item;
    
    always @(posedge i_clk) begin
-      #2;      /* If there is a chain of FIFOs */
-      mem[wraddr] = i_item;      
       if (i_write)
 	begin
 	   // Update the FIFO write address any time a write is made to
@@ -75,10 +77,11 @@ module FIFO(
 	     overrun <= 1'b1;
 	end // if (i_write)       
    end // always @ (posedge i_clk)
+
+   always @(rdaddr)
+     o_item <= mem[rdaddr]; 
    
    always @(posedge i_clk) begin
-      o_item = mem[rdaddr];
-      #2;   /* wait for read signal to update */
       if (i_read)
 	begin
 	  // On any read request, increment the pointer if the FIFO isn't
@@ -116,16 +119,18 @@ module FIFO_EMPTY (
 
    initial
      begin
-	mem[0] <= 0;
-	wraddr <= 0;
-	rdaddr <= 0;
 	overrun  <= 0;
 	underrun <= 0;
 	full <= 0;
 	empty <= 1;
+	wraddr = 0;
+	mem[wraddr] <= i_item;
+	rdaddr = 0;		
+	mem[0] = 0;	
+	o_item <= mem[rdaddr];
      end
    
-   always @(posedge i_clk)
+   always @(i_write or i_read or rdaddr or wraddr) begin
      casez({ i_write, i_read, !full, !empty })
        4'b01?1: begin	// A successful read
 	  full  <= 1'b0;
@@ -144,11 +149,13 @@ module FIFO_EMPTY (
 	  empty <= 1'b0;
        end
        default: begin end
-     endcase
+     endcase // casez ({ i_write, i_read, !full, !empty })
+   end // always @ (i_write or i_read or rdaddr or wraddr)
+   
+   always @(i_item or wraddr)
+     mem[wraddr] <= i_item;
    
    always @(posedge i_clk) begin
-      #1;      /* If there is a chain of FIFOs */      
-      mem[wraddr] = i_item;      
      if (i_write)
        begin
 	  // Update the FIFO write address any time a write is made to
@@ -162,10 +169,12 @@ module FIFO_EMPTY (
 	    overrun <= 1'b1;
        end // if (i_write)       
    end // always @ (posedge i_clk)
+
+   always @(rdaddr)
+     o_item <= mem[rdaddr]; 
    
 
    always @(posedge i_clk) begin
-      o_item = mem[rdaddr];
       if (i_read)
 	begin
 	   // On any read request, increment the pointer if the FIFO isn't

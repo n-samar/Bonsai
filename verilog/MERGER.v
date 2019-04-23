@@ -97,8 +97,8 @@ module MERGER (input i_clk,
       data_3_smaller <= 0;
       switch_output_2 <= 0;
       switch_output_3 <= 0;      
-      stall_2 <= 1;
-      stall_3 <= 1;
+      stall_2 <= 0;
+      stall_3 <= 0;
    end
    
    /* Advance the pipelined data stage 1->2 */
@@ -155,6 +155,8 @@ module MERGER (input i_clk,
 	   else
 	     $display("ERROR!");
 	end // if (~stall_3)
+	else
+	  i_c_write <= 1'b0;
      end
 
    /* Writting into FIFO_A if possible */
