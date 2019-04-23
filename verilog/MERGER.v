@@ -27,14 +27,15 @@ module MERGER (input i_clk,
    wire 			 a_min_zero, b_min_zero, a_lte_b;
    wire 			 r_a_min_zero, r_b_min_zero;
    wire 			 switch_output;
-   reg [31:0] 			 data_2_top;
-   reg [31:0] 			 data_2_bottom;   
-   reg [31:0] 			 data_3_bigger;
-   reg [31:0] 			 data_3_smaller;   
-   reg 				 switch_output_2;
-   reg 				 switch_output_3;
-   reg 				 stall_2;
-   reg 				 stall_3;
+   reg [31:0] 			 i_data_2_top;
+   wire [31:0] 			 o_data_2_top;   
+   wire [31:0] 			 data_2_bottom;   
+   wire [31:0] 			 data_3_bigger;
+   wire [31:0] 			 data_3_smaller;   
+   wire 			 switch_output_2;
+   wire 			 switch_output_3;
+   wire 			 stall_2;
+   wire 			 stall_3;
 
    parameter period = 4;
    
@@ -88,17 +89,35 @@ module MERGER (input i_clk,
 		.stall(stall), 
 		.switch_output(switch_output));
 
+   BITONIC_NETWORK_2 first_merger (.i_clk(i_clk),
+				   .switch_output(switch_output),
+				   .stall(stall),
+				   .top_tuple(i_data_2_top),
+				   .i_elems_0(R_A),
+				   .i_elems_1(R_B),
+				   .o_elems_0(data_2_bottom),
+				   .o_elems_1(),
+				   .o_switch_output(switch_output_2),
+				   .o_stall(stall_2),
+				   .o_top_tuple(o_data_2_top));
+
+   BITONIC_NETWORK_2 second_merger (.i_clk(i_clk),
+				    .switch_output(switch_output_2),
+				    .stall(stall),
+				    .top_tuple(),
+				    .i_elems_0(o_data_2_top),
+				    .i_elems_1(data_2_bottom),
+				    .o_elems_0(data_3_smaller),
+				    .o_elems_1(data_3_bigger),
+				    .o_switch_output(switch_output_3),
+				    .o_stall(stall_3),
+				    .o_top_tuple());
+   
+   
    initial begin
       R_A <= 0;
       R_B <= 0;
-      data_2_top <= 0;
-      data_2_bottom <= 0;
-      data_3_bigger <= 0;
-      data_3_smaller <= 0;
-      switch_output_2 <= 0;
-      switch_output_3 <= 0;      
-      stall_2 <= 0;
-      stall_3 <= 0;
+      i_data_2_top <= 0;
    end
 
 
@@ -106,43 +125,20 @@ module MERGER (input i_clk,
    /* We must wait for the control logic to finish and fifos FIFO_A and FIFO_B to update */	   
    always @(posedge i_clk)
      begin
-	stall_2 <= stall;	      
 	if (~stall) begin
 	   if (select_A) begin
-	      data_2_top <= fifo_a_out;
+	      i_data_2_top <= fifo_a_out;
 	      R_A <= fifo_a_out;	      
 	   end
 	   else begin
-	      data_2_top <= fifo_b_out;
+	      i_data_2_top <= fifo_b_out;
 	      R_B <= fifo_b_out;	      
 	   end
-	   switch_output_2 <= switch_output;
-	   if (R_A <= R_B)
-	     data_2_bottom <= R_A;
-	   else
-	     data_2_bottom <= R_B;      	   
 	end // if (~stall)
 	
      end // always @ (posedge i_clk)
 
-   /* Advance the pipelined data stage 2->3 */
-   always @(posedge i_clk)
-     begin
-	stall_3 <= stall_2;	
-	if (~stall_2) begin
-	   if (data_2_top <= data_2_bottom) begin
-	      data_3_bigger <= data_2_bottom;   
-	      data_3_smaller <= data_2_top;
-	   end
-	   else begin
-	      data_3_bigger <= data_2_top;   
-	      data_3_smaller <= data_2_bottom;
-	   end
-	   switch_output_3 <= switch_output_2;
-	end // if (~stall_2)
-     end // always @ (posedge i_clk)
-
-   /* Advance the pipelined data stage 3->4 */
+   /* Advance the pipelined data stage LAST */
    always @(posedge i_clk)
      begin	
 	if (~stall_3) begin
