@@ -33,47 +33,43 @@ module CONTROL(input i_clk,
 	switch_output = 1'b0;
      end
 
-   always @(posedge i_clk)
+   always @(i_a_min_zero or i_b_min_zero or i_a_empty or i_b_empty or i_r_a_min_zero or i_r_b_min_zero or i_a_lte_b or i_fifo_out_full)
      begin
-	#0.2 /* Wait for FIFO_A and FIFO_B to update */
 	casez(state)
 	  TOGGLE: begin
 	     if (i_a_empty) 
-	       new_state <= DONE_A;
+	       new_state = DONE_A;
 	     else if (i_b_empty)
-	       new_state <= DONE_B;
+	       new_state = DONE_B;
 	     else if (~i_a_min_zero | ~i_b_min_zero)
-	       new_state <= NOMINAL;
+	       new_state = NOMINAL;
 	     else
-	       new_state <= TOGGLE;
-	     
+	       new_state = TOGGLE;
 	  end
 	  DONE_A: begin
 	     if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
-	       new_state <= FINISHED;
+	       new_state = FINISHED;
 	     else if (i_b_min_zero)
-	       new_state <= TOGGLE;
+	       new_state = TOGGLE;
 	  end
 	  DONE_B: begin
 	     if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
-	       new_state <= FINISHED;
+	       new_state = FINISHED;
 	     else if (i_a_min_zero)
-	       new_state <= TOGGLE;	  
+	       new_state = TOGGLE;	  
 	  end       
 	  FINISHED: begin end       
 	  NOMINAL: begin
 	     if (i_a_min_zero)
-	       new_state <= DONE_A;
+	       new_state = DONE_A;
 	     else if (i_b_min_zero)
-	       new_state <= DONE_B;			 
+	       new_state = DONE_B;			 
 	  end    
 	  default: begin end
-	endcase
-	#0.1;
+	endcase // casez (state)
 	
 	if (~stall | new_state == FINISHED | new_state == TOGGLE)
 	  state = new_state;
-	#0.1;
 	select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & (~select_A));
 	switch_output <= state == TOGGLE & ~switch_output;
      end // always @ (posedge i_clk)
