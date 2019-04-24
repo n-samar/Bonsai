@@ -3,21 +3,21 @@
 module merger_tb;
    reg write_fifo_1, write_fifo_2, write_fifo_out;
    wire fifo_1_full, fifo_2_full, fifo_1_overrun, fifo_2_overrun, fifo_1_underrun, fifo_2_underrun, fifo_out_overrun, fifo_out_underrun;
-   wire [31:0] 			   out_fifo_1;
-   wire [31:0] 			   out_fifo_2;
-   reg [31:0] 			   in_fifo_1;
-   reg [31:0] 			   in_fifo_2;   
+   wire [2*32-1:0] 			   out_fifo_1;
+   wire [2*32-1:0] 			   out_fifo_2;
+   reg [2*32-1:0] 			   in_fifo_1;
+   reg [2*32-1:0] 			   in_fifo_2;   
    wire 			   out_fifo_1_empty;   
    wire 			   fifo_2_empty;
    wire 			   fifo_out_full, fifo_out_empty;
    wire 			   o_fifo_1_read, o_fifo_2_read, o_out_fifo_write;
-   wire [31:0] 			   o_data;
+   wire [2*32-1:0] 			   o_data;
    reg 			   clk;
-   wire [31:0] 		   out_fifo_item;
+   wire [2*32-1:0] 		   out_fifo_item;
    
    parameter period = 4;   
 
-   FIFO_EMPTY fifo_1(.i_clk(clk),
+   FIFO_EMPTY_2 fifo_1(.i_clk(clk),
 	       .i_item(in_fifo_1),
 	       .i_write(write_fifo_1),
 	       .o_item(out_fifo_1),
@@ -27,7 +27,7 @@ module merger_tb;
 	       .overrun(fifo_1_overrun),
 	       .underrun(fifo_1_underrun));
 
-   FIFO_EMPTY fifo_2(.i_clk(clk),
+   FIFO_EMPTY_2 fifo_2(.i_clk(clk),
 	       .i_item(in_fifo_2),
 	       .i_write(write_fifo_2),
 	       .o_item(out_fifo_2),
@@ -37,7 +37,7 @@ module merger_tb;
 	       .overrun(fifo_2_overrun),
 	       .underrun(fifo_2_underrun));
 
-   FIFO fifo_out(.i_clk(clk),
+   FIFO_2 fifo_out(.i_clk(clk),
 	       .i_item(o_data),
 	       .i_write(o_out_fifo_write),
 	       .o_item(out_fifo_item),
@@ -47,7 +47,7 @@ module merger_tb;
 	       .overrun(fifo_out_overrun),
 	       .underrun(fifo_out_underrun));
 
-   MERGER_1 dut (.i_clk(clk),
+   MERGER_2 dut (.i_clk(clk),
 	       .i_fifo_1(out_fifo_1),
 	       .i_fifo_1_empty(fifo_1_empty),
 	       .i_fifo_2(out_fifo_2),
@@ -70,61 +70,44 @@ module merger_tb;
 	write_fifo_2 <= 1'b1;
 
 	#period;
-	in_fifo_1 <= 1;	
-	in_fifo_2 <= 2;
+	in_fifo_1[31:0] <= 1;	
+	in_fifo_2[31:0] <= 2;
+	in_fifo_1[2*32-1:32] <= 3;	
+	in_fifo_2[2*32-1:32] <= 4;
+
+	#period;
+	in_fifo_1[31:0] <= 5;
+	in_fifo_2[31:0] <= 6;
+	in_fifo_1[2*32-1:32] <= 7;
+	in_fifo_2[2*32-1:32] <= 8;
+
+	#period;
+	in_fifo_1 <= 0;	
+	in_fifo_2 <= 0;
+
+	#period;
+	in_fifo_1 <= 0;	
+	in_fifo_2 <= 0;	
 	
 	#period;
-	in_fifo_1 <= 3;	
-	in_fifo_2 <= 4;
+	in_fifo_1[31:0] <= 1;
+	in_fifo_2[31:0] <= 5;
+	in_fifo_1[2*32-1:32] <= 2;	
+	in_fifo_2[2*32-1:32] <= 6;
 
 	#period;
-	in_fifo_1 <= 5;
-	in_fifo_2 <= 6;
+	in_fifo_1[31:0] <= 3;	
+	in_fifo_2[31:0] <= 7;
+	in_fifo_1[2*32-1:32] <= 4;	
+	in_fifo_2[2*32-1:32] <= 8;
 
 	#period;
-	in_fifo_1 <= 7;
-	in_fifo_2 <= 8;
+	in_fifo_1 <= 0;	
+	in_fifo_2 <= 0;
 
 	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-
 	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	
 	#period;
-	in_fifo_1 <= 1;
-	in_fifo_2 <= 5;
-	
-	#period;
-	in_fifo_1 <= 2;	
-	in_fifo_2 <= 6;
-
-	#period;
-	in_fifo_1 <= 3;	
-	in_fifo_2 <= 7;
-
-	#period;
-	in_fifo_1 <= 4;	
-	in_fifo_2 <= 8;
-
-	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-
-	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-
-
-	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-
-	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;		
 
 	#period;
 	write_fifo_1 <= 1'b0;
@@ -142,4 +125,3 @@ module merger_tb;
 	$dumpvars(0,merger_tb);
      end
 endmodule // merger_tb
-

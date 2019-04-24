@@ -47,7 +47,7 @@ module merger_tb;
 	       .overrun(fifo_out_overrun),
 	       .underrun(fifo_out_underrun));
 
-   MERGER_1 dut (.i_clk(clk),
+   MERGER dut (.i_clk(clk),
 	       .i_fifo_1(out_fifo_1),
 	       .i_fifo_1_empty(fifo_1_empty),
 	       .i_fifo_2(out_fifo_2),
@@ -62,16 +62,12 @@ module merger_tb;
    initial
      begin
 	write_fifo_out <= 1'b1;
-
+	
 	clk <= 0;
-	in_fifo_1 <= 0;	
-	in_fifo_2 <= 0;
-	write_fifo_1 <= 1'b1;
-	write_fifo_2 <= 1'b1;
-
-	#period;
 	in_fifo_1 <= 1;	
 	in_fifo_2 <= 2;
+	write_fifo_1 <= 1'b1;
+	write_fifo_2 <= 1'b1;
 	
 	#period;
 	in_fifo_1 <= 3;	
@@ -114,19 +110,6 @@ module merger_tb;
 	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
 
 	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-
-
-	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-
-	#period;
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;		
-
-	#period;
 	write_fifo_1 <= 1'b0;
 	write_fifo_2 <= 1'b0;
 
@@ -141,5 +124,5 @@ module merger_tb;
 	$dumpfile("test_merger.vcd");
 	$dumpvars(0,merger_tb);
      end
-endmodule // merger_tb
+endmodule // control_tb
 

@@ -38,7 +38,7 @@ module FIFO(
 	o_item <= 0;
      end
    /* wait for read and write signals to be updated */   
-   always @(i_write or i_read or rdaddr or wraddr) begin
+   always @(posedge i_clk) begin
      casez({ i_write, i_read, !full, !empty })
        4'b01?1: begin	// A successful read
 	  full  <= 1'b0;
@@ -130,7 +130,7 @@ module FIFO_EMPTY (
 	o_item <= mem[rdaddr];
      end
    
-   always @(i_write or i_read or rdaddr or wraddr) begin
+   always @(posedge i_clk) begin
      casez({ i_write, i_read, !full, !empty })
        4'b01?1: begin	// A successful read
 	  full  <= 1'b0;
