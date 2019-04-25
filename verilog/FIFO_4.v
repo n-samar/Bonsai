@@ -1,7 +1,7 @@
 `timescale 1ns/10ps
 
 /* 2-element tuples as input */
-module FIFO_2 (
+module FIFO_4 (
 	    input 		      i_clk,
 	    input [(DATA_WIDTH-1):0]  i_item,
 	    input 		      i_write,
@@ -13,7 +13,7 @@ module FIFO_2 (
 	    output reg underrun
 	    );
    parameter	FIFO_SIZE = 4;
-   parameter DATA_WIDTH = 64;   
+   parameter DATA_WIDTH = 128;   
    reg	[((1<<FIFO_SIZE)-1):0]	rdaddr, wraddr;
    reg [(DATA_WIDTH-1):0] 	mem	[0:((1<<FIFO_SIZE)-1)];
    wire	[((1<<FIFO_SIZE)-1):0]	dblnext, nxtread;
@@ -99,7 +99,7 @@ endmodule
 
 
 
-module FIFO_EMPTY_2 (
+module FIFO_EMPTY_4 (
 	    input 		      i_clk,
 	    input [(DATA_WIDTH-1):0]  i_item,
 	    input 		      i_write,
@@ -111,7 +111,7 @@ module FIFO_EMPTY_2 (
 	    output reg underrun
 	    );
    parameter	FIFO_SIZE = 3;
-   parameter DATA_WIDTH = 64;   
+   parameter DATA_WIDTH = 128;   
    reg	[(FIFO_SIZE-1):0]	rdaddr, wraddr;
    reg [(DATA_WIDTH-1):0] 	mem	[0:((1<<FIFO_SIZE)-1)];
    wire	[(DATA_WIDTH-1):0]	dblnext, nxtread;
