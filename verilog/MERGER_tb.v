@@ -1,7 +1,7 @@
 `timescale 1 ns/10 ps
 
 module merger_tb;
-   reg write_fifo_1, write_fifo_2, write_fifo_out;
+   reg write_fifo_1, write_fifo_2, read_fifo_out;
    wire fifo_1_full, fifo_2_full, fifo_1_overrun, fifo_2_overrun, fifo_1_underrun, fifo_2_underrun, fifo_out_overrun, fifo_out_underrun;
    wire [31:0] 			   out_fifo_1;
    wire [31:0] 			   out_fifo_2;
@@ -41,7 +41,7 @@ module merger_tb;
 	       .i_item(o_data),
 	       .i_write(o_out_fifo_write),
 	       .o_item(out_fifo_item),
-	       .i_read(write_fifo_out),
+	       .i_read(read_fifo_out),
 	       .empty(fifo_out_empty),
 	       .full(fifo_out_full),
 	       .overrun(fifo_out_overrun),
@@ -52,7 +52,7 @@ module merger_tb;
 	       .i_fifo_1_empty(fifo_1_empty),
 	       .i_fifo_2(out_fifo_2),
 	       .i_fifo_2_empty(fifo_2_empty),
-	       .i_fifo_out_ready(~fifo_out_full | write_fifo_out),
+	       .i_fifo_out_ready(~fifo_out_full | read_fifo_out),
 	       .o_fifo_1_read(o_fifo_1_read),
 	       .o_fifo_2_read(o_fifo_2_read),
 	       .o_out_fifo_write(o_out_fifo_write),
@@ -61,7 +61,7 @@ module merger_tb;
    
    initial
      begin
-	write_fifo_out <= 1'b1;
+	read_fifo_out <= 1'b1;
 	
 	clk <= 0;
 	write_fifo_1 <= 1'b1;
@@ -113,5 +113,5 @@ module merger_tb;
 	$dumpfile("test_merger.vcd");
 	$dumpvars(0,merger_tb);
      end
-endmodule // control_tb
+endmodule // merger_tb
 
