@@ -1,5 +1,60 @@
 `timescale 1ns/10ps
 
+module shift_right_logical_16E (Q, A0, A1, A2, A3, CE, CLK, D);
+   parameter INIT = 16'h0000;
+   output Q;
+   input   A0, A1, A2, A3, CE, CLK, D;
+   reg [15:0] data;
+   assign Q = data[{A3, A2, A1, A0}];
+   initial begin
+      data[0] = 0;
+      data[1] = 0;
+      data[2] = 0;
+      data[3] = 0;
+   end
+   always @(posedge CLK)
+     begin
+	if (CE == 1'b1) begin
+	   {data[15:0]} <= {data[14:0], D};
+	end
+     end
+endmodule // shift_right_logical_16E
+
+module IFIFO16 #(
+  parameter P_WIDTH         = 32
+) (
+  input  wire               i_clk,
+  input  wire [P_WIDTH-1:0] i_data,
+  output wire [P_WIDTH-1:0] o_data,
+  input  wire               i_enq,
+  input  wire               i_deq,
+  output wire               o_full,
+  output reg                o_empty
+);
+  initial begin
+     o_empty = 0; 
+  end
+  
+  reg [4:0]  cnt =  4;
+  reg [3:0]  adr = 3;
+  
+  always @(posedge i_clk) begin
+    adr     <=   adr + i_enq - i_deq;
+    cnt     <=   cnt + i_enq - i_deq;
+    o_empty <= ((cnt + i_enq - i_deq)==0);
+    // if(cnt>16) $display("%m invalid enq! cnt=%d", cnt);
+  end
+  assign o_full = cnt[4]; // not verified this logic !!
+  
+  genvar i;
+  generate
+    for (i=0; i<P_WIDTH; i=i+1) begin : FIFO
+       shift_right_logical_16E fifo16(.CLK(i_clk), .CE(i_enq), .D(i_data[i]), .Q(o_data[i]),
+                    .A0(adr[0]),  .A1(adr[1]), .A2(adr[2]),  .A3(adr[3]));
+    end
+  endgenerate
+endmodule
+
 module FIFO(
 	    input 		      i_clk,
 	    input [(DATA_WIDTH-1):0]  i_item,

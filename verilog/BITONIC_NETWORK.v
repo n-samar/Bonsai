@@ -15,6 +15,7 @@ module BITONIC_NETWORK_2 (input i_clk,
 
    initial begin
       /* nothing to do here */
+      o_stall <= 0;
    end
 
    assign o_top_tuple = top_tuple;

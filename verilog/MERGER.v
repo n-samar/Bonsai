@@ -13,7 +13,7 @@ module MERGER_1 (input i_clk,
 	      output wire [31:0] o_data);
 
    wire 			 i_write_a, i_write_b;
-   wire 			 i_c_read;
+   reg 				 i_c_read;
    wire 			 select_A;
    wire 			 stall;
    reg [31:0] 			 R_A;
@@ -50,38 +50,41 @@ module MERGER_1 (input i_clk,
    assign i_write_b = ~i_fifo_2_empty & (~fifo_b_full | (~select_A & ~stall));
    assign o_fifo_2_read = ~i_fifo_2_empty & (~fifo_b_full | (~select_A & ~stall));
    assign o_out_fifo_write = i_fifo_out_ready & ~fifo_c_empty;
-   assign i_c_read = i_fifo_out_ready & ~fifo_c_empty;
+
+   initial begin
+      i_c_write <= 0;
+      i_c_read <= 1;
+   end
    
    
-   FIFO fifo_a(.i_clk(i_clk), 
-	       .i_item(i_fifo_1), 
-	       .i_write(i_write_a), 
-	       .i_read(select_A & ~stall),
-	       .o_item(fifo_a_out), 
-	       .empty(fifo_a_empty), 
-	       .full(fifo_a_full), 
-	       .overrun(overrun_a), 
-	       .underrun(underrun_a));
+   always @(posedge i_clk) begin
+      i_c_read <= i_fifo_out_ready & ~stall_3;
+   end
+   
+   
+   IFIFO16 fifo_a(.i_clk(i_clk), 
+		  .i_data(i_fifo_1), 
+		  .o_data(fifo_a_out),
+		  .i_enq(i_write_a), 		  
+		  .i_deq(select_A & ~stall), 
+		  .o_empty(fifo_a_empty), 
+		  .o_full(fifo_a_full));
 
-   FIFO fifo_b(.i_clk(i_clk), 
-	       .i_item(i_fifo_2), 
-	       .i_write(i_write_b), 
-	       .i_read(~select_A & ~stall),
-	       .o_item(fifo_b_out), 
-	       .empty(fifo_b_empty), 
-	       .full(fifo_b_full), 
-	       .overrun(overrun_b), 
-	       .underrun(underrun_b));     
+   IFIFO16 fifo_b(.i_clk(i_clk), 
+		  .i_data(i_fifo_2), 
+		  .o_data(fifo_b_out),
+		  .i_enq(i_write_b), 
+		  .i_deq(~select_A & ~stall), 
+		  .o_empty(fifo_b_empty), 
+		  .o_full(fifo_b_full));     
 
-   FIFO fifo_c(.i_clk(i_clk), 
-	       .i_item(i_fifo_c), 
-	       .i_write(i_c_write), 
-	       .i_read(i_c_read),
-	       .o_item(o_data), 
-	       .empty(fifo_c_empty), 
-	       .full(fifo_c_full), 
-	       .overrun(overrun_b), 
-	       .underrun(underrun_b));
+   IFIFO16 fifo_c(.i_clk(i_clk), 
+		  .i_data(i_fifo_c), 
+		  .o_data(o_data),
+		  .i_enq(i_c_write), 
+		  .i_deq(i_c_read),		  
+		  .o_empty(fifo_c_empty), 
+		  .o_full(fifo_c_full));
 
    CONTROL ctrl(.i_clk(i_clk), 
 		.i_fifo_out_full(!i_fifo_out_ready), 

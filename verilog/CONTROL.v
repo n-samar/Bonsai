@@ -29,7 +29,7 @@ module CONTROL(input i_clk,
    initial
      begin
 	state = TOGGLE;
-	select_A = 1'b0;
+	select_A = 1'b1;
 	switch_output = 1'b0;
      end
 
@@ -41,7 +41,7 @@ module CONTROL(input i_clk,
 	       new_state = DONE_A;
 	     else if (i_b_empty)
 	       new_state = DONE_B;
-	     else if (~i_a_min_zero | ~i_b_min_zero)
+	     else if (~i_a_min_zero & ~i_b_min_zero)
 	       new_state = NOMINAL;
 	     else
 	       new_state = TOGGLE;
@@ -58,7 +58,8 @@ module CONTROL(input i_clk,
 	     else if (i_a_min_zero)
 	       new_state = TOGGLE;	  
 	  end       
-	  FINISHED: begin end       
+	  FINISHED: begin 
+	  end       
 	  NOMINAL: begin
 	     if (i_a_min_zero)
 	       new_state = DONE_A;
@@ -70,7 +71,7 @@ module CONTROL(input i_clk,
 	
 	if (~stall | new_state == FINISHED | new_state == TOGGLE)
 	  state = new_state;
-	select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & (~select_A));
+	select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & (i_a_min_zero));
 	switch_output <= state == TOGGLE & ~switch_output;
      end // always @ (posedge i_clk)
 endmodule
