@@ -117,25 +117,21 @@ module MERGER_TREE_P1_L8(input i_clk,
 		       .o_data(o_data));   
 
    /* 1->0 */   
-   FIFO fifo_1_0(.i_clk(i_clk),
-		 .i_item(fifo_1_0_i_item),
-		 .i_write(fifo_1_0_write),
-		 .i_read(fifo_1_0_read),
-		 .o_item(fifo_1_0_o_item),
-		 .empty(fifo_1_0_empty),
-		 .full(fifo_1_0_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_1_0(.i_clk(i_clk),
+		 .i_data(fifo_1_0_i_item),
+		 .i_enq(fifo_1_0_write),
+		 .i_deq(fifo_1_0_read),
+		 .o_data(fifo_1_0_o_item),
+		 .o_empty(fifo_1_0_empty),
+		 .o_full(fifo_1_0_full));
    
-   FIFO fifo_1_1(.i_clk(i_clk),
-		 .i_item(fifo_1_1_i_item),
-		 .i_write(fifo_1_1_write),
-		 .i_read(fifo_1_1_read),
-		 .o_item(fifo_1_1_o_item),
-		 .empty(fifo_1_1_empty),
-		 .full(fifo_1_1_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_1_1(.i_clk(i_clk),
+		 .i_data(fifo_1_1_i_item),
+		 .i_enq(fifo_1_1_write),
+		 .i_deq(fifo_1_1_read),
+		 .o_data(fifo_1_1_o_item),
+		 .o_empty(fifo_1_1_empty),
+		 .o_full(fifo_1_1_full));
 
    MERGER_1 merger_1_0(.i_clk(i_clk),
 		       .i_fifo_1(fifo_2_0_o_item),
@@ -161,45 +157,37 @@ module MERGER_TREE_P1_L8(input i_clk,
 		       .o_data(fifo_1_1_i_item));
 
    /* 2-> 1 */
-   FIFO fifo_2_0(.i_clk(i_clk),
-		 .i_item(fifo_2_0_i_item),
-		 .i_write(fifo_2_0_write),
-		 .i_read(fifo_2_0_read),
-		 .o_item(fifo_2_0_o_item),
-		 .empty(fifo_2_0_empty),
-		 .full(fifo_2_0_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_2_0(.i_clk(i_clk),
+		 .i_data(fifo_2_0_i_item),
+		 .i_enq(fifo_2_0_write),
+		 .i_deq(fifo_2_0_read),
+		 .o_data(fifo_2_0_o_item),
+		 .o_empty(fifo_2_0_empty),
+		 .o_full(fifo_2_0_full));
    
-   FIFO fifo_2_1(.i_clk(i_clk),
-		 .i_item(fifo_2_1_i_item),
-		 .i_write(fifo_2_1_write),
-		 .i_read(fifo_2_1_read),
-		 .o_item(fifo_2_1_o_item),
-		 .empty(fifo_2_1_empty),
-		 .full(fifo_2_1_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_2_1(.i_clk(i_clk),
+		 .i_data(fifo_2_1_i_item),
+		 .i_enq(fifo_2_1_write),
+		 .i_deq(fifo_2_1_read),
+		 .o_data(fifo_2_1_o_item),
+		 .o_empty(fifo_2_1_empty),
+		 .o_full(fifo_2_1_full));
 
-   FIFO fifo_2_2(.i_clk(i_clk),
-		 .i_item(fifo_2_2_i_item),
-		 .i_write(fifo_2_2_write),
-		 .i_read(fifo_2_2_read),
-		 .o_item(fifo_2_2_o_item),
-		 .empty(fifo_2_2_empty),
-		 .full(fifo_2_2_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_2_2(.i_clk(i_clk),
+		 .i_data(fifo_2_2_i_item),
+		 .i_enq(fifo_2_2_write),
+		 .i_deq(fifo_2_2_read),
+		 .o_data(fifo_2_2_o_item),
+		 .o_empty(fifo_2_2_empty),
+		 .o_full(fifo_2_2_full));
    
-   FIFO fifo_2_3(.i_clk(i_clk),
-		 .i_item(fifo_2_3_i_item),
-		 .i_write(fifo_2_3_write),
-		 .i_read(fifo_2_3_read),
-		 .o_item(fifo_2_3_o_item),
-		 .empty(fifo_2_3_empty),
-		 .full(fifo_2_3_full),
-		 .overrun(),
-		 .underrun());   
+   IFIFO16 fifo_2_3(.i_clk(i_clk),
+		 .i_data(fifo_2_3_i_item),
+		 .i_enq(fifo_2_3_write),
+		 .i_deq(fifo_2_3_read),
+		 .o_data(fifo_2_3_o_item),
+		 .o_empty(fifo_2_3_empty),
+		 .o_full(fifo_2_3_full));   
    
    MERGER_1 merger_2_0(.i_clk(i_clk),
 		       .i_fifo_1(fifo_3_0_o_item),
@@ -249,85 +237,69 @@ module MERGER_TREE_P1_L8(input i_clk,
 
 
    /* 3 -> 2 */
-   FIFO fifo_3_0(.i_clk(i_clk),
-		 .i_item(fifo_3_0_i_item),
-		 .i_write(fifo_3_0_write),
-		 .i_read(fifo_3_0_read),
-		 .o_item(fifo_3_0_o_item),
-		 .empty(fifo_3_0_empty),
-		 .full(fifo_3_0_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_3_0(.i_clk(i_clk),
+		 .i_data(fifo_3_0_i_item),
+		 .i_enq(fifo_3_0_write),
+		 .i_deq(fifo_3_0_read),
+		 .o_data(fifo_3_0_o_item),
+		 .o_empty(fifo_3_0_empty),
+		 .o_full(fifo_3_0_full));
    
-   FIFO fifo_3_1(.i_clk(i_clk),
-		 .i_item(fifo_3_1_i_item),
-		 .i_write(fifo_3_1_write),
-		 .i_read(fifo_3_1_read),
-		 .o_item(fifo_3_1_o_item),
-		 .empty(fifo_3_1_empty),
-		 .full(fifo_3_1_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_3_1(.i_clk(i_clk),
+		 .i_data(fifo_3_1_i_item),
+		 .i_enq(fifo_3_1_write),
+		 .i_deq(fifo_3_1_read),
+		 .o_data(fifo_3_1_o_item),
+		 .o_empty(fifo_3_1_empty),
+		 .o_full(fifo_3_1_full));
 
-   FIFO fifo_3_2(.i_clk(i_clk),
-		 .i_item(fifo_3_2_i_item),
-		 .i_write(fifo_3_2_write),
-		 .i_read(fifo_3_2_read),
-		 .o_item(fifo_3_2_o_item),
-		 .empty(fifo_3_2_empty),
-		 .full(fifo_3_2_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_3_2(.i_clk(i_clk),
+		 .i_data(fifo_3_2_i_item),
+		 .i_enq(fifo_3_2_write),
+		 .i_deq(fifo_3_2_read),
+		 .o_data(fifo_3_2_o_item),
+		 .o_empty(fifo_3_2_empty),
+		 .o_full(fifo_3_2_full));
    
-   FIFO fifo_3_3(.i_clk(i_clk),
-		 .i_item(fifo_3_3_i_item),
-		 .i_write(fifo_3_3_write),
-		 .i_read(fifo_3_3_read),
-		 .o_item(fifo_3_3_o_item),
-		 .empty(fifo_3_3_empty),
-		 .full(fifo_3_3_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_3_3(.i_clk(i_clk),
+		 .i_data(fifo_3_3_i_item),
+		 .i_enq(fifo_3_3_write),
+		 .i_deq(fifo_3_3_read),
+		 .o_data(fifo_3_3_o_item),
+		 .o_empty(fifo_3_3_empty),
+		 .o_full(fifo_3_3_full));
 
-   FIFO fifo_3_4(.i_clk(i_clk),
-		 .i_item(fifo_3_4_i_item),
-		 .i_write(fifo_3_4_write),
-		 .i_read(fifo_3_4_read),
-		 .o_item(fifo_3_4_o_item),
-		 .empty(fifo_3_4_empty),
-		 .full(fifo_3_4_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_3_4(.i_clk(i_clk),
+		 .i_data(fifo_3_4_i_item),
+		 .i_enq(fifo_3_4_write),
+		 .i_deq(fifo_3_4_read),
+		 .o_data(fifo_3_4_o_item),
+		 .o_empty(fifo_3_4_empty),
+		 .o_full(fifo_3_4_full));
    
-   FIFO fifo_3_5(.i_clk(i_clk),
-		 .i_item(fifo_3_5_i_item),
-		 .i_write(fifo_3_5_write),
-		 .i_read(fifo_3_5_read),
-		 .o_item(fifo_3_5_o_item),
-		 .empty(fifo_3_5_empty),
-		 .full(fifo_3_5_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_3_5(.i_clk(i_clk),
+		 .i_data(fifo_3_5_i_item),
+		 .i_enq(fifo_3_5_write),
+		 .i_deq(fifo_3_5_read),
+		 .o_data(fifo_3_5_o_item),
+		 .o_empty(fifo_3_5_empty),
+		 .o_full(fifo_3_5_full));
 
-   FIFO fifo_3_6(.i_clk(i_clk),
-		 .i_item(fifo_3_6_i_item),
-		 .i_write(fifo_3_6_write),
-		 .i_read(fifo_3_6_read),
-		 .o_item(fifo_3_6_o_item),
-		 .empty(fifo_3_6_empty),
-		 .full(fifo_3_6_full),
-		 .overrun(),
-		 .underrun());
+   IFIFO16 fifo_3_6(.i_clk(i_clk),
+		 .i_data(fifo_3_6_i_item),
+		 .i_enq(fifo_3_6_write),
+		 .i_deq(fifo_3_6_read),
+		 .o_data(fifo_3_6_o_item),
+		 .o_empty(fifo_3_6_empty),
+		 .o_full(fifo_3_6_full));
    
-   FIFO fifo_3_7(.i_clk(i_clk),
-		 .i_item(fifo_3_7_i_item),
-		 .i_write(fifo_3_7_write),
-		 .i_read(fifo_3_7_read),
-		 .o_item(fifo_3_7_o_item),
-		 .empty(fifo_3_7_empty),
-		 .full(fifo_3_7_full),
-		 .overrun(),
-		 .underrun());      
+   IFIFO16 fifo_3_7(.i_clk(i_clk),
+		 .i_data(fifo_3_7_i_item),
+		 .i_enq(fifo_3_7_write),
+		 .i_deq(fifo_3_7_read),
+		 .o_data(fifo_3_7_o_item),
+		 .o_empty(fifo_3_7_empty),
+		 .o_full(fifo_3_7_full));      
    
    MERGER_1 merger_3_0(.i_clk(i_clk),
 		       .i_fifo_1(i_fifo_0),
@@ -422,4 +394,4 @@ module MERGER_TREE_P1_L8(input i_clk,
 		       .o_data(fifo_3_7_i_item));         
 endmodule
 			 
-			 
+		       
