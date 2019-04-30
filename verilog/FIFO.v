@@ -47,14 +47,14 @@ module IFIFO16 #(
      o_empty = 0; 
   end
   
-  reg [4:0]  cnt =  4;
+  reg [4:0]  cnt =  5;
   reg [3:0]  adr = 3;
   
   always @(posedge i_clk) begin
      if(cnt > 0 | ~i_deq) begin
 	adr     <=   adr + i_enq - i_deq;
 	cnt     <=   cnt + i_enq - i_deq;
-	o_empty <= ((cnt + i_enq - i_deq)==0);
+	o_empty <= ((cnt + i_enq - i_deq)==1);
      end
     // if(cnt>16) $display("%m invalid enq! cnt=%d", cnt);
   end
