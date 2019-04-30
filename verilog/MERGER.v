@@ -36,7 +36,13 @@ module MERGER_1 (input i_clk,
    wire 			 switch_output_3;
    wire 			 stall_2;
    wire 			 stall_3;
+   reg 				 i_fifo_out_ready_clocked;
 
+   always @(posedge i_clk) begin
+      i_fifo_out_ready_clocked <= i_fifo_out_ready;
+   end
+   
+   
    parameter period = 4;
    
    assign a_min_zero = (fifo_a_out == 0);
@@ -49,11 +55,12 @@ module MERGER_1 (input i_clk,
    assign i_write_a = ~i_fifo_1_empty & (~fifo_a_full | (select_A & ~stall));
    assign i_write_b = ~i_fifo_2_empty & (~fifo_b_full | (~select_A & ~stall));
    assign o_fifo_2_read = ~i_fifo_2_empty & (~fifo_b_full | (~select_A & ~stall));
-   assign o_out_fifo_write = i_fifo_out_ready & ~fifo_c_empty;
+   assign o_out_fifo_write = i_fifo_out_ready_clocked & ~fifo_c_empty;
 
    initial begin
       i_c_write <= 0;
       i_c_read <= 1;
+      i_fifo_out_ready_clocked <= 1;
    end
    
    
@@ -87,7 +94,7 @@ module MERGER_1 (input i_clk,
 		  .o_full(fifo_c_full));
 
    CONTROL ctrl(.i_clk(i_clk), 
-		.i_fifo_out_full(!i_fifo_out_ready), 
+		.i_fifo_out_full(!i_fifo_out_ready_clocked), 
 		.i_a_min_zero(a_min_zero), 
 		.i_b_min_zero(b_min_zero),
 		.i_a_lte_b(a_lte_b), 
