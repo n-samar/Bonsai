@@ -100,26 +100,7 @@ module merger_tb;
 	#period;	
 	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
 	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;	
-	/*	
-	#period;
-	in_fifo_1 <= 1;
-	in_fifo_2 <= 5;
-	
-	#period;
-	write_fifo_2 <= 1'b0;	
-	in_fifo_1 <= 2;	
 
-	#period;
-	in_fifo_1 <= 3;	
-
-	#period;
-	in_fifo_1 <= 4;	
-
-	#period;
-	write_fifo_2 <= 1'b1;		
-	in_fifo_1 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	in_fifo_2 <= 32'b0000_0000_0000_0000_0000_0000_0000_0000;
-	*/
 	#period;
 	write_fifo_1 <= 1'b0;
 	write_fifo_2 <= 1'b0;

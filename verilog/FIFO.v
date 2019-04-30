@@ -7,10 +7,22 @@ module shift_right_logical_16E (Q, A0, A1, A2, A3, CE, CLK, D);
    reg [15:0] data;
    assign Q = data[{A3, A2, A1, A0}];
    initial begin
-      data[0] = 0;
-      data[1] = 0;
-      data[2] = 0;
-      data[3] = 0;
+      data[0] <= 0;
+      data[1] <= 0;
+      data[2] <= 0;
+      data[3] <= 0;
+      data[4] <= 0;
+      data[5] <= 0;
+      data[6] <= 0;
+      data[7] <= 0;
+      data[8] <= 0;
+      data[9] <= 0;
+      data[10] <= 0;
+      data[11] <= 0;
+      data[12] <= 0;
+      data[13] <= 0;
+      data[14] <= 0;
+      data[15] <= 0;      
    end
    always @(posedge CLK)
      begin
@@ -39,9 +51,11 @@ module IFIFO16 #(
   reg [3:0]  adr = 3;
   
   always @(posedge i_clk) begin
-    adr     <=   adr + i_enq - i_deq;
-    cnt     <=   cnt + i_enq - i_deq;
-    o_empty <= ((cnt + i_enq - i_deq)==0);
+     if(cnt > 0 | ~i_deq) begin
+	adr     <=   adr + i_enq - i_deq;
+	cnt     <=   cnt + i_enq - i_deq;
+	o_empty <= ((cnt + i_enq - i_deq)==0);
+     end
     // if(cnt>16) $display("%m invalid enq! cnt=%d", cnt);
   end
   assign o_full = cnt[4]; // not verified this logic !!
@@ -56,21 +70,21 @@ module IFIFO16 #(
 endmodule
 
 module FIFO(
-	    input 		      i_clk,
-	    input [(DATA_WIDTH-1):0]  i_item,
-	    input 		      i_write,
-	    input 		      i_read,	    	    
+	    input 			  i_clk,
+	    input [(DATA_WIDTH-1):0] 	  i_item,
+	    input 			  i_write,
+	    input 			  i_read, 
 	    output reg [(DATA_WIDTH-1):0] o_item,
-	    output reg empty,
-	    output reg full,
-	    output reg overrun,
-	    output reg underrun
+	    output reg 			  empty,
+	    output reg 			  full,
+	    output reg 			  overrun,
+	    output reg 			  underrun
 	    );
    parameter	FIFO_SIZE = 4;
    parameter DATA_WIDTH = 32;   
-   reg	[((1<<FIFO_SIZE)-1):0]	rdaddr, wraddr;
-   reg [(DATA_WIDTH-1):0] 	mem	[0:((1<<FIFO_SIZE)-1)];
-   wire	[((1<<FIFO_SIZE)-1):0]	dblnext, nxtread;
+   reg [((1<<FIFO_SIZE)-1):0] 		  rdaddr, wraddr;
+   reg [(DATA_WIDTH-1):0] 		  mem	[0:((1<<FIFO_SIZE)-1)];
+   wire [((1<<FIFO_SIZE)-1):0] 		  dblnext, nxtread;
    
    assign	dblnext = (wraddr + 1) % (1<<FIFO_SIZE);
    assign	nxtread = (rdaddr + 1'b1) % (1<<FIFO_SIZE);
