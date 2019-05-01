@@ -148,6 +148,8 @@ module merger_tree_tb;
 	in_fifo_3 <= 0;
 
 	#period;
+	#period;
+	#period;	
 	write_fifo_0 <= 1'b0;
 	write_fifo_1 <= 1'b0;
 	write_fifo_2 <= 1'b0;

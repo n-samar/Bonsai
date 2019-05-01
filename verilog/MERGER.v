@@ -51,10 +51,10 @@ module MERGER_1 (input i_clk,
    assign r_a_min_zero = (R_A == 0);
    assign r_b_min_zero = (R_B == 0);
 
-   assign o_fifo_1_read = ~i_fifo_1_empty & (~fifo_a_full | (select_A & ~stall));
-   assign i_write_a = ~i_fifo_1_empty & (~fifo_a_full | (select_A & ~stall));
-   assign i_write_b = ~i_fifo_2_empty & (~fifo_b_full | (~select_A & ~stall));
-   assign o_fifo_2_read = ~i_fifo_2_empty & (~fifo_b_full | (~select_A & ~stall));
+   assign o_fifo_1_read = ~i_fifo_1_empty & (~fifo_a_full);
+   assign i_write_a = ~i_fifo_1_empty & (~fifo_a_full);
+   assign i_write_b = ~i_fifo_2_empty & (~fifo_b_full);
+   assign o_fifo_2_read = ~i_fifo_2_empty & (~fifo_b_full);
    assign o_out_fifo_write = i_fifo_out_ready_clocked & ~fifo_c_empty;
 
    initial begin

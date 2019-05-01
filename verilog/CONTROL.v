@@ -38,6 +38,7 @@ module CONTROL(input i_clk,
    always @(i_a_min_zero or i_b_min_zero or i_a_empty or i_b_empty or i_r_a_min_zero or i_r_b_min_zero or i_a_lte_b or i_fifo_out_full)
      begin
 	edit_state <= ~edit_state;
+	#0.5   // Can't have this!!!
 	casez(state)
 	  TOGGLE: begin
 	     if (i_a_empty) 
@@ -74,7 +75,8 @@ module CONTROL(input i_clk,
 	
 	if (~stall | new_state == FINISHED | new_state == TOGGLE)
 	  state = new_state;
-	select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & (i_a_min_zero));
-	switch_output <= state == TOGGLE & ~switch_output;
+	select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & i_a_min_zero & i_r_b_min_zero);
+	switch_output <= state == TOGGLE &(~switch_output);
+	
      end // always @ (posedge i_clk)
 endmodule
