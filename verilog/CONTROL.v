@@ -43,6 +43,7 @@ module CONTROL(input i_clk,
    
    always @(i_a_empty or i_b_empty or i_r_a_min_zero or i_r_b_min_zero or i_a_min_zero or i_b_min_zero or state)
      begin
+	#0.1;   
 	casez(state)
 	  TOGGLE: begin
 	     if (i_a_empty) 
