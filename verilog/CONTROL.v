@@ -41,15 +41,14 @@ module CONTROL(input i_clk,
       switch_output <= (state == TOGGLE) & ~switch_output;
    end
    
-   always @(i_a_empty or i_b_empty or i_r_a_min_zero or i_r_b_min_zero or i_a_min_zero or i_b_min_zero)
+   always @(i_a_empty or i_b_empty or i_r_a_min_zero or i_r_b_min_zero or i_a_min_zero or i_b_min_zero or state)
      begin
-	#0.1;
 	casez(state)
 	  TOGGLE: begin
 	     if (i_a_empty) 
 	       new_state <= DONE_A;
 	     else if (i_b_empty)
-	       new_state = DONE_B;
+	       new_state <= DONE_B;
 	     else if (~i_a_min_zero & ~i_b_min_zero)
 	       new_state <= NOMINAL;
 	     else
