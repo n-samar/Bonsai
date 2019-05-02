@@ -60,12 +60,12 @@ module MERGER_1 (input i_clk,
    initial begin
       i_c_write <= 0;
       i_c_read <= 1;
-      i_fifo_out_ready_clocked <= 1;
+      i_fifo_out_ready_clocked <= 1; 
    end
    
    
    always @(posedge i_clk) begin
-      i_c_read <= i_fifo_out_ready & ~stall_3;
+      i_c_read <= i_fifo_out_ready & ~fifo_c_empty;
    end
    
    

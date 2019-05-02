@@ -11,18 +11,6 @@ module shift_right_logical_16E (Q, A0, A1, A2, A3, CE, CLK, D);
       data[1] <= 0;
       data[2] <= 0;
       data[3] <= 0;
-      data[4] <= 0;
-      data[5] <= 0;
-      data[6] <= 0;
-      data[7] <= 0;
-      data[8] <= 0;
-      data[9] <= 0;
-      data[10] <= 0;
-      data[11] <= 0;
-      data[12] <= 0;
-      data[13] <= 0;
-      data[14] <= 0;
-      data[15] <= 0;      
    end
    always @(posedge CLK)
      begin
@@ -48,13 +36,13 @@ module IFIFO16 #(
   end
   
   reg [4:0]  cnt =  5;
-  reg [3:0]  adr = 3;
+  reg [3:0]  adr = 2;
   
   always @(posedge i_clk) begin
      if(cnt > 0 | ~i_deq) begin
 	adr     <=   adr + i_enq - i_deq;
 	cnt     <=   cnt + i_enq - i_deq;
-	o_empty <= ((cnt + i_enq - i_deq)==1);
+	o_empty <= ((cnt + i_enq - i_deq)<=4);
      end
     // if(cnt>16) $display("%m invalid enq! cnt=%d", cnt);
   end

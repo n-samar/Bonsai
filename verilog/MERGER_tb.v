@@ -89,15 +89,9 @@ module merger_tb;
 	#period;
 	in_fifo_1 <= 0;
 	in_fifo_2 <= 0;
-
 	#period;
-	in_fifo_1 <= 0;
-	in_fifo_2 <= 0;
-
 	#period;
-	in_fifo_1 <= 0;
-	in_fifo_2 <= 0;	
-
+	#period;
 	#period;	
 	write_fifo_1 <= 1'b0;
 	write_fifo_2 <= 1'b0;

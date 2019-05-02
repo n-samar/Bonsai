@@ -115,7 +115,7 @@ module merger_tree_tb;
 		 .o_item(out_fifo_item),
 		 .i_read(read_fifo_out),
 		 .empty(fifo_out_empty),
-		 .full(),
+		 .full(fifo_out_full),
 		 .overrun(),
 		 .underrun());
 
@@ -136,7 +136,7 @@ module merger_tree_tb;
 			  .i_fifo_6_empty(fifo_6_empty),
 			  .i_fifo_7(out_fifo_7),
 			  .i_fifo_7_empty(fifo_7_empty),			  
-			  .i_fifo_out_ready(~fifo_out_full | read_fifo_out),
+			  .i_fifo_out_ready(~fifo_out_full),
 			  .o_fifo_0_read(o_fifo_0_read),
 			  .o_fifo_1_read(o_fifo_1_read),
 			  .o_fifo_2_read(o_fifo_2_read),
@@ -242,8 +242,12 @@ module merger_tree_tb;
 	in_fifo_7 = 0;	
 	#period;
 	#period;
+	#period;	
 	#period;
 	#period;
+	#period;
+	#period;
+	#period;	
 	#period;	
 	write_fifo_0 = 1'b0;
 	write_fifo_1 = 1'b0;
