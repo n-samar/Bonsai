@@ -24,60 +24,58 @@ module CONTROL(input i_clk,
    
    reg [2:0] 	      state;
    reg [2:0] 	      new_state;
-   reg 		      edit_state;   // This variable is only used for debugging
-   
+
    assign stall = (state == FINISHED) | (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty);
    initial
      begin
-	edit_state <= 0;
 	state <= TOGGLE;
 	select_A <= 1'b1;
 	switch_output <= 1'b0;
 	new_state <= TOGGLE;
      end
+
+   always @(negedge i_clk) begin
+      if (~stall | new_state == FINISHED | new_state == TOGGLE)
+	state = new_state;
+      select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & i_a_min_zero & i_r_b_min_zero & ~i_a_empty);
+      switch_output <= (state == TOGGLE) & ~switch_output;
+   end
    
-   always @(negedge i_clk)
+   always @(i_a_empty or i_b_empty or i_r_a_min_zero or i_r_b_min_zero or i_a_min_zero or i_b_min_zero)
      begin
-	if (edit_state) begin
-	   casez(state)
-	     TOGGLE: begin
-		if (i_a_empty) 
-		  new_state = DONE_A;
-		else if (i_b_empty)
-		  new_state = DONE_B;
-		else if (~i_a_min_zero & ~i_b_min_zero)
-		  new_state = NOMINAL;
-		else
-		  new_state = TOGGLE;
-	     end
-	     DONE_A: begin
-		if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
-		  new_state = FINISHED;
-		else if (i_b_min_zero)
-		  new_state = TOGGLE;
-	     end
-	     DONE_B: begin
-		if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
-		  new_state = FINISHED;
-		else if (i_a_min_zero)
-		  new_state = TOGGLE;	  
-	     end       
-	     FINISHED: begin 
-	     end       
-	     NOMINAL: begin
-		if (i_a_min_zero)
-		  new_state = DONE_A;
-		else if (i_b_min_zero)
-		  new_state = DONE_B;			 
-	     end    
-	     default: begin end
-	   endcase // casez (state)
-	   if (~stall | new_state == FINISHED | new_state == TOGGLE)
-	     state = new_state;
-	   select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & i_a_min_zero & i_r_b_min_zero & ~i_a_empty);
-	   switch_output <= (state == TOGGLE) & ~switch_output;     
-	end
-	else
- 	  edit_state <= 1;
-     end // always @ (posedge i_clk)
+	#0.1;
+	casez(state)
+	  TOGGLE: begin
+	     if (i_a_empty) 
+	       new_state = DONE_A;
+	     else if (i_b_empty)
+	       new_state = DONE_B;
+	     else if (~i_a_min_zero & ~i_b_min_zero)
+	       new_state = NOMINAL;
+	     else
+	       new_state = TOGGLE;
+	  end
+	  DONE_A: begin
+	     if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
+	       new_state = FINISHED;
+	     else if (i_b_min_zero)
+	       new_state = TOGGLE;
+	  end
+	  DONE_B: begin
+	     if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
+	       new_state = FINISHED;
+	     else if (i_a_min_zero)
+	       new_state = TOGGLE;	  
+	  end       
+	  FINISHED: begin 
+	  end       
+	  NOMINAL: begin
+	     if (i_a_min_zero)
+		new_state = DONE_A;
+	     else if (i_b_min_zero)
+	       new_state = DONE_B;			 
+	  end    
+	  default: begin end
+	endcase // casez (state)
+     end
 endmodule
