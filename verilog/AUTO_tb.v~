@@ -1,0 +1,133 @@
+/******************************************************************************************/
+/* High-Performance Sorting Project          Version X.X.X  2017-11-15 ArchLab TOKYO TECH */
+/******************************************************************************************/
+
+
+/******************************************************************************************/
+module TEST_MERGE_TREE #(
+  parameter P_LEN_SEQ = 1024, // length of one input sequence
+
+  parameter P_K   = `D_K,
+  parameter P_D   = `D_D,
+  parameter P_R   =  P_K+P_D+2,
+  parameter P_E   = `D_E,
+  parameter P_W   =  P_E,
+  parameter P_IFD = 32
+) ();
+  localparam
+    PERIOD    = 1000,
+    RST_CYCLE = 10,
+    STDERR    = 32'h8000_0002;
+
+  initial begin
+    $display("P_E       = %d", P_E);
+    $display("P_LEN_SEQ = %d", P_LEN_SEQ);
+  end
+
+  /****************************************************************************************/
+  reg clk = 1'b0;
+  initial begin  #PERIOD clk = 1'b1;  forever clk = #(PERIOD/2) ~clk; end
+ 
+  reg rst_x = 0;
+  initial begin  #(PERIOD*RST_CYCLE) rst_x <= 1; end
+
+  reg [31:0] cnt=0;
+  always @(posedge clk) cnt <= cnt + 1;
+  initial begin
+    if(cnt>P_LEN_SEQ*4) begin
+      $display("!!!\nMax cycle and end.\n!!!"); $finish();
+    end
+  end
+  
+  /****************************************************************************************/
+  initial begin
+    $readmemh("data.txt", data, 0, P_LEN_SEQ*P_W-1);
+  end
+
+  /****************************************************************************************/
+//  reg [2:0] state=2;
+  reg [2:0] state=0;
+  initial begin  
+    #(PERIOD*64)  state <= 1; 
+    #(PERIOD*128) state <= 2; 
+    #(PERIOD*400) state <= 3; 
+  end
+
+  wire init = (state==1 || state==2);
+  
+  /****************************************************************************************/
+  reg [P_R-3:0]               data  [0:P_LEN_SEQ*P_W-1];
+  reg [$clog2(P_LEN_SEQ):0]   raddr [0:P_W-1];
+  wire[P_W-1:0]               o_stall_x;
+
+  integer i;
+  always @(posedge clk) begin
+    if(~rst_x) begin  for(i=0; i<P_W; i = i + 1) raddr[i] <= 0;  end 
+    else begin
+      for(i=0; i<P_W; i = i + 1) begin
+        if (state==3 && o_stall_x[i] && (raddr[i] != P_LEN_SEQ)) raddr[i] <= raddr[i] + 1;
+      end
+    end
+  end
+
+  
+  /****************************************************************************************/
+  wire [P_R*P_E-1:0]  i_data, o_data;
+  wire [P_R-1:0]      o_data_record [0:P_E-1];
+
+  generate
+    genvar index;
+    for(index=0; index<P_W; index = index + 1) begin
+      assign i_data[P_R*index +: P_R] 
+        =
+         ~o_stall_x[index]  ? {2'b00, {(P_R-2){1'd0}}} : // input invalidated data if stall
+         
+         (state==0) ? {2'b01, {64{1'b1}}} :                     //
+         (state==1) ? {2'b01, 64'h0} :                          //
+         (state==2) ? {2'b00, 64'h0} :                          //
+         
+         raddr[index] == P_LEN_SEQ ? {2'b01, {(P_R-2){1'd1}}} : // input finished data if finished
+         {2'b01, data[P_LEN_SEQ*index + raddr[index]]};         // otherwise input valid data
+    end
+
+    for(index=0; index<(P_E); index = index + 1) begin
+      assign o_data_record[index] = o_data[index*P_R +: P_R];
+    end
+  endgenerate
+
+  reg stall_x = 1;
+  MERGE_TREE #(.P_K(P_K), .P_D(P_D),  .P_R(P_R), .P_E(P_E),  .P_IFD(P_IFD)) 
+  MT (.clk(clk), .init(init), .i_data(rst_x ? i_data : 0), .i_stall_x(rst_x & stall_x),
+      .o_stall_x(o_stall_x), .o_data(o_data));
+
+  integer cycle=0;    /** clock cycle **/
+  integer outcycle=0; /** the number of valid bundle-output **/
+  integer count_start = 0; /* */
+  
+  /******************** detect finish  ************************/
+  always @(posedge clk) begin 
+    if (state==3 && o_data_record[P_E-1]=={2'b01, {(P_R-2){1'd1}}}) begin
+      $display("Active rate = %9d / %9d = %5.3f", outcycle, cycle, 1.0*outcycle/cycle);
+      $finish();
+    end
+    if (count_start & o_data_record[P_E-1][P_R-1:P_R-2]==2'b01) 
+      outcycle = outcycle + 1; // valid bundle
+  end
+  
+  always @(posedge clk)  if (count_start) cycle = cycle + 1;
+  
+  integer k;
+  always @(posedge clk) begin
+    for(k=0; k<P_E; k = k + 1) begin : cont
+      if(o_data_record[P_E-1][`VALID_BIT]) begin
+        if( o_data_record[k][0 +: P_K+P_D]==0 || o_data_record[k][0 +: P_K+P_D]=={64{1'b1}})
+          $write("%d %d | %d ", cycle, state, o_data_record[k][`VALID_BIT]);
+        else begin
+          count_start = 1;
+        end
+        $write("%x\n", o_data_record[k][0 +: P_K+P_D]);
+      end
+    end
+  end
+endmodule
+/******************************************************************************************/

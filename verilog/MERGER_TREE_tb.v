@@ -18,7 +18,7 @@ module merger_tree_tb;
    wire 			   o_fifo_1_read, o_fifo_2_read, o_out_fifo_write;
    wire [31:0] 			   o_data;
    reg 			   clk;
-   wire [31:0] 		   out_fifo_item;
+e   wire [31:0] 		   out_fifo_item;
    
    parameter period = 4;   
 

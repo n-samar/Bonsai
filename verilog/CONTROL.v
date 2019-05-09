@@ -48,8 +48,9 @@ module CONTROL(input i_clk,
    always @(negedge i_clk) begin
       if (~stall | new_state == FINISHED | new_state == TOGGLE)
 	state = new_state;
+      if (~stall)
+	switch_output <= (state == TOGGLE) & ~switch_output;      
       select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & i_a_min_zero & i_r_b_min_zero & ~i_a_empty);
-      switch_output <= (state == TOGGLE) & ~switch_output;
    end
    /*
    always @(i_a_empty or i_b_empty or i_r_a_min_zero or i_r_b_min_zero or i_a_min_zero or i_b_min_zero or state)

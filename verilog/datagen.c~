@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+
+#define SHUFFLE_NUM 4
+
+/******************************************************************************/
+static int comp(const void *c1, const void *c2)
+{return *(long long int*)c1 - *(long long int*)c2;}
+
+/******************************************************************************/
+int main(int argc, char ** argv) {
+    if (argc < 3) {
+        printf("usage: ./datagen #num_ways #num_records_per_way seed\n");
+        exit(1);
+    }
+    
+    int ways            = atoi(argv[1]);
+    int records_per_way = atoi(argv[2]);
+    int seed = (argc==4) ? atoi(argv[3]) : 1; // random gen seed
+    int n = ways * records_per_way;
+    int i, j;
+    printf("datagen %d way, %d records_per_way.\n", ways, records_per_way);
+
+    long long int *buf;
+    buf = calloc(n, sizeof(long long int));
+
+    srand(seed);
+
+    /******* generate keys *****/
+    for (i=0; i<n; i++) buf[i] = rand();
+    
+    /******* add satellite date & generate ans.txt *****/
+    {
+        qsort(buf, n, sizeof(long long int), comp);
+            
+        FILE *ans = fopen("ans.txt", "w");
+        for (i=0; i<n; i++){
+            buf[i] = (buf[i] << 32) + i+1;
+        fprintf(ans, "%016llx\n", buf[i]);
+        
+        }
+        fclose(ans);
+    }
+    
+    /******* shuffle records *****/
+    for (j=0; j< SHUFFLE_NUM; j++){
+        for (i=0; i<n; i++){
+            int idx1 = i;
+            int idx2 = rand() % n;
+            
+            long long int tmp = buf[idx1];
+            buf[idx1] = buf[idx2];
+            buf[idx2] = tmp;
+        }
+    }
+    
+    /*******  partially sorting & generate data.txt *****/
+    {
+        FILE *dat = fopen("data.txt", "w");
+        
+        for (i=0; i<ways; i++){
+            qsort(buf+i*records_per_way,
+                  records_per_way, sizeof(long long int), comp);
+        }
+        for (i=0; i<n; i++){
+            fprintf(dat, "%016llx\n", buf[i]);
+            
+        }
+        fclose(dat);
+    }
+    
+    return 0;
+}
