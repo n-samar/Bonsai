@@ -18,7 +18,7 @@ module merger_tree_tb;
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
    parameter DATA_WIDTH = 32;
-   parameter LEN_SEQ = 2048;
+   parameter LEN_SEQ = 128;
    
 
    reg [31:0] 		   counter = 0;
@@ -68,7 +68,7 @@ module merger_tree_tb;
    
 
    initial begin
-      $readmemh("data.txt", data, 0, LEAF_CNT*LEN_SEQ);
+      $readmemh("data_16_128.txt", data, 0, LEAF_CNT*LEN_SEQ);
    end  
    
    always @ (negedge clk) begin
@@ -127,7 +127,7 @@ module merger_tree_tb;
      end
    
    initial begin
-      f = $fopen("out.txt", "w");
+      f = $fopen("out_16_128.txt", "w+");
    end
    
    always @(posedge clk) begin

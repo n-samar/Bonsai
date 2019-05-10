@@ -47,29 +47,40 @@ int main(int argc, char ** argv) {
     
     /*******  partially sorting & generate data.txt *****/
     {
-        FILE *dat = fopen("data.txt", "w");
+      char data_filename[80];
+      strcpy(data_filename, "data_");
+      strcat(data_filename, argv[1]);
+      strcat(data_filename, "_");
+      strcat(data_filename, argv[2]);
+      strcat(data_filename, ".txt");
+      FILE *dat = fopen(data_filename, "w+");
         
-        for (i=0; i<ways; i++){
-	  qsort(buf+i*records_per_way,
-                  records_per_way, sizeof(uint32_t), comp);
-	  buf[i*records_per_way] = 0;
-        }
-	for (i=0; i<n; i++){
-	  fprintf(dat, "%08x\n", buf[i]); 
-	}
-	fprintf(dat, "%08x\n", 0);   // Add trailing zero for testing convenience
-        fclose(dat);
+      for (i=0; i<ways; i++){
+	qsort(buf+i*records_per_way,
+	      records_per_way, sizeof(uint32_t), comp);
+	buf[i*records_per_way] = 0;
+      }
+      for (i=0; i<n; i++){
+	fprintf(dat, "%08x\n", buf[i]); 
+      }
+      fprintf(dat, "%08x\n", 0);   // Add trailing zero for testing convenience
+      fclose(dat);
     }
 
     /******* generate ans.txt *****/
     {
-        qsort(buf, n, sizeof(uint32_t), comp);
-            
-        FILE *ans = fopen("ans.txt", "w");
-        for (i=0; i<n; i++){
-	    fprintf(ans, "%08x\n", buf[i]);
-        }
-        fclose(ans);
+      qsort(buf, n, sizeof(uint32_t), comp);
+      char ans_filename[80];
+      strcpy(ans_filename, "ans_");
+      strcat(ans_filename, argv[1]);
+      strcat(ans_filename, "_");
+      strcat(ans_filename, argv[2]);
+      strcat(ans_filename, ".txt");            
+      FILE *ans = fopen(ans_filename, "w+");
+      for (i=0; i<n; i++){
+	fprintf(ans, "%08x\n", buf[i]);
+      }
+      fclose(ans);
     }    
     
     return 0;

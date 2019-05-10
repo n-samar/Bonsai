@@ -17,7 +17,7 @@ module merger_tb;
    wire [31:0] 		   out_fifo_item;
    
    parameter period = 4;
-   parameter LEN_SEQ = 1024;   // Length of each input sequence
+   parameter LEN_SEQ = 128;   // Length of each input sequence
    parameter DATA_WIDTH = 32;
    parameter LEAF_CNT = 2;
 
@@ -74,7 +74,7 @@ module merger_tb;
 
 
    initial begin
-      $readmemh("data.txt", data, 0, LEAF_CNT*LEN_SEQ);
+      $readmemh("data_2_128.txt", data, 0, LEAF_CNT*LEN_SEQ);
    end  
    
    always @ (negedge clk) begin
@@ -133,7 +133,7 @@ module merger_tb;
      end
    
    initial begin
-      f = $fopen("out.txt", "w");
+      f = $fopen("out_2_128.txt", "w+");
    end
    
    always @(posedge clk) begin
