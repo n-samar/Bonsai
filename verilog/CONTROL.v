@@ -49,9 +49,9 @@ module CONTROL(input i_clk,
 
    always @(negedge i_clk) begin
       if (~stall) begin
-	 state = new_state;
-	 switch_output <= (state == TOGGLE) & ~switch_output;
-	 select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & i_a_min_zero & i_r_b_min_zero & ~i_a_empty);
+	 state <= new_state;
+	 switch_output <= (new_state == TOGGLE) & ~switch_output;
+	 select_A <= (new_state == NOMINAL & i_a_lte_b) | (new_state == DONE_B) | (new_state == TOGGLE & i_a_min_zero & i_r_b_min_zero & ~i_a_empty);
       end
    end
    
