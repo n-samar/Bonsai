@@ -54,7 +54,7 @@ module CONTROL(input i_clk,
 
    always @(negedge i_clk) begin
       if (~stall | new_state == FINISHED | new_state == TOGGLE)
-	state = new_state;
+	state <= new_state;
       if (~stall) begin
 	 switch_output <= new_switch_output;
 	 select_A <= new_select_A;
