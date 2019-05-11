@@ -114,7 +114,7 @@ module MERGER_2 (input i_clk,
 
    BITONIC_NETWORK_4 second_merger (.i_clk(i_clk),
 				    .switch_output(switch_output_2),
-				    .stall(stall),
+				    .stall(stall_2),
 				    .top_tuple(),
 				    .i_elems_0(o_data_2_top),
 				    .i_elems_1(data_2_bottom),
