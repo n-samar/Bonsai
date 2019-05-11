@@ -23,10 +23,13 @@ module CONTROL(input i_clk,
    parameter period = 4;
    
    reg [2:0] 	      state;
-   wire [2:0] 	      new_state;
+   reg [2:0] 	      new_state;
    reg 		      debug;
+   reg 		      ready;
    
-   assign new_state = (state == TOGGLE) ? (i_a_empty ? DONE_A : 
+
+   always @(negedge i_clk) begin
+      new_state = (state == TOGGLE) ? (i_a_empty ? DONE_A : 
 					   (i_b_empty ? DONE_B : 
 					    ((~i_a_min_zero & ~i_b_min_zero) ? NOMINAL : TOGGLE))) :
 		      (state == DONE_A) ? ((i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero) ? FINISHED : 
@@ -36,18 +39,21 @@ module CONTROL(input i_clk,
 		      (state == NOMINAL) ? (i_a_min_zero ? DONE_A :
 					    (i_b_min_zero ? DONE_B : NOMINAL)) :
 		      FINISHED;
+      ready = ~ready;
+   end
    
    assign stall = (state == FINISHED) | (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty);
    
    initial
      begin
+	ready <= 0;
 	debug <= 0;
 	state <= TOGGLE;
 	select_A <= 1'b1;
 	switch_output <= 1'b0;
      end
 
-   always @(negedge i_clk) begin
+   always @(ready) begin
       if (~stall) begin
 	 state <= new_state;
 	 switch_output <= (new_state == TOGGLE) & ~switch_output;
