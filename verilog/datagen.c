@@ -17,8 +17,10 @@ int main(int argc, char ** argv) {
     }
     
     int ways            = atoi(argv[1]);
-    int records_per_way = atoi(argv[2]);
-    int seed = (argc==4) ? atoi(argv[3]) : 1; // random gen seed
+    int records_per_tuple = (argc>=5) ? atoi(argv[4]) : 1;    
+    int records_per_way = atoi(argv[2]) * records_per_tuple;
+    int seed = (argc>=4) ? atoi(argv[3]) : 1; // random gen seed
+
     int n = ways * records_per_way;
     int i, j;
     printf("datagen %d way, %d records_per_way.\n", ways, records_per_way);
@@ -30,7 +32,9 @@ int main(int argc, char ** argv) {
 
     /******* generate keys *****/
     for (i=0; i<n; i++) buf[i] = rand();
-    buf[0] = 0;   // Need a zero input
+    for (i=0; i<records_per_tuple; i++) {
+      buf[i] = 0;   // Need a zero input
+    }
    
     
     /******* shuffle records *****/
@@ -52,18 +56,31 @@ int main(int argc, char ** argv) {
       strcat(data_filename, argv[1]);
       strcat(data_filename, "_");
       strcat(data_filename, argv[2]);
+      if (argc>=5) {
+	strcat(data_filename, "_");
+	strcat(data_filename, argv[4]);
+      }      
       strcat(data_filename, ".txt");
       FILE *dat = fopen(data_filename, "w+");
         
       for (i=0; i<ways; i++){
 	qsort(buf+i*records_per_way,
 	      records_per_way, sizeof(uint32_t), comp);
-	buf[i*records_per_way] = 0;
+	for (int j=0; j<records_per_tuple; j++) {
+	  buf[i*records_per_way+j] = 0;
+	}
       }
       for (i=0; i<n; i++){
-	fprintf(dat, "%08x\n", buf[i]); 
+	if (i%records_per_tuple == records_per_tuple-1) {
+	  fprintf(dat, "%08x\n", buf[i-records_per_tuple+1]);
+	} else {
+	  fprintf(dat, "%08x", buf[i+records_per_tuple-1-2*(i%records_per_tuple)]);	  
+	}
       }
-      fprintf(dat, "%08x\n", 0);   // Add trailing zero for testing convenience
+      for (i=0; i<records_per_tuple; i++) {
+	fprintf(dat, "%08x", 0);   // Add trailing zero for testing convenience
+      }
+      fprintf(dat, "\n");
       fclose(dat);
     }
 
@@ -75,10 +92,18 @@ int main(int argc, char ** argv) {
       strcat(ans_filename, argv[1]);
       strcat(ans_filename, "_");
       strcat(ans_filename, argv[2]);
+      if (argc>=5) {
+	strcat(ans_filename, "_");
+	strcat(ans_filename, argv[4]);
+      }
       strcat(ans_filename, ".txt");            
       FILE *ans = fopen(ans_filename, "w+");
       for (i=0; i<n; i++){
-	fprintf(ans, "%08x\n", buf[i]);
+	if (i%records_per_tuple == records_per_tuple-1) {
+	  fprintf(ans, "%08x\n", buf[i-records_per_tuple+1]);
+	} else {
+	  fprintf(ans, "%08x", buf[i+records_per_tuple-1-2*(i%records_per_tuple)]);	  
+	}
       }
       fclose(ans);
     }    

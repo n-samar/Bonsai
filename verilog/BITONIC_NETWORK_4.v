@@ -22,8 +22,13 @@ module BITONIC_NETWORK_4 (input i_clk,
    initial begin
       stall_1 <= 0;
       switch_output_1 <= 0;
+      o_stall <= 0;
       elems_1_0 <= 0;
       elems_1_1 <= 0;
+      o_elems_0 <= 0;
+      o_elems_1 <= 0;
+      o_switch_output <= 0;
+      o_top_tuple <= 0;
    end
 
    /* step 1 */
