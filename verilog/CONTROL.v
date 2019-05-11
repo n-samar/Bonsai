@@ -47,17 +47,11 @@ module CONTROL(input i_clk,
 	switch_output <= 1'b0;
      end
 
-   always @ (debug) begin
+   always @(negedge i_clk) begin
       if (~stall) begin
+	 state = new_state;
 	 switch_output <= (state == TOGGLE) & ~switch_output;
 	 select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & i_a_min_zero & i_r_b_min_zero & ~i_a_empty);
-      end
-   end
-    
-   always @(negedge i_clk) begin
-      if (~stall | new_state == FINISHED | new_state == TOGGLE) begin
-	 state = new_state;
-	 debug <= ~debug;
       end
    end
    

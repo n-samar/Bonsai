@@ -194,9 +194,9 @@ test_tree_P2_L8 : data compile_tree_P2_L8 sim_tree_P2_L8 filter_output_tree_P2_L
 
 test_tree_P2_L8_global_reset : data compile_tree_P2_L8_global_reset sim_tree_P2_L8_global_reset filter_output_tree_P2_L8_global_reset out_no_zeros_16_128_2_gl4.txt ans_no_zeros_16_128_2_gl4.txt
 	if [[ $$(diff -u out_no_zeros_16_128_2_gl4.txt ans_no_zeros_16_128_2_gl4.txt) ]]; then \
-		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P2_L8' 1>&2; \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P2_L8_GLOBAL_RESET' 1>&2; \
 	else \
-		echo 'SUCESS! tree_P2_L8' 1>&2; \
+		echo 'SUCESS! tree_P2_L8_global_reset' 1>&2; \
 	fi
 
 test_tree_P1_L8_global_reset : compile_tree_P1_L8 filter_output_tree_P1_L8_global_reset out_no_zeros_16_128_gl4.txt ans_no_zeros_16_128_gl4.txt sim_tree_P1_L8 merger 
