@@ -38,6 +38,10 @@ data : datagen
 	cat ans_128_32.txt >> ans_128_32_gl2.txt; \
 	cat ans_128_32_gl2.txt > ans_128_32_gl4.txt; \
 	cat ans_128_32_gl2.txt >> ans_128_32_gl4.txt; \
+	cat ans_16_128_2.txt > ans_16_128_2_gl2.txt; \
+	cat ans_16_128_2.txt >> ans_16_128_2_gl2.txt; \
+	cat ans_16_128_2_gl2.txt > ans_16_128_2_gl4.txt; \
+	cat ans_16_128_2_gl2.txt >> ans_16_128_2_gl4.txt;
 
 compile_merger_1 : data FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  AUTO_tb.v
 	$(VERILOG) -o merger_1 FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  AUTO_tb.v
@@ -52,8 +56,11 @@ compile_tree_P1_L8 : data FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TRE
 compile_tree_P2_L8 : data FIFO.v MERGER_2.v CONTROL.v BITONIC_NETWORK_4.v MERGER_TREE_P2_L8.v MERGER_TREE_P2_L8_tb.v
 	$(VERILOG) -o tree_P2_L8 FIFO.v MERGER_2.v CONTROL.v BITONIC_NETWORK_4.v MERGER_TREE_P2_L8.v MERGER_TREE_P2_L8_tb.v;
 
+compile_tree_P2_L8_global_reset : data FIFO.v MERGER_2.v CONTROL.v BITONIC_NETWORK_4.v MERGER_TREE_P2_L8.v MERGER_TREE_P2_L8_GLOBAL_RESET_tb.v
+	$(VERILOG) -o tree_P2_L8_gl FIFO.v MERGER_2.v CONTROL.v BITONIC_NETWORK_4.v MERGER_TREE_P2_L8.v MERGER_TREE_P2_L8_GLOBAL_RESET_tb.v;
+
 compile_tree_P1_L8_global_reset : FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L8_auto.v MERGER_TREE_P1_L8_AUTOMATIC_GLOBAL_RESET_tb.v
-	$(VERILOG) -o tree_P1_L8 FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L8_auto.v MERGER_TREE_P1_L8_AUTOMATIC_GLOBAL_RESET_tb.v
+	$(VERILOG) -o tree_P1_L8_gl FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L8_auto.v MERGER_TREE_P1_L8_AUTOMATIC_GLOBAL_RESET_tb.v
 
 compile_tree_P1_L16 : data FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L16.v MERGER_TREE_P1_L16_tb.v
 	$(VERILOG) -o tree_P1_L16 FIFO.v BITONIC_NETWORK.v MERGER.v CONTROL.v MERGER_TREE_P1_L16.v MERGER_TREE_P1_L16_tb.v
@@ -85,8 +92,11 @@ sim_tree_P1_L8 : compile_tree_P1_L8 merger
 sim_tree_P2_L8 : compile_tree_P2_L8 tree_P2_L8
 	$(VVP) tree_P2_L8;
 
+sim_tree_P2_L8_global_reset : compile_tree_P2_L8_global_reset tree_P2_L8_gl
+	$(VVP) tree_P2_L8_gl;
+
 sim_tree_P1_L8_global_reset : compile_tree_P1_L8_global_reset merger
-	$(VVP) tree_P1_L8_gl
+	$(VVP) tree_P1_L8_gl;
 
 sim_tree_P1_L16 : compile_tree_P1_L16 merger
 	$(VVP) tree_P1_L16
@@ -118,9 +128,13 @@ filter_output_tree_P1_L8 : data sim_tree_P1_L8
 	sed '/^00000000$$/d' out_16_128.txt > out_no_zeros_16_128.txt
 	sed '/^00000000$$/d' ans_16_128.txt > ans_no_zeros_16_128.txt
 
-filter_output_tree_P2_L8 : data sim_tree_P1_L8
+filter_output_tree_P2_L8 : data sim_tree_P2_L8
 	sed '/^0000000000000000$$/d' out_16_128_2.txt > out_no_zeros_16_128_2.txt
 	sed '/^0000000000000000$$/d' ans_16_128_2.txt > ans_no_zeros_16_128_2.txt
+
+filter_output_tree_P2_L8_global_reset : data sim_tree_P2_L8_global_reset
+	sed '/^0000000000000000$$/d' out_16_128_2_gl4.txt > out_no_zeros_16_128_2_gl4.txt
+	sed '/^0000000000000000$$/d' ans_16_128_2_gl4.txt > ans_no_zeros_16_128_2_gl4.txt
 
 filter_output_tree_P1_L8_global_reset : data sim_tree_P1_L8_global_reset
 	sed '/^00000000$$/d' out_16_128_gl4.txt > out_no_zeros_16_128_gl4.txt
@@ -173,6 +187,13 @@ test_tree_P1_L8 : compile_tree_P1_L8 filter_output_tree_P1_L8 out_no_zeros_16_12
 
 test_tree_P2_L8 : data compile_tree_P2_L8 sim_tree_P2_L8 filter_output_tree_P2_L8 out_no_zeros_16_128_2.txt ans_no_zeros_16_128_2.txt
 	if [[ $$(diff -u out_no_zeros_16_128_2.txt ans_no_zeros_16_128_2.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P2_L8' 1>&2; \
+	else \
+		echo 'SUCESS! tree_P2_L8' 1>&2; \
+	fi
+
+test_tree_P2_L8_global_reset : data compile_tree_P2_L8_global_reset sim_tree_P2_L8_global_reset filter_output_tree_P2_L8_global_reset out_no_zeros_16_128_2_gl4.txt ans_no_zeros_16_128_2_gl4.txt
+	if [[ $$(diff -u out_no_zeros_16_128_2_gl4.txt ans_no_zeros_16_128_2_gl4.txt) ]]; then \
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P2_L8' 1>&2; \
 	else \
 		echo 'SUCESS! tree_P2_L8' 1>&2; \

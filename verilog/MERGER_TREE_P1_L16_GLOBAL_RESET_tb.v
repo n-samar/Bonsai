@@ -142,7 +142,7 @@ module merger_tree_tb;
      end
    
    initial begin
-      f = $fopen("out_32_128_4.txt", "w+");
+      f = $fopen("out_32_128_gl4.txt", "w+");
    end
    
    always @(posedge clk) begin
