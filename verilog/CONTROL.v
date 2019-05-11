@@ -24,15 +24,8 @@ module CONTROL(input i_clk,
    
    reg [2:0] 	      state;
    wire [2:0] 	      new_state;
-   wire 	      debug;
-   wire 	      new_select_A;
-   wire 	      new_switch_output;
-   assign new_select_A = (new_state == NOMINAL & i_a_lte_b) | (new_state == DONE_B) | (new_state == TOGGLE & i_a_min_zero & i_r_b_min_zero & ~i_a_empty);
-   assign new_switch_output = (new_state == TOGGLE) & ~switch_output;
+   reg 		      debug;
    
-
-   
-   assign debug = (state == NOMINAL) & i_b_min_zero;
    assign new_state = (state == TOGGLE) ? (i_a_empty ? DONE_A : 
 					   (i_b_empty ? DONE_B : 
 					    ((~i_a_min_zero & ~i_b_min_zero) ? NOMINAL : TOGGLE))) :
@@ -45,23 +38,26 @@ module CONTROL(input i_clk,
 		      FINISHED;
    
    assign stall = (state == FINISHED) | (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty);
+   
    initial
      begin
+	debug <= 0;
 	state <= TOGGLE;
 	select_A <= 1'b1;
 	switch_output <= 1'b0;
      end
 
-   always @(stall or new_switch_output or new_select_A) begin
-     if (~stall) begin
-	    switch_output <= new_switch_output;
-	    select_A <= new_select_A;
-     end
+   always @ (debug) begin
+      if (~stall) begin
+	 switch_output <= (state == TOGGLE) & ~switch_output;
+	 select_A <= (state == NOMINAL & i_a_lte_b) | (state == DONE_B) | (state == TOGGLE & i_a_min_zero & i_r_b_min_zero & ~i_a_empty);
+      end
    end
-   
+    
    always @(negedge i_clk) begin
       if (~stall | new_state == FINISHED | new_state == TOGGLE) begin
-	    state <= new_state;
+	 state = new_state;
+	 debug <= ~debug;
       end
    end
    
