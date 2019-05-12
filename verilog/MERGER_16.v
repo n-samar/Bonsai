@@ -1,4 +1,4 @@
-module MERGER_8 (input i_clk,
+module MERGER_16 (input i_clk,
 	      input [DATA_WIDTH-1:0] 	     i_fifo_1,
 	      input 		     i_fifo_1_empty,
 	      input [DATA_WIDTH-1:0] 	     i_fifo_2,
