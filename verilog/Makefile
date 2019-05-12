@@ -23,6 +23,7 @@ data : datagen
 	./datagen 2 $(LIST_INPUT_SIZE) 1 2; \
 	./datagen 16 $(LIST_INPUT_SIZE) 1 2; \
 	./datagen 2 $(LIST_INPUT_SIZE) 1 4; \
+	./datagen 2 $(LIST_INPUT_SIZE) 1 8; \
 	cat ans_16_128.txt > ans_16_128_gl2.txt; \
 	cat ans_16_128.txt >> ans_16_128_gl2.txt; \
 	cat ans_16_128_gl2.txt > ans_16_128_gl4.txt; \
@@ -52,6 +53,9 @@ compile_merger_2 : data FIFO.v MERGER_2.v CONTROL.v BITONIC_NETWORK_4.v  MERGER_
 
 compile_merger_4 : data FIFO.v MERGER_4.v CONTROL.v BITONIC_NETWORK_8.v  MERGER_4_tb.v
 	$(VERILOG) -o merger_4 FIFO.v MERGER_4.v CONTROL.v BITONIC_NETWORK_8.v  MERGER_4_tb.v;
+
+compile_merger_8 : data FIFO.v MERGER_8.v CONTROL.v BITONIC_NETWORK_16.v  MERGER_8_tb.v
+	$(VERILOG) -o merger_8 FIFO.v MERGER_8.v CONTROL.v BITONIC_NETWORK_16.v  MERGER_8_tb.v;
 
 compile_tree_P1_L8 : data FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L8_auto.v MERGER_TREE_P1_L8_AUTOMATIC_tb.v
 	$(VERILOG) -o tree_P1_L8 FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L8_auto.v MERGER_TREE_P1_L8_AUTOMATIC_tb.v;
@@ -91,6 +95,9 @@ sim_merger_2 : compile_merger_2 merger
 
 sim_merger_4 : compile_merger_4 merger
 	$(VVP) merger_4
+
+sim_merger_8 : compile_merger_8 merger
+	$(VVP) merger_8
 
 sim_tree_P1_L8 : compile_tree_P1_L8 merger
 	$(VVP) tree_P1_L8;
@@ -133,6 +140,10 @@ filter_output_merger_2 : sim_merger_4 data
 filter_output_merger_4 : sim_merger_4 data
 	sed '/^00000000000000000000000000000000$$/d' out_2_128_4.txt > out_no_zeros_2_128_4.txt
 	sed '/^00000000000000000000000000000000$$/d' ans_2_128_4.txt > ans_no_zeros_2_128_4.txt
+
+filter_output_merger_8 : sim_merger_8 data
+	sed '/^0000000000000000000000000000000000000000000000000000000000000000$$/d' out_2_128_8.txt > out_no_zeros_2_128_8.txt
+	sed '/^0000000000000000000000000000000000000000000000000000000000000000$$/d' ans_2_128_8.txt > ans_no_zeros_2_128_8.txt
 
 filter_output_tree_P1_L8 : data sim_tree_P1_L8
 	sed '/^00000000$$/d' out_16_128.txt > out_no_zeros_16_128.txt
@@ -193,6 +204,13 @@ test_merger_4 : data compile_merger_4 sim_merger_4 filter_output_merger_4 out_no
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST MERGER_4' 1>&2; \
 	else \
 		echo 'SUCESS! merger_4' 1>&2; \
+	fi
+
+test_merger_8 : data compile_merger_8 sim_merger_8 filter_output_merger_8 out_no_zeros_2_128_8.txt ans_no_zeros_2_128_8.txt merger
+	if [[ $$(diff -u out_no_zeros_2_128_8.txt ans_no_zeros_2_128_8.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST MERGER_8' 1>&2; \
+	else \
+		echo 'SUCESS! merger_8' 1>&2; \
 	fi
 
 test_tree_P1_L8 : compile_tree_P1_L8 filter_output_tree_P1_L8 out_no_zeros_16_128.txt ans_no_zeros_16_128.txt sim_tree_P1_L8 merger 
