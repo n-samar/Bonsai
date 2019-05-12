@@ -22,6 +22,7 @@ data : datagen
 	./datagen 128 32 1; \
 	./datagen 2 $(LIST_INPUT_SIZE) 1 2; \
 	./datagen 16 $(LIST_INPUT_SIZE) 1 2; \
+	./datagen 2 $(LIST_INPUT_SIZE) 1 4; \
 	cat ans_16_128.txt > ans_16_128_gl2.txt; \
 	cat ans_16_128.txt >> ans_16_128_gl2.txt; \
 	cat ans_16_128_gl2.txt > ans_16_128_gl4.txt; \
@@ -47,8 +48,10 @@ compile_merger_1 : data FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  AUTO_tb.v
 	$(VERILOG) -o merger_1 FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  AUTO_tb.v
 
 compile_merger_2 : data FIFO.v MERGER_2.v CONTROL.v BITONIC_NETWORK_4.v  MERGER_2_AUTO_tb.v
-	echo hello; \
 	$(VERILOG) -o merger_2 FIFO.v MERGER_2.v CONTROL.v BITONIC_NETWORK_4.v  MERGER_2_AUTO_tb.v;
+
+compile_merger_4 : data FIFO.v MERGER_4.v CONTROL.v BITONIC_NETWORK_8.v  MERGER_4_tb.v
+	$(VERILOG) -o merger_4 FIFO.v MERGER_4.v CONTROL.v BITONIC_NETWORK_8.v  MERGER_4_tb.v;
 
 compile_tree_P1_L8 : data FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L8_auto.v MERGER_TREE_P1_L8_AUTOMATIC_tb.v
 	$(VERILOG) -o tree_P1_L8 FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L8_auto.v MERGER_TREE_P1_L8_AUTOMATIC_tb.v;
@@ -86,6 +89,9 @@ sim_merger_1 : compile_merger_1 merger
 sim_merger_2 : compile_merger_2 merger
 	$(VVP) merger_2
 
+sim_merger_4 : compile_merger_4 merger
+	$(VVP) merger_4
+
 sim_tree_P1_L8 : compile_tree_P1_L8 merger
 	$(VVP) tree_P1_L8;
 
@@ -120,9 +126,13 @@ filter_output_merger_1 : sim_merger_1 data
 	sed '/^00000000$$/d' out_2_128.txt > out_no_zeros_2_128.txt
 	sed '/^00000000$$/d' ans_2_128.txt > ans_no_zeros_2_128.txt
 
-filter_output_merger_2 : sim_merger_1 data
+filter_output_merger_2 : sim_merger_4 data
 	sed '/^0000000000000000$$/d' out_2_128_2.txt > out_no_zeros_2_128_2.txt
 	sed '/^0000000000000000$$/d' ans_2_128_2.txt > ans_no_zeros_2_128_2.txt
+
+filter_output_merger_4 : sim_merger_4 data
+	sed '/^00000000000000000000000000000000$$/d' out_2_128_4.txt > out_no_zeros_2_128_4.txt
+	sed '/^00000000000000000000000000000000$$/d' ans_2_128_4.txt > ans_no_zeros_2_128_4.txt
 
 filter_output_tree_P1_L8 : data sim_tree_P1_L8
 	sed '/^00000000$$/d' out_16_128.txt > out_no_zeros_16_128.txt
@@ -176,6 +186,13 @@ test_merger_2 : data compile_merger_2 sim_merger_2 filter_output_merger_2 out_no
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST MERGER_2' 1>&2; \
 	else \
 		echo 'SUCESS! merger_2' 1>&2; \
+	fi
+
+test_merger_4 : data compile_merger_4 sim_merger_4 filter_output_merger_4 out_no_zeros_2_128_4.txt ans_no_zeros_2_128_4.txt merger
+	if [[ $$(diff -u out_no_zeros_2_128_4.txt ans_no_zeros_2_128_4.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST MERGER_4' 1>&2; \
+	else \
+		echo 'SUCESS! merger_4' 1>&2; \
 	fi
 
 test_tree_P1_L8 : compile_tree_P1_L8 filter_output_tree_P1_L8 out_no_zeros_16_128.txt ans_no_zeros_16_128.txt sim_tree_P1_L8 merger 
@@ -249,5 +266,5 @@ test_tree_P1_L64_global_reset : filter_output_tree_P1_L64_global_reset out_no_ze
 		echo 'SUCESS! tree_P1_L64_global_reset' 1>&2; \
 	fi
 
-test_all : test_tree_P2_L8_global_reset test_tree_P2_L8 test_merger_2 test_tree_P1_L64_global_reset test_tree_P1_L64 test_tree_P1_L32_global_reset test_tree_P1_L32 test_tree_P1_L16_global_reset test_tree_P1_L16 data test_tree_P1_L8 test_tree_P1_L8_global_reset test_merger_1 
+test_all : test_merger_4 test_tree_P2_L8_global_reset test_tree_P2_L8 test_merger_2 test_tree_P1_L64_global_reset test_tree_P1_L64 test_tree_P1_L32_global_reset test_tree_P1_L32 test_tree_P1_L16_global_reset test_tree_P1_L16 data test_tree_P1_L8 test_tree_P1_L8_global_reset test_merger_1 
 	echo "All tests run." 1>&2;
