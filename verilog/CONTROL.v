@@ -24,7 +24,7 @@ module CONTROL(input i_clk,
    
    reg [2:0] 	      state;
    reg [2:0] 	      new_state;
-   reg 		      ready;
+   reg                ready;
    
 
    always @(negedge i_clk) begin
