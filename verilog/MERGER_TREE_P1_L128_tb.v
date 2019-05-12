@@ -18,7 +18,7 @@ module merger_tree_tb;
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
    parameter DATA_WIDTH = 32;
-   parameter LEN_SEQ = 128;
+   parameter LEN_SEQ = 16;
    
 
    reg [31:0] 		   counter = 0;
@@ -33,15 +33,15 @@ module merger_tree_tb;
    genvar fifo_index;
    generate
       for (fifo_index = 0; fifo_index < 2*L; fifo_index = fifo_index + 1) begin : IN
-	 FIFO_EMPTY fifo(.i_clk(clk),
-			 .i_item(in_fifo[fifo_index] ),
-			 .i_write(write_fifo[fifo_index]),
-			 .o_item(out_fifo[fifo_index]),
-			 .i_read(fifo_read[fifo_index]),
-			 .empty(fifo_empty[fifo_index]),
-			 .full(fifo_full[fifo_index]),
-			 .overrun(),
-			 .underrun());	 
+	     FIFO_EMPTY fifo(.i_clk(clk),
+			             .i_item(in_fifo[fifo_index] ),
+			             .i_write(write_fifo[fifo_index]),
+			             .o_item(out_fifo[fifo_index]),
+			             .i_read(fifo_read[fifo_index]),
+			             .empty(fifo_empty[fifo_index]),
+			             .full(fifo_full[fifo_index]),
+			             .overrun(),
+			             .underrun());	 
       end // block: IN
    endgenerate
 
@@ -128,7 +128,7 @@ module merger_tree_tb;
    
 
    initial begin
-      $readmemh("data_256_128.txt", data, 0, LEAF_CNT*LEN_SEQ);
+      $readmemh("data_256_16.txt", data, 0, LEAF_CNT*LEN_SEQ);
    end  
    
    always @ (negedge clk) begin
@@ -187,12 +187,12 @@ module merger_tree_tb;
      end
    
    initial begin
-      f = $fopen("out_256_128.txt", "w+");
+      f = $fopen("out_256_16.txt", "w+");
    end
    
    always @(posedge clk) begin
       if(counter < LEAF_CNT*LEN_SEQ+10000) begin
-	 $fwrite(f, "%x\n", o_data);
+	     $fwrite(f, "%x\n", o_data);
       end
       else if(counter == LEAF_CNT*LEN_SEQ+10000) begin
 	 $fclose(f);

@@ -8,8 +8,14 @@ module MERGER_TREE_P1 #(parameter L = 128) (input i_clk,
 					   output [2*L-1:0]     o_fifo_read, 
 					   output 	      o_out_fifo_write,
 					   output wire [31:0] o_data);
-   parameter log_L = 6;
 
+   wire [31:0] 						      fifo_o_item_7 [127:0];
+   wire [31:0] 						      fifo_i_item_7 [127:0];   
+   wire [127:0] 						      fifo_read_7;
+   wire [127:0] 						      fifo_write_7;
+   wire [127:0] 						      fifo_empty_7;
+   wire [127:0] 						      fifo_full_7;
+   
    wire [31:0] 						      fifo_o_item_6 [63:0];
    wire [31:0] 						      fifo_i_item_6 [63:0];   
    wire [63:0] 						      fifo_read_6;
@@ -57,15 +63,34 @@ module MERGER_TREE_P1 #(parameter L = 128) (input i_clk,
    generate
       for (level = L; level > 1; level = level/2) begin : GEN
 	 for (i = 0; i < level; i=i+1) begin : GENN
-	    if (level == 64) begin
+	    if (level == 128) begin
 	       MERGER_1 merger(.i_clk(i_clk),
 			     .i_fifo_1(i_fifo[32*2*i+31:32*2*i]),
 			     .i_fifo_1_empty(i_fifo_empty[2*i]),
 			     .i_fifo_2(i_fifo[32*2*i+32+31:32*2*i+32]),
 			     .i_fifo_2_empty(i_fifo_empty[2*i+1]),
-			     .i_fifo_out_ready(~fifo_full_6[i] | fifo_read_6[i]),
+			     .i_fifo_out_ready(~fifo_full_7[i] | fifo_read_7[i]),
 			     .o_fifo_1_read(o_fifo_read[2*i]),
 			     .o_fifo_2_read(o_fifo_read[2*i+1]),
+			     .o_out_fifo_write(fifo_write_7[i]),
+			     .o_data(fifo_i_item_7[i]));
+	       IFIFO16 fifo(.i_clk(i_clk),
+			    .i_data(fifo_i_item_7[i]),
+			    .i_enq(fifo_write_7[i]),
+			    .i_deq(fifo_read_7[i]),
+			    .o_data(fifo_o_item_7[i]),
+			    .o_empty(fifo_empty_7[i]),
+			    .o_full(fifo_full_7[i]));	       
+	    end // if (level == 64)
+	    else if (level == 64) begin
+	       MERGER_1 merger(.i_clk(i_clk),
+			     .i_fifo_1(fifo_o_item_7[2*i]),
+			     .i_fifo_1_empty(fifo_empty_7[2*i]),
+			     .i_fifo_2(fifo_o_item_7[2*i+1]),
+			     .i_fifo_2_empty(fifo_empty_7[2*i+1]),
+			     .i_fifo_out_ready(~fifo_full_6[i] | fifo_read_6[i]),
+			     .o_fifo_1_read(fifo_read_7[2*i]),
+			     .o_fifo_2_read(fifo_read_7[2*i+1]),
 			     .o_out_fifo_write(fifo_write_6[i]),
 			     .o_data(fifo_i_item_6[i]));
 	       IFIFO16 fifo(.i_clk(i_clk),
@@ -75,7 +100,7 @@ module MERGER_TREE_P1 #(parameter L = 128) (input i_clk,
 			    .o_data(fifo_o_item_6[i]),
 			    .o_empty(fifo_empty_6[i]),
 			    .o_full(fifo_full_6[i]));	       
-	    end // if (level == 64)
+	    end	            
 	    else if (level == 32) begin
 	       MERGER_1 merger(.i_clk(i_clk),
 			     .i_fifo_1(fifo_o_item_6[2*i]),
