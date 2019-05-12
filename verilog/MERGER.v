@@ -25,7 +25,6 @@ module MERGER_1 (input i_clk,
    wire [31:0] 			 fifo_a_out;
    wire [31:0] 			 fifo_b_out;
    wire 			 a_min_zero, b_min_zero, a_lte_b;
-   wire 			 r_a_min_zero, r_b_min_zero;
    wire 			 switch_output;
    reg [31:0] 			 i_data_2_top;
    wire [31:0] 			 o_data_2_top;   
@@ -48,8 +47,6 @@ module MERGER_1 (input i_clk,
    assign a_min_zero = (fifo_a_out == 0);
    assign b_min_zero = (fifo_b_out == 0);
    assign a_lte_b = (fifo_a_out[31:0] <= fifo_b_out[31:0]);
-   assign r_a_min_zero = (R_A == 0);
-   assign r_b_min_zero = (R_B == 0);
 
    assign o_fifo_1_read = ~i_fifo_1_empty & (~fifo_a_full);
    assign i_write_a = ~i_fifo_1_empty & (~fifo_a_full);
@@ -100,8 +97,6 @@ module MERGER_1 (input i_clk,
 		.i_a_lte_b(a_lte_b), 
 		.i_a_empty(fifo_a_empty), 
 		.i_b_empty(fifo_b_empty), 
-		.i_r_a_min_zero(r_a_min_zero), 
-		.i_r_b_min_zero(r_b_min_zero), 
 		.select_A(select_A), 
 		.stall(stall), 
 		.switch_output(switch_output));

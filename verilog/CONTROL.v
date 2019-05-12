@@ -7,8 +7,6 @@ module CONTROL(input i_clk,
 	       input  i_a_lte_b,
 	       input  i_a_empty,
 	       input  i_b_empty,
-	       input  i_r_a_min_zero,
-	       input  i_r_b_min_zero,
 	       output reg select_A,
 	       output stall,
 	       output reg switch_output
@@ -28,20 +26,16 @@ module CONTROL(input i_clk,
    
 
    always @(negedge i_clk) begin
-      new_state = (state == TOGGLE) ? (i_a_empty ? DONE_A : 
-					   (i_b_empty ? DONE_B : 
-					    ((~i_a_min_zero & ~i_b_min_zero) ? NOMINAL : TOGGLE))) :
-		      (state == DONE_A) ? ((i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero) ? FINISHED : 
-					   (i_b_min_zero ? TOGGLE : DONE_A)) :
-		      (state == DONE_B) ? ((i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero) ? FINISHED : 
-					   (i_a_min_zero ? TOGGLE : DONE_B)) :
+      new_state = (state == TOGGLE) ? (((~i_a_min_zero & ~i_b_min_zero) ? NOMINAL : TOGGLE)) :
+		      (state == DONE_A) ? ((i_b_min_zero ? TOGGLE : DONE_A)) :
+		      (state == DONE_B) ? ((i_a_min_zero ? TOGGLE : DONE_B)) :
 		      (state == NOMINAL) ? (i_a_min_zero ? DONE_A :
 					    (i_b_min_zero ? DONE_B : NOMINAL)) :
 		      FINISHED;
       ready = ~ready;
    end
    
-   assign stall = (state == FINISHED) | (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty);
+   assign stall = (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty);
    
    initial
      begin
@@ -53,9 +47,9 @@ module CONTROL(input i_clk,
 
    always @(ready) begin
       if (~stall) begin
-	 state <= new_state;
-	 switch_output <= (new_state == TOGGLE) & ~switch_output;
-	 select_A <= (new_state == NOMINAL & i_a_lte_b) | (new_state == DONE_B) | (new_state == TOGGLE & i_a_min_zero & i_r_b_min_zero & ~i_a_empty);
+	     state <= new_state;
+	     switch_output <= (new_state == TOGGLE & state != TOGGLE);
+	     select_A <= (new_state == NOMINAL & i_a_lte_b) | (new_state == DONE_B) | (new_state == TOGGLE & state != DONE_B & i_a_min_zero & ~i_a_empty);
       end
    end
    
