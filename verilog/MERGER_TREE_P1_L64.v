@@ -55,8 +55,8 @@ module MERGER_TREE_P1 #(parameter L = 64) (input i_clk,
    
    genvar						      level, i;   
    generate
-      for (level = L; level > 1; level = level/2) begin : IN
-	 for (i = 0; i < level; i=i+1) begin
+      for (level = L; level > 1; level = level/2) begin : GEN
+	 for (i = 0; i < level; i=i+1) begin : GENN
 	    if (level == 64) begin
 	       MERGER_1 merger(.i_clk(i_clk),
 			     .i_fifo_1(i_fifo[32*2*i+31:32*2*i]),

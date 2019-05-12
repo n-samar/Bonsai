@@ -24,7 +24,6 @@ module CONTROL(input i_clk,
    
    reg [2:0] 	      state;
    reg [2:0] 	      new_state;
-   reg 		      debug;
    reg 		      ready;
    
 
@@ -47,7 +46,6 @@ module CONTROL(input i_clk,
    initial
      begin
 	ready <= 0;
-	debug <= 0;
 	state <= TOGGLE;
 	select_A <= 1'b1;
 	switch_output <= 1'b0;

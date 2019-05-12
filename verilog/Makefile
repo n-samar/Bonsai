@@ -249,5 +249,5 @@ test_tree_P1_L64_global_reset : filter_output_tree_P1_L64_global_reset out_no_ze
 		echo 'SUCESS! tree_P1_L64_global_reset' 1>&2; \
 	fi
 
-test_all : test_tree_P1_L64 test_tree_P1_L32_global_reset test_tree_P1_L32 test_tree_P1_L16_global_reset test_tree_P1_L16 data test_tree_P1_L8 test_tree_P1_L8_global_reset test_merger_1 
+test_all : test_tree_P2_L8_global_reset test_tree_P2_L8 test_merger_2 test_tree_P1_L64_global_reset test_tree_P1_L64 test_tree_P1_L32_global_reset test_tree_P1_L32 test_tree_P1_L16_global_reset test_tree_P1_L16 data test_tree_P1_L8 test_tree_P1_L8_global_reset test_merger_1 
 	echo "All tests run." 1>&2;
