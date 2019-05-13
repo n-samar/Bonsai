@@ -25,6 +25,7 @@ data : datagen
 	./datagen 2 $(LIST_INPUT_SIZE) 1 4; \
 	./datagen 2 $(LIST_INPUT_SIZE) 1 8; \
 	./datagen 256 16 1; \
+	./datagen 1 128 1 1 2; \
 	cat ans_16_128.txt > ans_16_128_gl2.txt; \
 	cat ans_16_128.txt >> ans_16_128_gl2.txt; \
 	cat ans_16_128_gl2.txt > ans_16_128_gl4.txt; \
@@ -45,6 +46,9 @@ data : datagen
 	cat ans_16_128_2.txt >> ans_16_128_2_gl2.txt; \
 	cat ans_16_128_2_gl2.txt > ans_16_128_2_gl4.txt; \
 	cat ans_16_128_2_gl2.txt >> ans_16_128_2_gl4.txt;
+
+compile_coupler : data FIFO.v COUPLER.v COUPLER_tb.v
+	$(VERILOG) -o coupler FIFO.v COUPLER.v COUPLER_tb.v
 
 compile_merger_1 : data FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  AUTO_tb.v
 	$(VERILOG) -o merger_1 FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  AUTO_tb.v
@@ -91,6 +95,9 @@ compile_tree_P1_L64_global_reset : FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v M
 compile_tree_P1_L128 : FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L128.v MERGER_TREE_P1_L128_tb.v
 	$(VERILOG) -o tree_P1_L128 FIFO.v BITONIC_NETWORK.v MERGER.v CONTROL.v MERGER_TREE_P1_L128.v MERGER_TREE_P1_L128_tb.v
 
+sim_coupler : compile_coupler
+	$(VVP) coupler
+
 sim_merger_1 : compile_merger_1 merger
 	$(VVP) merger_1
 
@@ -135,6 +142,10 @@ sim_tree_P1_L64_global_reset : compile_tree_P1_L64_global_reset merger
 
 sim_tree_P1_L128 : compile_tree_P1_L128 merger
 	$(VVP) tree_P1_L128
+
+filter_output_coupler : sim_coupler data
+	sed '/^0000000000000000$$/d' out_1_128.txt > out_no_zeros_1_128.txt
+	sed '/^0000000000000000$$/d' ans_1_128_1.txt > ans_no_zeros_1_128.txt
 
 filter_output_merger_1 : sim_merger_1 data
 	sed '/^00000000$$/d' out_2_128.txt > out_no_zeros_2_128.txt
@@ -302,5 +313,12 @@ test_tree_P1_L128 : compile_tree_P1_L128 filter_output_tree_P1_L128 out_no_zeros
 		echo 'SUCESS! tree_P1_L128' 1>&2; \
 	fi
 
-test_all : test_merger_4 test_tree_P2_L8_global_reset test_tree_P2_L8 test_merger_2 test_tree_P1_L64_global_reset test_tree_P1_L64 test_tree_P1_L32_global_reset test_tree_P1_L32 test_tree_P1_L16_global_reset test_tree_P1_L16 data test_tree_P1_L8 test_tree_P1_L8_global_reset test_merger_1 
+test_coupler : compile_coupler filter_output_coupler out_no_zeros_1_128.txt ans_no_zeros_1_128.txt sim_coupler coupler
+	if [[ $$(diff -u out_no_zeros_1_128.txt ans_no_zeros_1_128.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST COUPLER' 1>&2; \
+	else \
+		echo 'SUCESS! coupler' 1>&2; \
+	fi
+
+test_all : test_coupler test_merger_4 test_tree_P2_L8_global_reset test_tree_P2_L8 test_merger_2 test_tree_P1_L64_global_reset test_tree_P1_L64 test_tree_P1_L32_global_reset test_tree_P1_L32 test_tree_P1_L16_global_reset test_tree_P1_L16 data test_tree_P1_L8 test_tree_P1_L8_global_reset test_merger_1 
 	echo "All tests run." 1>&2;
