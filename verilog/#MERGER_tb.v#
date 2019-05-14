@@ -1,4 +1,4 @@
-`timescale 1 ns/10 ps
+1`timescale 1 ns/10 ps
 
 module merger_tb;
    reg write_fifo_1, write_fifo_2, read_fifo_out;
@@ -14,10 +14,8 @@ module merger_tb;
    wire [31:0] 			   o_data;
    reg 			   clk;
    wire [31:0] 		   out_fifo_item;
-   localparam
-     period = 4;
-
    
+   parameter period = 4;   
 
    FIFO_EMPTY fifo_1(.i_clk(clk),
 	       .i_item(in_fifo_1),

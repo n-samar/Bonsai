@@ -13,7 +13,7 @@ module MERGER_1 (input i_clk,
 	      output wire [31:0] o_data);
 
    wire 			 i_write_a, i_write_b;
-   reg 				 i_c_read;
+   wire 			 i_c_read;
    wire 			 select_A;
    wire 			 stall;
    reg [31:0] 			 R_A;
@@ -53,17 +53,14 @@ module MERGER_1 (input i_clk,
    assign i_write_b = ~i_fifo_2_empty & (~fifo_b_full);
    assign o_fifo_2_read = ~i_fifo_2_empty & (~fifo_b_full);
    assign o_out_fifo_write = i_fifo_out_ready_clocked & ~fifo_c_empty;
+   assign i_c_read = i_fifo_out_ready_clocked & ~fifo_c_empty;   
 
    initial begin
       i_c_write <= 0;
-      i_c_read <= 1;
       i_fifo_out_ready_clocked <= 1; 
    end
    
    
-   always @(posedge i_clk) begin
-      i_c_read <= i_fifo_out_ready & ~fifo_c_empty;
-   end
    
    
    IFIFO16 fifo_a(.i_clk(i_clk), 

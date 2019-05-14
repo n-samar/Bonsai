@@ -35,7 +35,7 @@ module IFIFO16 #(
      o_empty <= 0; 
   end
   
-  reg [4:0]  cnt =  5;
+  reg [3:0]  cnt =  5;
   reg [3:0]  adr = 2;
   
   always @(posedge i_clk) begin

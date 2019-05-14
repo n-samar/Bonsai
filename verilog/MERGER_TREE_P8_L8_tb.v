@@ -2,7 +2,7 @@
 
 module merger_tree_tb;
    reg [2*L-1:0] write_fifo;
-   reg read_fifo_out;
+   wire read_fifo_out;
    
    wire [31:0] out_fifo [0:2*L-1];
    wire [2*L-1:0] fifo_full;
@@ -29,6 +29,8 @@ module merger_tree_tb;
    reg [DATA_WIDTH-1:0] data [0:LEN_SEQ*LEAF_CNT];
    integer 		f;
    reg [31:0] 		countdown [0:LEAF_CNT-1];   
+
+   assign read_fifo_out = ~fifo_out_empty;
    
    genvar fifo_index;
    generate
@@ -111,7 +113,6 @@ module merger_tree_tb;
 	   countdown[j] = 20;
 	   in_fifo[j] <= data[rdaddr[j]];	   
 	end
-	read_fifo_out <= 1'b1;
 	clk <= 0;
      end
 
@@ -127,12 +128,14 @@ module merger_tree_tb;
    initial begin
       f = $fopen("out_16_128_P8_L8.txt", "w+");
    end
-   
+
    always @(posedge clk) begin
-      if(counter < LEAF_CNT*LEN_SEQ+100) begin
-	 $fwrite(f, "%x\n", o_data);
+      if(counter < LEAF_CNT*LEN_SEQ+2000) begin
+	 if(read_fifo_out) begin
+	    $fwrite(f, "%x\n", o_data);
+	 end
       end
-      else if(counter == LEAF_CNT*LEN_SEQ+100) begin
+      else if(counter == LEAF_CNT*LEN_SEQ+2000) begin
 	 $fclose(f);
 	 $finish;
       end
