@@ -47,21 +47,29 @@ module COUPLER #(
       second_elem <= 0;      
    end
    
-   always @(posedge i_clk) begin
+   always @(negedge i_clk) begin
       if (~out_full & ~in_empty) begin
-         in_deq <= 1;
          if (state == 0) begin
+            in_deq <= 1;	    
             out_enq <= 0;            
             first_elem <= in_elem;
             state <= 1;
          end
          else if (state == 1) begin
-            second_elem <= in_elem;         
+	    if (first_elem != 0) begin
+	       in_deq <= 1;
+               second_elem <= in_elem;   
+	    end
+	    else begin
+	       in_deq <= 0;	       
+	       second_elem <= 0;	       
+	    end	      
             state <= 0;  
             out_enq <= 1;            
          end
       end 
       else begin
+	 out_enq <= 0;	 
          in_deq <= 0;         
       end
    end

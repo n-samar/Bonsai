@@ -35,8 +35,9 @@ module coupler_tb;
    always @ (posedge clk) begin
       counter <= counter + 1;
 	 if(~o_full) begin
+	    i_data = data[rdaddr];	       	       	    	    
 	    if(rdaddr < LEN_SEQ) begin
-	       rdaddr <= rdaddr+1;
+	       rdaddr = rdaddr+1;	    	       
 	    end
 	 end
    end
@@ -44,16 +45,13 @@ module coupler_tb;
    assign i_deq = ~o_empty;
    assign i_enq = ~o_full;
    
-   always @ (posedge clk) begin
-	  i_data <= data[rdaddr];
-   end
    
    initial
      begin
         counter <= 0;        
-	    rdaddr <= 0;
-	    i_data <= 0;	   
-	    clk <= 0;
+	rdaddr <= 0;
+	i_data <= 0;	   
+	clk <= 0;
      end
 
    always
