@@ -1,4 +1,4 @@
-module MERGER_16 (input i_clk,
+module MERGER_32 (input i_clk,
 	      input [DATA_WIDTH-1:0] 	     i_fifo_1,
 	      input 		     i_fifo_1_empty,
 	      input [DATA_WIDTH-1:0] 	     i_fifo_2,
@@ -9,7 +9,7 @@ module MERGER_16 (input i_clk,
 	      output 		     o_out_fifo_write,
 	      output wire [DATA_WIDTH-1:0] o_data);
 
-   parameter DATA_WIDTH = 512;
+   parameter DATA_WIDTH = 1024;
    wire 			     i_write_a, i_write_b;
    reg 				     i_c_read;
    wire 			     select_A;
@@ -96,7 +96,7 @@ module MERGER_16 (input i_clk,
 		.stall(stall), 
 		.switch_output(switch_output));
 
-   BITONIC_NETWORK_32 first_merger (.i_clk(i_clk),
+   BITONIC_NETWORK_64 first_merger (.i_clk(i_clk),
 				   .switch_output(switch_output),
 				   .stall(stall),
 				   .top_tuple(i_data_2_top),
@@ -108,7 +108,7 @@ module MERGER_16 (input i_clk,
 				   .o_stall(stall_2),
 				   .o_top_tuple(o_data_2_top));
 
-   BITONIC_NETWORK_32 second_merger (.i_clk(i_clk),
+   BITONIC_NETWORK_64 second_merger (.i_clk(i_clk),
 				    .switch_output(switch_output_2),
 				    .stall(stall_2),
 				    .top_tuple(),
@@ -156,7 +156,7 @@ module MERGER_16 (input i_clk,
 	else
 	  i_c_write <= 1'b0;
      end
-   endmodule // MERGER_16
+   endmodule // MERGER_32
 
 
 

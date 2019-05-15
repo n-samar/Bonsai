@@ -156,7 +156,7 @@ module MERGER_16 (input i_clk,
 	else
 	  i_c_write <= 1'b0;
      end
-   endmodule // MERGER_16
+   endmodule // MERGER_8
 
 
 

@@ -2,7 +2,7 @@
 
 module merger_tree_tb;
    reg [2*L-1:0] write_fifo;
-   reg read_fifo_out;
+   wire read_fifo_out;
    
    wire [31:0] out_fifo [0:2*L-1];
    wire [2*L-1:0] fifo_full;
@@ -29,6 +29,8 @@ module merger_tree_tb;
    reg [DATA_WIDTH-1:0] data [0:LEN_SEQ*LEAF_CNT];
    integer 		f;
    reg [31:0] 		countdown [0:LEAF_CNT-1];   
+
+   assign read_fifo_out = ~fifo_out_empty;
    
    genvar fifo_index;
    generate
@@ -51,7 +53,7 @@ module merger_tree_tb;
 		 .o_data(out_fifo_item),
 		 .i_enq(read_fifo_out),
 		 .o_empty(fifo_out_empty),
-		 .o_full());
+		 .o_full(fifo_out_full));
 
    MERGER_TREE_P16_L128 dut (.i_clk(clk),
 				.i_fifo({out_fifo[127+128], out_fifo[126+128], out_fifo[125+128], out_fifo[124+128], out_fifo[123+128], 
@@ -171,7 +173,6 @@ module merger_tree_tb;
 	   countdown[j] = 20;
 	   in_fifo[j] <= data[rdaddr[j]];	   
 	end
-	read_fifo_out <= 1'b1;
 	clk <= 0;
      end
 

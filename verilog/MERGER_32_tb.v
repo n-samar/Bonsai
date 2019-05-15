@@ -3,7 +3,7 @@
 module merger_tb;
    parameter period = 4;
    parameter LEN_SEQ = 16;   // Length of each input sequence
-   parameter DATA_WIDTH = 512;
+   parameter DATA_WIDTH = 1024;
    parameter LEAF_CNT = 2;
 
    reg [1:0] write_fifo;
@@ -55,7 +55,7 @@ module merger_tb;
 	       .o_empty(fifo_out_empty),
 	       .o_full(fifo_out_full));
 
-   MERGER_16 dut (.i_clk(clk),
+   MERGER_32 dut (.i_clk(clk),
 	       .i_fifo_1(out_fifo[0]),
 	       .i_fifo_1_empty(fifo_empty[0]),
 	       .i_fifo_2(out_fifo[1]),
@@ -68,7 +68,7 @@ module merger_tb;
 
 
    initial begin
-      $readmemh("data_2_16_16.txt", data, 0, LEAF_CNT*LEN_SEQ);
+      $readmemh("data_2_16_32.txt", data, 0, LEAF_CNT*LEN_SEQ);
    end  
    
    always @ (negedge clk) begin
@@ -126,14 +126,14 @@ module merger_tb;
      end
 
    initial begin
-      f = $fopen("out_2_16_16.txt", "w+");
+      f = $fopen("out_2_16_32.txt", "w+");
    end
    
    always @(posedge clk) begin
-      if(counter < LEAF_CNT*LEN_SEQ+1000) begin
+      if(counter < LEAF_CNT*LEN_SEQ+100) begin
 	 $fwrite(f, "%x\n", o_data);
       end
-      else if(counter == LEAF_CNT*LEN_SEQ+1000) begin
+      else if(counter == LEAF_CNT*LEN_SEQ+100) begin
 	 $fclose(f);
 	 $finish;
       end

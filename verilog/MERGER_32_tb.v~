@@ -55,7 +55,7 @@ module merger_tb;
 	       .o_empty(fifo_out_empty),
 	       .o_full(fifo_out_full));
 
-   MERGER_16 dut (.i_clk(clk),
+   MERGER_8 dut (.i_clk(clk),
 	       .i_fifo_1(out_fifo[0]),
 	       .i_fifo_1_empty(fifo_empty[0]),
 	       .i_fifo_2(out_fifo[1]),
