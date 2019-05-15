@@ -98,6 +98,10 @@ int main(int argc, char ** argv) {
 	strcat(ans_filename, "_");
 	strcat(ans_filename, argv[4]);
       }
+      if (argc>=6) {
+	strcat(ans_filename, "_");
+	strcat(ans_filename, argv[5]);
+      }
       strcat(ans_filename, ".txt");            
       FILE *ans = fopen(ans_filename, "w+");
       for (i=0; i<n; i++){
