@@ -1,6 +1,6 @@
 /* For 32-merger */
 
-module CAS (input i_clk,
+module CAS_64 (input i_clk,
             input         stall,
             input [31:0]  i_elems_0,
             input [31:0]  i_elems_1,
@@ -88,7 +88,7 @@ module BITONIC_NETWORK_64 (input i_clk,
    /* step 1 */   
    generate
       for (i=0; i<32; i=i+1) begin : GEN
-         CAS cas(.i_clk(i_clk),
+         CAS_64 cas(.i_clk(i_clk),
                  .stall(stall), 
                  .i_elems_0(i_elems_0[(i+1)*32-1:i*32]), 
                  .i_elems_1(i_elems_1[(32-i)*32-1:(32-i-1)*32]),
@@ -101,7 +101,7 @@ module BITONIC_NETWORK_64 (input i_clk,
    generate
       for (j=0; j<2; j=j+1) begin : GEN2
          for (i=0; i<16; i=i+1) begin
-            CAS cas(.i_clk(i_clk),
+            CAS_64 cas(.i_clk(i_clk),
                     .stall(stall_1), 
                     .i_elems_0(elems_1[(32*j+i+1)*32-1:(32*j+i)*32]), 
                     .i_elems_1(elems_1[(32*j+i+1+16)*32-1:(32*j+i+16)*32]),
@@ -115,7 +115,7 @@ module BITONIC_NETWORK_64 (input i_clk,
    generate
       for (j=0; j<4; j=j+1) begin : GEN3
          for (i=0; i<8; i=i+1) begin
-            CAS cas(.i_clk(i_clk),
+            CAS_64 cas(.i_clk(i_clk),
                     .stall(stall_2),
                     .i_elems_0(elems_2[(16*j+i+1)*32-1:(16*j+i)*32]), 
                     .i_elems_1(elems_2[(16*j+i+1+8)*32-1:(16*j+i+8)*32]),
@@ -129,7 +129,7 @@ module BITONIC_NETWORK_64 (input i_clk,
    generate
       for (j=0; j<8; j=j+1) begin : GEN4
          for (i=0; i<4; i=i+1) begin
-            CAS cas(.i_clk(i_clk),
+            CAS_64 cas(.i_clk(i_clk),
                     .stall(stall_3),
                     .i_elems_0(elems_3[(8*j+i+1)*32-1:(8*j+i)*32]), 
                     .i_elems_1(elems_3[(8*j+i+1+4)*32-1:(8*j+i+4)*32]),
@@ -143,7 +143,7 @@ module BITONIC_NETWORK_64 (input i_clk,
    generate
       for (j=0; j<16; j=j+1) begin : GEN5
          for (i=0; i<2; i=i+1) begin
-            CAS cas(.i_clk(i_clk),
+            CAS_64 cas(.i_clk(i_clk),
                     .stall(stall_4),
                     .i_elems_0(elems_4[(4*j+i+1)*32-1:(4*j+i)*32]), 
                     .i_elems_1(elems_4[(4*j+i+1+2)*32-1:(4*j+i+2)*32]),
@@ -156,13 +156,13 @@ module BITONIC_NETWORK_64 (input i_clk,
    /* step 5 */   
    generate
       for (i=0; i<32; i=i+2) begin : GEN6
-            CAS cas1(.i_clk(i_clk),
+            CAS_64 cas1(.i_clk(i_clk),
                     .stall(stall_5),
                     .i_elems_0(elems_5[(i+1)*32-1:i*32]), 
                     .i_elems_1(elems_5[(i+2)*32-1:(i+1)*32]),
                     .o_elems_0(o_elems_0[(i+1)*32-1:i*32]), 
                     .o_elems_1(o_elems_0[(i+2)*32-1:(i+1)*32]));
-            CAS cas2(.i_clk(i_clk),
+            CAS_64 cas2(.i_clk(i_clk),
                     .stall(stall_5),
                     .i_elems_0(elems_5[32*32+(i+1)*32-1:32*32+i*32]), 
                     .i_elems_1(elems_5[32*32+(i+2)*32-1:32*32+(i+1)*32]),

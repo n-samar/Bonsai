@@ -49,9 +49,9 @@ module merger_tree_tb;
 
    IFIFO16 #(512) fifo_out(.i_clk(clk),
 		 .i_data(o_data),
-		 .i_deq(o_out_fifo_write),
+		 .i_enq(o_out_fifo_write),
 		 .o_data(out_fifo_item),
-		 .i_enq(read_fifo_out),
+		 .i_deq(read_fifo_out),
 		 .o_empty(fifo_out_empty),
 		 .o_full(fifo_out_full));
 
@@ -121,7 +121,7 @@ module merger_tree_tb;
 					 out_fifo[7], out_fifo[6], out_fifo[5], out_fifo[4], 
 					 out_fifo[3], out_fifo[2], out_fifo[1], out_fifo[0]}),
 			       .i_fifo_empty(fifo_empty),			  
-			  .i_fifo_out_ready(~fifo_out_full | read_fifo_out),
+			  .i_fifo_out_ready(~fifo_out_full),
 			  .o_fifo_read(fifo_read),		  
 			  .o_out_fifo_write(o_out_fifo_write),
 			  .o_data(o_data));	       

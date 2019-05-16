@@ -35,7 +35,7 @@ module CONTROL(input i_clk,
       ready = ~ready;
    end
    
-   assign stall = (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty) | (state == TOGGLE & i_a_empty & i_b_empty);
+   assign stall = (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty) | (state == TOGGLE & i_a_empty & (i_b_empty | ~i_b_min_zero));
    
    initial
      begin
