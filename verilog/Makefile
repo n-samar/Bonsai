@@ -28,6 +28,10 @@ data : datagen
 	./datagen 1 128 1 1 2; \
 	./datagen 2 16 1 16; \
 	./datagen 2 16 1 32; \
+	./datagen 8 128 1 1 4; \
+	./datagen 16 128 1 1 8; \
+	./datagen 256 16 1 1 16; \
+	./datagen 256 16 1 1 32; \
 	cat ans_16_128.txt > ans_16_128_gl2.txt; \
 	cat ans_16_128.txt >> ans_16_128_gl2.txt; \
 	cat ans_16_128_gl2.txt > ans_16_128_gl4.txt; \
@@ -103,6 +107,19 @@ compile_tree_P1_L64_global_reset : FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v M
 compile_tree_P1_L128 : FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v MERGER_TREE_P1_L128.v MERGER_TREE_P1_L128_tb.v
 	$(VERILOG) -o tree_P1_L128 FIFO.v BITONIC_NETWORK.v MERGER.v CONTROL.v MERGER_TREE_P1_L128.v MERGER_TREE_P1_L128_tb.v
 
+compile_tree_P16_L128 : COUPLER.v FIFO.v MERGER.v MERGER_2.v MERGER_4.v MERGER_8.v MERGER_16.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v BITONIC_NETWORK_16.v BITONIC_NETWORK_32.v BITONIC_NETWORK_64.v MERGER_TREE_P16_L128.v MERGER_TREE_P16_L128_tb.v
+	$(VERILOG) -o tree_P16_L128 COUPLER.v FIFO.v MERGER.v MERGER_2.v MERGER_4.v MERGER_8.v MERGER_16.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v BITONIC_NETWORK_16.v BITONIC_NETWORK_32.v BITONIC_NETWORK_64.v MERGER_TREE_P16_L128.v MERGER_TREE_P16_L128_tb.v
+
+compile_tree_P32_L128 : COUPLER.v FIFO.v MERGER.v MERGER_2.v MERGER_4.v MERGER_8.v MERGER_16.v MERGER_32.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v BITONIC_NETWORK_16.v BITONIC_NETWORK_32.v BITONIC_NETWORK_64.v MERGER_TREE_P32_L128.v MERGER_TREE_P32_L128_tb.v
+	$(VERILOG) -o tree_P32_L128 COUPLER.v FIFO.v MERGER.v MERGER_2.v MERGER_4.v MERGER_8.v MERGER_16.v MERGER_32.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v BITONIC_NETWORK_16.v BITONIC_NETWORK_32.v BITONIC_NETWORK_64.v MERGER_TREE_P32_L128.v MERGER_TREE_P32_L128_tb.v
+
+
+compile_tree_P4_L4 : FIFO.v MERGER.v MERGER_4.v MERGER_2.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v MERGER_TREE_P4_L4.v MERGER_TREE_P4_L4_tb.v COUPLER.v
+	$(VERILOG) -o tree_P4_L4 COUPLER.v FIFO.v MERGER.v MERGER_4.v MERGER_2.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v MERGER_TREE_P4_L4.v MERGER_TREE_P4_L4_tb.v
+
+compile_tree_P8_L8 : FIFO.v MERGER.v MERGER_8.v MERGER_4.v MERGER_2.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v BITONIC_NETWORK_16.v MERGER_TREE_P8_L8.v MERGER_TREE_P8_L8_tb.v COUPLER.v
+	$(VERILOG) -o tree_P8_L8 COUPLER.v FIFO.v MERGER.v MERGER_8.v MERGER_4.v MERGER_2.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v BITONIC_NETWORK_16.v MERGER_TREE_P8_L8.v MERGER_TREE_P8_L8_tb.v
+
 sim_coupler : compile_coupler
 	$(VVP) coupler
 
@@ -130,6 +147,12 @@ sim_tree_P1_L8 : compile_tree_P1_L8
 sim_tree_P2_L8 : compile_tree_P2_L8 tree_P2_L8
 	$(VVP) tree_P2_L8;
 
+sim_tree_P4_L4 : compile_tree_P4_L4 tree_P4_L4
+	$(VVP) tree_P4_L4;
+
+sim_tree_P8_L8 : compile_tree_P8_L8 tree_P8_L8
+	$(VVP) tree_P8_L8;
+
 sim_tree_P2_L8_global_reset : compile_tree_P2_L8_global_reset tree_P2_L8_gl
 	$(VVP) tree_P2_L8_gl;
 
@@ -154,8 +177,14 @@ sim_tree_P1_L64 : compile_tree_P1_L64 merger
 sim_tree_P1_L64_global_reset : compile_tree_P1_L64_global_reset merger
 	$(VVP) tree_P1_L64
 
-sim_tree_P1_L128 : compile_tree_P1_L128 merger
+sim_tree_P1_L128 : compile_tree_P1_L128
 	$(VVP) tree_P1_L128
+
+sim_tree_P16_L128 : compile_tree_P16_L128
+	$(VVP) tree_P16_L128
+
+sim_tree_P32_L128 : compile_tree_P32_L128
+	$(VVP) tree_P32_L128
 
 filter_output_coupler : sim_coupler data
 	sed '/^0000000000000000$$/d' out_1_128.txt > out_no_zeros_1_128.txt
@@ -188,6 +217,14 @@ filter_output_merger_32 : sim_merger_32 data
 filter_output_tree_P1_L8 : data sim_tree_P1_L8
 	sed '/^00000000$$/d' out_16_128.txt > out_no_zeros_16_128.txt
 	sed '/^00000000$$/d' ans_16_128.txt > ans_no_zeros_16_128.txt
+
+filter_output_tree_P4_L4 : data sim_tree_P4_L4
+	sed '/^00000000000000000000000000000000$$/d' out_8_128_1_4.txt > out_no_zeros_8_128_1_4.txt
+	sed '/^00000000000000000000000000000000$$/d' ans_8_128_1_4.txt > ans_no_zeros_8_128_1_4.txt
+
+filter_output_tree_P8_L8 : data sim_tree_P8_L8
+	sed '/^0000000000000000000000000000000000000000000000000000000000000000$$/d' out_16_128_1_8.txt > out_no_zeros_16_128_1_8.txt
+	sed '/^0000000000000000000000000000000000000000000000000000000000000000$$/d' ans_16_128_1_8.txt > ans_no_zeros_16_128_1_8.txt
 
 filter_output_tree_P2_L8 : data sim_tree_P2_L8
 	sed '/^0000000000000000$$/d' out_16_128_2.txt > out_no_zeros_16_128_2.txt
@@ -228,6 +265,14 @@ filter_output_tree_P1_L64_global_reset : data sim_tree_P1_L64_global_reset
 filter_output_tree_P1_L128 : data sim_tree_P1_L128
 	sed '/^00000000$$/d' out_256_16.txt > out_no_zeros_256_16.txt
 	sed '/^00000000$$/d' ans_256_16.txt > ans_no_zeros_256_16.txt
+
+filter_output_tree_P16_L128 : data sim_tree_P16_L128
+	sed '/^00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' out_256_16_1_16.txt > out_no_zeros_256_16_1_16.txt
+	sed '/^00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' ans_256_16_1_16.txt > ans_no_zeros_256_16_1_16.txt
+
+filter_output_tree_P32_L128 : data sim_tree_P32_L128
+	sed '/^0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' out_256_16_1_32.txt > out_no_zeros_256_16_1_32.txt
+	sed '/^0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' ans_256_16_1_32.txt > ans_no_zeros_256_16_1_32.txt
 
 test_merger_1 : compile_merger_1 sim_merger_1 filter_output_merger_1 out_no_zeros_2_128.txt ans_no_zeros_2_128.txt
 	if [[ $$(diff -u out_no_zeros_2_128.txt ans_no_zeros_2_128.txt) ]]; then \
@@ -283,6 +328,20 @@ test_tree_P2_L8 : data compile_tree_P2_L8 sim_tree_P2_L8 filter_output_tree_P2_L
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P2_L8' 1>&2; \
 	else \
 		echo 'SUCESS! tree_P2_L8' 1>&2; \
+	fi
+
+test_tree_P4_L4 : data compile_tree_P4_L4 sim_tree_P4_L4 filter_output_tree_P4_L4 out_no_zeros_8_128_1_4.txt ans_no_zeros_8_128_1_4.txt
+	if [[ $$(diff -u out_no_zeros_8_128_1_4.txt ans_no_zeros_8_128_1_4.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P4_L4' 1>&2; \
+	else \
+		echo 'SUCESS! tree_P4_L4' 1>&2; \
+	fi
+
+test_tree_P8_L8 : data compile_tree_P8_L8 sim_tree_P8_L8 filter_output_tree_P8_L8 out_no_zeros_16_128_1_8.txt ans_no_zeros_16_128_1_8.txt
+	if [[ $$(diff -u out_no_zeros_16_128_1_8.txt ans_no_zeros_16_128_1_8.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P8_L8' 1>&2; \
+	else \
+		echo 'SUCESS! tree_P8_L8' 1>&2; \
 	fi
 
 test_tree_P2_L8_global_reset : data compile_tree_P2_L8_global_reset sim_tree_P2_L8_global_reset filter_output_tree_P2_L8_global_reset out_no_zeros_16_128_2_gl4.txt ans_no_zeros_16_128_2_gl4.txt
@@ -342,11 +401,25 @@ test_tree_P1_L64_global_reset : filter_output_tree_P1_L64_global_reset out_no_ze
 		echo 'SUCESS! tree_P1_L64_global_reset' 1>&2; \
 	fi
 
-test_tree_P1_L128 : compile_tree_P1_L128 filter_output_tree_P1_L128 out_no_zeros_256_16.txt ans_no_zeros_256_16.txt sim_tree_P1_L128 merger 
+test_tree_P1_L128 : compile_tree_P1_L128 filter_output_tree_P1_L128 out_no_zeros_256_16.txt ans_no_zeros_256_16.txt sim_tree_P1_L128
 	if [[ $$(diff -u out_no_zeros_256_16.txt ans_no_zeros_256_16.txt) ]]; then \
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P1_L128' 1>&2; \
 	else \
 		echo 'SUCESS! tree_P1_L128' 1>&2; \
+	fi
+
+test_tree_P16_L128 : compile_tree_P16_L128 filter_output_tree_P16_L128 out_no_zeros_256_16_1_16.txt ans_no_zeros_256_16_1_16.txt sim_tree_P16_L128 
+	if [[ $$(diff -u out_no_zeros_256_16_1_16.txt ans_no_zeros_256_16_1_16.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P16_L128' 1>&2; \
+	else \
+		echo 'SUCESS! tree_P16_L128' 1>&2; \
+	fi
+
+test_tree_P32_L128 : compile_tree_P32_L128 filter_output_tree_P32_L128 out_no_zeros_256_16_1_16.txt ans_no_zeros_256_16_1_16.txt sim_tree_P32_L128 
+	if [[ $$(diff -u out_no_zeros_256_16_1_32.txt ans_no_zeros_256_16_1_32.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P32_L128' 1>&2; \
+	else \
+		echo 'SUCESS! tree_P32_L128' 1>&2; \
 	fi
 
 test_coupler : compile_coupler filter_output_coupler out_no_zeros_1_128.txt ans_no_zeros_1_128.txt sim_coupler coupler

@@ -186,7 +186,7 @@ module merger_tree_tb;
      end
    
    initial begin
-      f = $fopen("out_256_16_16.txt", "w+");
+      f = $fopen("out_256_16_1_16.txt", "w+");
    end
 
    always @(posedge clk) begin
