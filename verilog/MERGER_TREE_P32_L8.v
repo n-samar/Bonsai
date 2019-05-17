@@ -38,9 +38,9 @@ module MERGER_TREE_P16_L8 #(parameter L = 8) (input i_clk,
 	 for (i = 0; i < level; i=i+1) begin
 	    if (level == 8) begin
 	       MERGER_4 merger(.i_clk(i_clk),
-			     .i_fifo_1(i_fifo[32*4*i+2*32-1:32*4*i]),
+			     .i_fifo_1(i_fifo[32*8*i+4*32-1:32*8*i]),
 			     .i_fifo_1_empty(i_fifo_empty[2*i]),
-			     .i_fifo_2(i_fifo[32*4*i+2*32+2*32-1:32*4*i+2*32]),
+			     .i_fifo_2(i_fifo[32*8*i+4*32+4*32-1:32*8*i+4*32]),
 			     .i_fifo_2_empty(i_fifo_empty[2*i+1]),
 			     .i_fifo_out_ready(~fifo_full_3[i] | fifo_read_3[i]),
 			     .o_fifo_1_read(o_fifo_read[2*i]),
