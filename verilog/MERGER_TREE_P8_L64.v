@@ -1,7 +1,7 @@
 `timescale 1 ns/10 ps
 
 
-module MERGER_TREE_P4_L64 #(parameter L = 64) (input i_clk,
+module MERGER_TREE_P8_L64 #(parameter L = 64) (input i_clk,
 					   input [32*2*L-1:0]   i_fifo,
 					   input [2*L-1:0]      i_fifo_empty,
 					   input 	      i_fifo_out_ready,
