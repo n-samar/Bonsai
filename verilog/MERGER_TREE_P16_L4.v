@@ -2,7 +2,7 @@
 
 
 module MERGER_TREE_P16_L4 #(parameter L = 4) (input i_clk,
-					   input [32*4*L-1:0] 	  i_fifo,
+					   input [32*8*L-1:0] 	  i_fifo,
 					   input [2*L-1:0] 	  i_fifo_empty,
 					   input 		  i_fifo_out_ready,
 					   output [2*L-1:0] 	  o_fifo_read, 
