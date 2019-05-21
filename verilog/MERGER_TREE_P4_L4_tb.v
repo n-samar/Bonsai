@@ -19,6 +19,7 @@ module merger_tree_tb;
    parameter LEAF_CNT = 2*L;
    parameter DATA_WIDTH = 32;
    parameter LEN_SEQ = 128;
+   integer 	  data_file;
    
 
    reg [31:0] 		   counter = 0;
@@ -28,7 +29,17 @@ module merger_tree_tb;
    integer 		   k;   
    reg [DATA_WIDTH-1:0]    data [0:LEN_SEQ*LEAF_CNT];
    integer 		   f;
-   reg [31:0] 		   countdown [0:LEAF_CNT-1];   
+   reg [31:0] 		   countdown [0:LEAF_CNT-1];
+   reg [3:0] 		   buffer_ptr [0:LEAF_CNT-1];
+   reg [LEAF_CNT-1:0] 	   buffer_enq;
+   reg [LEAF_CNT-1:0] 	   buffer_deq;
+   wire [LEAF_CNT-1:0] 	   buffer_empty;
+   wire [LEAF_CNT-1:0] 	   buffer_full;
+   reg [31:0] 			   readmemh_data[0:15];
+   
+   reg [511:0] 		   buffer_in [0:LEAF_CNT-1];   
+   wire [511:0] 		   buffer_out [0:LEAF_CNT-1];
+   
 
    assign read_fifo_out = ~fifo_out_empty;
    
@@ -36,15 +47,21 @@ module merger_tree_tb;
    genvar 		   fifo_index;
    generate
       for (fifo_index = 0; fifo_index < 2*L; fifo_index = fifo_index + 1) begin : IN
-	 FIFO_EMPTY fifo(.i_clk(clk),
-			 .i_item(in_fifo[fifo_index] ),
-			 .i_write(write_fifo[fifo_index]),
-			 .o_item(out_fifo[fifo_index]),
-			 .i_read(fifo_read[fifo_index]),
-			 .empty(fifo_empty[fifo_index]),
-			 .full(fifo_full[fifo_index]),
-			 .overrun(),
-			 .underrun());	 
+	 IFIFO16 #(512) buffer(.i_clk(clk),
+			       .i_data(buffer_in[fifo_index]),
+			       .o_data(buffer_out[fifo_index]),
+			       .i_enq(buffer_enq[fifo_index]),
+			       .i_deq(buffer_deq[fifo_index]),
+			       .o_full(buffer_full[fifo_index]),
+			       .o_empty(buffer_empty[fifo_index]));
+	 
+	 IFIFO16 #(32) fifo(.i_clk(clk),
+			 .i_data(in_fifo[fifo_index] ),
+			 .i_enq(write_fifo[fifo_index]),
+			 .o_data(out_fifo[fifo_index]),
+			 .i_deq(fifo_read[fifo_index]),
+			 .o_empty(fifo_empty[fifo_index]),
+			 .o_full(fifo_full[fifo_index]));	 
       end // block: IN
    endgenerate
 
@@ -64,53 +81,135 @@ module merger_tree_tb;
 			  .o_fifo_read(fifo_read),		  
 			  .o_out_fifo_write(o_out_fifo_write),
 			  .o_data(o_data));	       
-   
 
-   initial begin
-      $readmemh("data_8_128_1.txt", data, 0, LEAF_CNT*LEN_SEQ);
-   end  
+   integer ind;
    
    always @ (negedge clk) begin
-      counter <= counter + 1;	       
+      counter <= counter + 1;	    
       for(i=0; i<LEAF_CNT; i=i+1) begin
-	 if(~fifo_full[i]) begin
-	    if(rdaddr[i] < (i+1)*LEN_SEQ-1) begin
-	       write_fifo[i] <= 1;	       	 	    	       
-	       rdaddr[i] <= rdaddr[i]+1;
-	    end
-	    else if(rdaddr[i] == (i+1)*LEN_SEQ-1) begin
-	       write_fifo[i] <= 1;	       	 	    	       
-	       rdaddr[i] <= LEAF_CNT*LEN_SEQ;      // This will push zeros for 3 clock cycles
-	    end 
-	    else begin
-	       if (countdown[i] == 0) begin
-		  write_fifo[i] <= 0;
-	       end
-	       else begin
-		  countdown[i] <= countdown[i] - 1;		  
-		  write_fifo[i] <= 1;	       	 	    		  
-	       end
-	    end
-	 end // if (~fifo_full[i])
+	 if (buffer_ptr[i] == 15 & ~buffer_empty[i] & ~fifo_full[i]) begin
+	    buffer_deq[i] <= 1;	   
+	 end
 	 else begin
-	    write_fifo[i] <= 0;
+	    buffer_deq[i] <= 0;	    
+	 end // if (~fifo_full[i])
+      end
+   end // always @ (negedge clk)
+
+   initial begin
+      $readmemh("data_8_128_1.txt", data, 0, LEAF_CNT*LEN_SEQ);      
+   end
+
+   integer l, z;
+   always @ (posedge clk) begin
+      for (l = 0;  l < LEAF_CNT; l=l+1) begin
+	 if(~fifo_full[l]) begin
+	    write_fifo[l] <= 1;	       	 	    	       
+	    buffer_ptr[l] <= (buffer_ptr[l]+1)%(16);	    
+	 end
+	 else begin
+	    write_fifo[l] <= 0;
+	 end	 
+	 buffer_enq[l] <= ((l == counter%(LEAF_CNT)) & ~buffer_full[l]);
+	 rdaddr[l] <= rdaddr[l] + 16*(((l == counter%(LEAF_CNT)) & ~buffer_full[l]));
+	 if (l == counter%(LEAF_CNT)) begin
+	    if (rdaddr[l] < (l+1)*LEN_SEQ) begin
+	       buffer_in[l] <= {data[rdaddr[l]+15],
+				data[rdaddr[l]+14],
+				data[rdaddr[l]+13],
+				data[rdaddr[l]+12],
+				data[rdaddr[l]+11],
+				data[rdaddr[l]+10],
+				data[rdaddr[l]+9],
+				data[rdaddr[l]+8],
+				data[rdaddr[l]+7],
+				data[rdaddr[l]+6],
+				data[rdaddr[l]+5],
+				data[rdaddr[l]+4],
+				data[rdaddr[l]+3],
+				data[rdaddr[l]+2],
+				data[rdaddr[l]+1],
+				data[rdaddr[l]+0]};
+	    end
+	    else begin
+	       buffer_in[l] <= {data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0],
+				data[0]};	       
+	    end
 	 end
       end
    end
-   
+
+
+
+
+   integer x;
    always @ (posedge clk) begin
-      for(k=0; k<LEAF_CNT; k = k+1) begin
-	 in_fifo[k] <= data[rdaddr[k]];
+      for(x=0; x<LEAF_CNT; x=x+1) begin
+	 if (~buffer_empty[x]) begin
+	    in_fifo[x] <= {buffer_out[x][32*buffer_ptr[x]+31],
+			   buffer_out[x][32*buffer_ptr[x]+30],
+			   buffer_out[x][32*buffer_ptr[x]+29],
+			   buffer_out[x][32*buffer_ptr[x]+28],
+			   buffer_out[x][32*buffer_ptr[x]+27],
+			   buffer_out[x][32*buffer_ptr[x]+26],
+			   buffer_out[x][32*buffer_ptr[x]+25],
+			   buffer_out[x][32*buffer_ptr[x]+24],
+			   buffer_out[x][32*buffer_ptr[x]+23],
+			   buffer_out[x][32*buffer_ptr[x]+22],
+			   buffer_out[x][32*buffer_ptr[x]+21],
+			   buffer_out[x][32*buffer_ptr[x]+20],
+			   buffer_out[x][32*buffer_ptr[x]+19],
+			   buffer_out[x][32*buffer_ptr[x]+18],
+			   buffer_out[x][32*buffer_ptr[x]+17],
+			   buffer_out[x][32*buffer_ptr[x]+16],
+			   buffer_out[x][32*buffer_ptr[x]+15],
+			   buffer_out[x][32*buffer_ptr[x]+14],
+			   buffer_out[x][32*buffer_ptr[x]+13],
+			   buffer_out[x][32*buffer_ptr[x]+12],
+			   buffer_out[x][32*buffer_ptr[x]+11],
+			   buffer_out[x][32*buffer_ptr[x]+10],
+			   buffer_out[x][32*buffer_ptr[x]+9],
+			   buffer_out[x][32*buffer_ptr[x]+8],
+			   buffer_out[x][32*buffer_ptr[x]+7],
+			   buffer_out[x][32*buffer_ptr[x]+6],
+			   buffer_out[x][32*buffer_ptr[x]+5],
+			   buffer_out[x][32*buffer_ptr[x]+4],
+			   buffer_out[x][32*buffer_ptr[x]+3],
+			   buffer_out[x][32*buffer_ptr[x]+2],
+			   buffer_out[x][32*buffer_ptr[x]+1],
+			   buffer_out[x][32*buffer_ptr[x]+0]			   
+			   };
+	 end
       end
-   end
-   
+   end   
+
+   integer b;   
    initial
      begin
 	for (j=0; j<LEAF_CNT; j=j+1) begin
 	   rdaddr[j] = j*LEN_SEQ;
-	   write_fifo[j] <= 1'b1;
+	   write_fifo[j] <= 0;
 	   countdown[j] = 20;
-	   in_fifo[j] <= data[rdaddr[j]];	   
+	   in_fifo[j] <= 0;
+	   buffer_ptr[j] <= 0;
+	   in_fifo[j] <= 0;
+	   buffer_enq[j] <= 0;
+	   buffer_deq[j] <= 0;
+	   buffer_in[j] <= 0;
 	end
 	clk <= 0;
      end
@@ -121,7 +220,7 @@ module merger_tree_tb;
    initial
      begin
 	$dumpfile("test_merger.vcd");
-	$dumpvars(0,merger_tree_tb);
+	$dumpvars(0, merger_tree_tb);
      end
    
    initial begin

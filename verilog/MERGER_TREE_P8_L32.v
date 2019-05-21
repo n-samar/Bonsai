@@ -24,22 +24,22 @@ module MERGER_TREE_P8_L32 #(parameter L = 32) (input i_clk,
    wire [15:0] 						      fifo_empty_4;
    wire [15:0] 						      fifo_full_4;
 
-   wire [2*32-1:0] 						      fifo_o_item_3 [7:0];
+   wire [2*32-1:0] 					      fifo_o_item_3 [7:0];
    wire [31:0] 						      fifo_i_item_3 [7:0];   
    wire [7:0] 						      fifo_read_3;
    wire [7:0] 						      fifo_write_3;
    wire [7:0] 						      fifo_empty_3;
    wire [7:0] 						      fifo_full_3;      
 
-   wire [4*32-1:0] 						      fifo_o_item_2 [3:0];
-   wire [2*32-1:0] 						      fifo_i_item_2 [3:0];   
+   wire [4*32-1:0] 					      fifo_o_item_2 [3:0];
+   wire [2*32-1:0] 					      fifo_i_item_2 [3:0];   
    wire [3:0] 						      fifo_read_2;
    wire [3:0] 						      fifo_write_2;
    wire [3:0] 						      fifo_empty_2;
    wire [3:0] 						      fifo_full_2;
 
-   wire [8*32-1:0] 						      fifo_o_item_1 [1:0];
-   wire [4*32-1:0] 						      fifo_i_item_1 [1:0];   
+   wire [8*32-1:0] 					      fifo_o_item_1 [1:0];
+   wire [4*32-1:0] 					      fifo_i_item_1 [1:0];   
    wire [1:0] 						      fifo_read_1;
    wire [1:0] 						      fifo_write_1;
    wire [1:0] 						      fifo_empty_1;
