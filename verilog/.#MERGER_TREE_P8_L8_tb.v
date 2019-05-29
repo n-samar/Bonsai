@@ -1,1 +1,0 @@
-nikola@nikola-Veriton-X2631.988:1557810889

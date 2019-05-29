@@ -19,13 +19,13 @@ module merger_tree_tb;
    parameter LEAF_CNT = 2*L;
    parameter DATA_WIDTH = 32;
    parameter BURST_SIZE = 20;
-   parameter LEN_SEQ = 320;
+   parameter LEN_SEQ = 960;
    integer 	  data_file;
    
-
-   reg [31:0] counter = 0;
-   reg [31:0] 		   rdaddr [0:LEAF_CNT-1];
-   wire [LEAF_CNT-1:0]  available;
+   reg [31:0] 	  buffer_counter = 0;   
+   reg [31:0] 	  counter = 0;
+   reg [31:0] 	  rdaddr [0:LEAF_CNT-1];
+   wire [LEAF_CNT-1:0] available;
    
    integer 		   i;
    integer 		   j;
@@ -101,7 +101,7 @@ module merger_tree_tb;
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_8_320_1.txt", data, 0, LEAF_CNT*LEN_SEQ);      
+      $readmemh("data_8_960_1.txt", data, 0, LEAF_CNT*LEN_SEQ);      
    end
 
    integer l, z;
@@ -109,53 +109,62 @@ module merger_tree_tb;
       for (l = 0;  l < LEAF_CNT; l=l+1) begin
 	     if(~fifo_full[l] & ~buffer_empty[l]) begin
 	        write_fifo[l] <= 1;	       	 	    	       
-	        buffer_ptr[l] <= (buffer_ptr[l]+1)%(16);	    
+	        buffer_ptr[l] <= (buffer_ptr[l]+1)%(16);
+
 	     end
 	     else begin
 	        write_fifo[l] <= 0;
 	     end
-
-         // This is suppose to check only once if the fifo is available and then put in the whole batch
-	     buffer_enq[l] <= ((l == (counter/BURST_SIZE)%(LEAF_CNT)) & (available[l] | buffer_enq[l]));
-	     rdaddr[l] <= rdaddr[l] + 16*(((l == (counter/BURST_SIZE)%(LEAF_CNT)) & (available[l] | buffer_enq[l])));
          
-	 if (l == (counter/BURST_SIZE)%(LEAF_CNT)) begin
-	    if (rdaddr[l] < (l+1)*LEN_SEQ) begin
-	       buffer_in[l] <= {data[rdaddr[l]+15],
-				            data[rdaddr[l]+14],
-				            data[rdaddr[l]+13],
-				            data[rdaddr[l]+12],
-				            data[rdaddr[l]+11],
-				            data[rdaddr[l]+10],
-				            data[rdaddr[l]+9],
-				            data[rdaddr[l]+8],
-				            data[rdaddr[l]+7],
-				            data[rdaddr[l]+6],
-				            data[rdaddr[l]+5],
-				            data[rdaddr[l]+4],
-				            data[rdaddr[l]+3],
-				            data[rdaddr[l]+2],
-				            data[rdaddr[l]+1],
-				            data[rdaddr[l]+0]};
-	    end
+	 if (l == (buffer_counter/BURST_SIZE)%(LEAF_CNT)) begin
+	    if (available[l] | buffer_enq[l]) begin
+	       buffer_enq[l] <= 1;
+	       rdaddr[l] <= rdaddr[l] + 16;
+	       buffer_counter <= (buffer_counter + 1) % (BURST_SIZE*LEAF_CNT);
+	       if (rdaddr[l] < (l+1)*LEN_SEQ) begin
+		  buffer_in[l] <= {data[rdaddr[l]+15],
+				   data[rdaddr[l]+14],
+				   data[rdaddr[l]+13],
+				   data[rdaddr[l]+12],
+				   data[rdaddr[l]+11],
+				   data[rdaddr[l]+10],
+				   data[rdaddr[l]+9],
+				   data[rdaddr[l]+8],
+				   data[rdaddr[l]+7],
+				   data[rdaddr[l]+6],
+				   data[rdaddr[l]+5],
+				   data[rdaddr[l]+4],
+				   data[rdaddr[l]+3],
+				   data[rdaddr[l]+2],
+				   data[rdaddr[l]+1],
+				   data[rdaddr[l]+0]};
+	       end
+	       else begin
+		  buffer_in[l] <= {data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0],
+				   data[0]};	       
+	       end	       
+	    end 
 	    else begin
-	       buffer_in[l] <= {data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0],
-				            data[0]};	       
+	       buffer_enq[l] <= 0;
+	       buffer_counter <= (buffer_counter + BURST_SIZE) % (BURST_SIZE*LEAF_CNT);			       
 	    end
+	 end // if (l == (buffer_counter/BURST_SIZE)%(LEAF_CNT))
+	 else begin
+	    buffer_enq[l] <= 0;	    
 	 end
       end
    end
@@ -231,16 +240,16 @@ module merger_tree_tb;
      end
    
    initial begin
-      f = $fopen("out_8_320_1_4.txt", "w+");
+      f = $fopen("out_8_960_1_4.txt", "w+");
    end
 
    always @(posedge clk) begin
-      if(counter < LEAF_CNT*LEN_SEQ+13000) begin
+      if(counter < LEAF_CNT*LEN_SEQ/2) begin
 	 if(read_fifo_out) begin
 	    $fwrite(f, "%x\n", o_data);
 	 end
       end
-      else if(counter == LEAF_CNT*LEN_SEQ+13000) begin
+      else if(counter == LEAF_CNT*LEN_SEQ/2) begin
 	 $fclose(f);
 	 $finish;
       end
