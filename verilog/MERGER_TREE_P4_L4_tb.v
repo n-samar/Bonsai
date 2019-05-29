@@ -18,12 +18,15 @@ module merger_tree_tb;
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
    parameter DATA_WIDTH = 32;
-   parameter LEN_SEQ = 128;
+   parameter BURST_SIZE = 20;
+   parameter LEN_SEQ = 320;
    integer 	  data_file;
    
 
-   reg [31:0] 		   counter = 0;
+   reg [31:0] counter = 0;
    reg [31:0] 		   rdaddr [0:LEAF_CNT-1];
+   wire [LEAF_CNT-1:0]  available;
+   
    integer 		   i;
    integer 		   j;
    integer 		   k;   
@@ -38,22 +41,23 @@ module merger_tree_tb;
    reg [31:0] 			   readmemh_data[0:15];
    
    reg [511:0] 		   buffer_in [0:LEAF_CNT-1];   
-   wire [511:0] 		   buffer_out [0:LEAF_CNT-1];
+   wire [511:0]        buffer_out [0:LEAF_CNT-1];
    
 
    assign read_fifo_out = ~fifo_out_empty;
    
    
-   genvar 		   fifo_index;
+   genvar              fifo_index;
    generate
       for (fifo_index = 0; fifo_index < 2*L; fifo_index = fifo_index + 1) begin : IN
-	 IFIFO16 #(512) buffer(.i_clk(clk),
-			       .i_data(buffer_in[fifo_index]),
-			       .o_data(buffer_out[fifo_index]),
-			       .i_enq(buffer_enq[fifo_index]),
-			       .i_deq(buffer_deq[fifo_index]),
-			       .o_full(buffer_full[fifo_index]),
-			       .o_empty(buffer_empty[fifo_index]));
+	 IFIFO32 #(512) buffer(.i_clk(clk),
+			               .i_data(buffer_in[fifo_index]),
+			               .o_data(buffer_out[fifo_index]),
+			               .i_enq(buffer_enq[fifo_index]),
+			               .i_deq(buffer_deq[fifo_index]),
+			               .o_full(buffer_full[fifo_index]),
+                           .o_available(available[fifo_index]),
+			               .o_empty(buffer_empty[fifo_index]));
 	 
 	 IFIFO16 #(32) fifo(.i_clk(clk),
 			 .i_data(in_fifo[fifo_index] ),
@@ -97,57 +101,60 @@ module merger_tree_tb;
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_8_128_1.txt", data, 0, LEAF_CNT*LEN_SEQ);      
+      $readmemh("data_8_320_1.txt", data, 0, LEAF_CNT*LEN_SEQ);      
    end
 
    integer l, z;
    always @ (posedge clk) begin
       for (l = 0;  l < LEAF_CNT; l=l+1) begin
-	 if(~fifo_full[l]) begin
-	    write_fifo[l] <= 1;	       	 	    	       
-	    buffer_ptr[l] <= (buffer_ptr[l]+1)%(16);	    
-	 end
-	 else begin
-	    write_fifo[l] <= 0;
-	 end	 
-	 buffer_enq[l] <= ((l == counter%(LEAF_CNT)) & ~buffer_full[l]);
-	 rdaddr[l] <= rdaddr[l] + 16*(((l == counter%(LEAF_CNT)) & ~buffer_full[l]));
-	 if (l == counter%(LEAF_CNT)) begin
+	     if(~fifo_full[l] & ~buffer_empty[l]) begin
+	        write_fifo[l] <= 1;	       	 	    	       
+	        buffer_ptr[l] <= (buffer_ptr[l]+1)%(16);	    
+	     end
+	     else begin
+	        write_fifo[l] <= 0;
+	     end
+
+         // This is suppose to check only once if the fifo is available and then put in the whole batch
+	     buffer_enq[l] <= ((l == (counter/BURST_SIZE)%(LEAF_CNT)) & (available[l] | buffer_enq[l]));
+	     rdaddr[l] <= rdaddr[l] + 16*(((l == (counter/BURST_SIZE)%(LEAF_CNT)) & (available[l] | buffer_enq[l])));
+         
+	 if (l == (counter/BURST_SIZE)%(LEAF_CNT)) begin
 	    if (rdaddr[l] < (l+1)*LEN_SEQ) begin
 	       buffer_in[l] <= {data[rdaddr[l]+15],
-				data[rdaddr[l]+14],
-				data[rdaddr[l]+13],
-				data[rdaddr[l]+12],
-				data[rdaddr[l]+11],
-				data[rdaddr[l]+10],
-				data[rdaddr[l]+9],
-				data[rdaddr[l]+8],
-				data[rdaddr[l]+7],
-				data[rdaddr[l]+6],
-				data[rdaddr[l]+5],
-				data[rdaddr[l]+4],
-				data[rdaddr[l]+3],
-				data[rdaddr[l]+2],
-				data[rdaddr[l]+1],
-				data[rdaddr[l]+0]};
+				            data[rdaddr[l]+14],
+				            data[rdaddr[l]+13],
+				            data[rdaddr[l]+12],
+				            data[rdaddr[l]+11],
+				            data[rdaddr[l]+10],
+				            data[rdaddr[l]+9],
+				            data[rdaddr[l]+8],
+				            data[rdaddr[l]+7],
+				            data[rdaddr[l]+6],
+				            data[rdaddr[l]+5],
+				            data[rdaddr[l]+4],
+				            data[rdaddr[l]+3],
+				            data[rdaddr[l]+2],
+				            data[rdaddr[l]+1],
+				            data[rdaddr[l]+0]};
 	    end
 	    else begin
 	       buffer_in[l] <= {data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0],
-				data[0]};	       
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0],
+				            data[0]};	       
 	    end
 	 end
       end
@@ -224,16 +231,16 @@ module merger_tree_tb;
      end
    
    initial begin
-      f = $fopen("out_8_128_1_4.txt", "w+");
+      f = $fopen("out_8_320_1_4.txt", "w+");
    end
 
    always @(posedge clk) begin
-      if(counter < LEAF_CNT*LEN_SEQ+1000) begin
+      if(counter < LEAF_CNT*LEN_SEQ+13000) begin
 	 if(read_fifo_out) begin
 	    $fwrite(f, "%x\n", o_data);
 	 end
       end
-      else if(counter == LEAF_CNT*LEN_SEQ+1000) begin
+      else if(counter == LEAF_CNT*LEN_SEQ+13000) begin
 	 $fclose(f);
 	 $finish;
       end

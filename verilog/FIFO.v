@@ -20,6 +20,66 @@ module shift_right_logical_16E (Q, A0, A1, A2, CE, CLK, D);
      end
 endmodule // shift_right_logical_16E
 
+module shift_right_logical_32E (Q, A0, A1, A2, A3, A4, CE, CLK, D);
+   parameter INIT = 16'h0000;
+   output Q;
+   input  A0, A1, A2, A3, A4, CE, CLK, D;
+   reg [31:0] data;
+   assign Q = data[{A4, A3, A2, A1, A0}];
+   initial begin
+      data[0] <= 0;
+      data[1] <= 0;
+      data[2] <= 0;
+      data[3] <= 0;
+   end
+   
+   always @(posedge CLK)
+     begin
+	    if (CE == 1'b1) begin
+	       {data[31:0]} <= {data[30:0], D};
+	    end
+     end
+endmodule // shift_right_logical_32E
+
+module IFIFO32 #(
+  parameter P_WIDTH         = 32
+) (
+  input wire                i_clk,
+  input wire [P_WIDTH-1:0]  i_data,
+  output wire [P_WIDTH-1:0] o_data,
+  input wire                i_enq,
+  input wire                i_deq,
+  output wire               o_full,
+  output wire                o_available,
+  output reg                o_empty
+);
+  initial begin
+     o_empty <= 0; 
+  end
+
+  reg [4:0]  cnt =  3;
+  reg [4:0]  adr =  0;
+  assign o_available = (cnt <= 8);     
+  
+  always @(posedge i_clk) begin
+     if(cnt > 0 | ~i_deq) begin
+	adr     <=   adr + i_enq - i_deq;
+	cnt     <=   cnt + i_enq - i_deq;
+	o_empty <= ((cnt + i_enq - i_deq)<=2);
+     end
+    // if(cnt>16) $display("%m invalid enq! cnt=%d", cnt);
+  end
+  assign o_full = (cnt >= 5'b11100); // not verified this logic !!
+  
+  genvar i;
+  generate
+    for (i=0; i<P_WIDTH; i=i+1) begin : FIFO
+       shift_right_logical_32E fifo32(.CLK(i_clk), .CE(i_enq), .D(i_data[i]), .Q(o_data[i]),
+                    .A0(adr[0]),  .A1(adr[1]), .A2(adr[2]), .A3(adr[3]), .A4(adr[4]));
+    end
+  endgenerate
+endmodule
+
 module IFIFO16 #(
   parameter P_WIDTH         = 32
 ) (
