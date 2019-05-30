@@ -44,32 +44,29 @@ endmodule // shift_right_logical_32E
 module IFIFO32 #(
   parameter P_WIDTH         = 32
 ) (
-  input wire                i_clk,
+  input wire 		    i_clk,
   input wire [P_WIDTH-1:0]  i_data,
   output wire [P_WIDTH-1:0] o_data,
-  input wire                i_enq,
-  input wire                i_deq,
-  output wire               o_full,
-  output wire                o_available,
-  output reg                o_empty
+  input wire 		    i_enq,
+  input wire 		    i_deq,
+  output wire 		    o_full,
+  output wire 		    o_available,
+  output 		    o_empty
 );
-  initial begin
-     o_empty <= 0; 
-  end
 
-  reg [4:0]  cnt =  3;
+  reg [4:0]  cnt =  0;
   reg [4:0]  adr =  0;
   assign o_available = (cnt <= 8);     
-  
+  assign o_empty = (cnt<=0);
+   
   always @(posedge i_clk) begin
      if(cnt > 0 | ~i_deq) begin
 	adr     <=   adr + i_enq - i_deq;
 	cnt     <=   cnt + i_enq - i_deq;
-	o_empty <= ((cnt + i_enq - i_deq)<=2);
      end
     // if(cnt>16) $display("%m invalid enq! cnt=%d", cnt);
   end
-  assign o_full = (cnt >= 5'b11100); // not verified this logic !!
+  assign o_full = (cnt >= 29); // not verified this logic !!
   
   genvar i;
   generate
@@ -83,30 +80,26 @@ endmodule
 module IFIFO16 #(
   parameter P_WIDTH         = 32
 ) (
-  input  wire               i_clk,
-  input  wire [P_WIDTH-1:0] i_data,
+  input wire 		    i_clk,
+  input wire [P_WIDTH-1:0]  i_data,
   output wire [P_WIDTH-1:0] o_data,
-  input  wire               i_enq,
-  input  wire               i_deq,
-  output wire               o_full,
-  output reg                o_empty
+  input wire 		    i_enq,
+  input wire 		    i_deq,
+  output wire 		    o_full,
+  output wire 		    o_empty
 );
-  initial begin
-     o_empty <= 0; 
-  end
-  
-  reg [3:0]  cnt =  5;
-  reg [3:0]  adr = 2;
+   assign o_empty = (cnt<=0);
+   reg [3:0] 		    cnt = 0;
+   reg [3:0] 		    adr = 0;
   
   always @(posedge i_clk) begin
      if(cnt > 0 | ~i_deq) begin
 	adr     <=   adr + i_enq - i_deq;
 	cnt     <=   cnt + i_enq - i_deq;
-	o_empty <= ((cnt + i_enq - i_deq)<=4);
      end
     // if(cnt>16) $display("%m invalid enq! cnt=%d", cnt);
   end
-  assign o_full = cnt[3]; // not verified this logic !!
+  assign o_full = (cnt >= 6); // not verified this logic !!
   
   genvar i;
   generate

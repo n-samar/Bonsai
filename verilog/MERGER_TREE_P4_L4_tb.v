@@ -244,12 +244,12 @@ module merger_tree_tb;
    end
 
    always @(posedge clk) begin
-      if(counter < LEAF_CNT*LEN_SEQ/2) begin
+      if(counter < (LEAF_CNT*LEN_SEQ+10000)/7) begin
 	 if(read_fifo_out) begin
 	    $fwrite(f, "%x\n", o_data);
 	 end
       end
-      else if(counter == LEAF_CNT*LEN_SEQ/2) begin
+      else if(counter == (LEAF_CNT*LEN_SEQ+10000)/7) begin
 	 $fclose(f);
 	 $finish;
       end
