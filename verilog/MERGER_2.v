@@ -55,7 +55,7 @@ module MERGER_2 (input i_clk,
 
    initial begin
       i_c_write <= 0;
-      i_fifo_out_ready_clocked <= 1; 
+      i_fifo_out_ready_clocked <= 0; 
    end
 
    IFIFO16 #(DATA_WIDTH) fifo_a(.i_clk(i_clk), 

@@ -12,8 +12,8 @@ module CONTROL(input i_clk,
 	       output reg switch_output
 	       );
    
-   parameter NOMINAL = 3'b000;
-   parameter TOGGLE = 3'b001;
+   parameter NOMINAL = 3'b001;
+   parameter TOGGLE = 3'b000;
    parameter DONE_A = 3'b010;
    parameter DONE_B = 3'b011;
    parameter FINISHED = 3'b100;
@@ -40,8 +40,8 @@ module CONTROL(input i_clk,
    initial
      begin
 	ready <= 0;
-	state <= TOGGLE;
-	select_A <= 1'b1;
+	state <= 3'b000;
+	select_A <= 1'b0;
 	switch_output <= 1'b0;
      end
 

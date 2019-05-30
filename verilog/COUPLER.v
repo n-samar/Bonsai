@@ -40,8 +40,8 @@ module COUPLER #(
    assign out_elem = {second_elem, first_elem};
    
    initial begin
-      in_deq <= 1;
-      out_enq <= 1;
+      in_deq <= 0;
+      out_enq <= 0;
       state <= 0;
       first_elem <= 0;
       second_elem <= 0;      

@@ -54,7 +54,7 @@ module MERGER_16 (input i_clk,
    
    initial begin
       i_c_write <= 0;
-      i_fifo_out_ready_clocked <= 1; 
+      i_fifo_out_ready_clocked <= 0; 
    end
 
    

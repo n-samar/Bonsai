@@ -60,7 +60,7 @@ module merger_tree_tb;
 			               .o_empty(buffer_empty[fifo_index]));
 	 
 	 IFIFO16 #(32) fifo(.i_clk(clk),
-			 .i_data(in_fifo[fifo_index] ),
+			 .i_data(in_fifo[fifo_index]),
 			 .i_enq(write_fifo[fifo_index]),
 			 .o_data(out_fifo[fifo_index]),
 			 .i_deq(fifo_read[fifo_index]),
