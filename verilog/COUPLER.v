@@ -56,14 +56,14 @@ module COUPLER #(
             state <= 1;
          end
          else if (state == 1) begin
-	    if (first_elem != 0) begin
-	       in_deq <= 1;
+	        if (first_elem != 0) begin
+	           in_deq <= 1;
                second_elem <= in_elem;   
-	    end
-	    else begin
-	       in_deq <= 0;
-	       second_elem <= 0;	       
-	    end	      
+	        end
+	        else begin
+	           in_deq <= (in_elem == 0);
+	           second_elem <= 0;	       
+	        end	      
             state <= 0;  
             out_enq <= 1;            
          end
