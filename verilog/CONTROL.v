@@ -49,7 +49,7 @@ module CONTROL(input i_clk,
       if (~stall) begin
 	     state <= new_state;
 	     switch_output <= (new_state == TOGGLE & state != TOGGLE);
-	     select_A <= (new_state == NOMINAL & i_a_lte_b) | (new_state == DONE_B) | (new_state == TOGGLE & state != DONE_B & i_a_min_zero & ~i_a_empty);
+	     select_A <= (new_state == NOMINAL & i_a_lte_b) | (new_state == DONE_B) | (new_state == TOGGLE & i_a_min_zero & ~i_a_empty);
       end
    end
    
