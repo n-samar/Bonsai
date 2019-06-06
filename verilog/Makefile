@@ -438,14 +438,20 @@ test_coupler : compile_coupler filter_output_coupler out_no_zeros_1_128.txt ans_
 test_tree_P4_L4_8_chunk: chunk_data
 	iverilog -o tree_P4_L4_8_chunk MERGER_TREE_P4_L4_8_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
 	vvp tree_P4_L4_8_chunk
+	python clean_data.py out_P4_L4_8_chunk.txt out.txt;
+	cat out.txt | uniq > data_P4_L4_64_chunk.txt;
 
 test_tree_P4_L4_64_chunk: chunk_data
 	iverilog -o tree_P4_L4_64_chunk MERGER_TREE_P4_L4_64_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
 	vvp tree_P4_L4_64_chunk
+	python clean_data.py out_P4_L4_64_chunk.txt out.txt;
+	cat out.txt | uniq > data_P4_L4_512_chunk.txt;
 
 test_tree_P4_L4_512_chunk: chunk_data
 	iverilog -o tree_P4_L4_512_chunk MERGER_TREE_P4_L4_512_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
 	vvp tree_P4_L4_512_chunk
+	python clean_data.py out_P4_L4_512_chunk.txt out.txt;
+	cat out.txt | uniq > data_P4_L4_4096_chunk.txt
 
 test_tree_P4_L4_4096_chunk: chunk_data
 	iverilog -o tree_P4_L4_4096_chunk MERGER_TREE_P4_L4_4096_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
@@ -458,7 +464,7 @@ test_tree_P4_L4_integrated: chunk_data
 	cat out.txt | uniq > data_P4_L4_64_chunk.txt;
 	iverilog -o tree_P4_L4_64_chunk MERGER_TREE_P4_L4_64_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
 	vvp tree_P4_L4_64_chunk
-	python clean_data.py out_P4_L4_64_chunk.txt;
+	python clean_data.py out_P4_L4_64_chunk.txt out.txt;
 	cat out.txt | uniq > data_P4_L4_512_chunk.txt;
 	iverilog -o tree_P4_L4_512_chunk MERGER_TREE_P4_L4_512_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
 	vvp tree_P4_L4_512_chunk

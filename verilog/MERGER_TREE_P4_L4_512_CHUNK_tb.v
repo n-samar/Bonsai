@@ -19,7 +19,7 @@ module merger_tree_tb;
    parameter LEAF_CNT = 2*L;
    parameter DATA_WIDTH = 32;
    parameter BURST_SIZE = 16;
-   parameter LEN_SEQ = 4*512;
+   parameter LEN_SEQ = 4104;
    integer 	  data_file;
    
    reg [31:0] 	  buffer_counter = 0;   
