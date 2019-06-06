@@ -18,8 +18,8 @@ module merger_tree_tb;
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
    parameter DATA_WIDTH = 32;
-   parameter BURST_SIZE = 20;
-   parameter LEN_SEQ = 160;
+   parameter BURST_SIZE = 16;
+   parameter LEN_SEQ = 4608;
    integer 	  data_file;
    
    reg [31:0] 	  buffer_counter = 0;   
@@ -101,7 +101,7 @@ module merger_tree_tb;
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_160_8_1.txt", data, 0, LEAF_CNT*LEN_SEQ);      
+      $readmemh("data_4096_9_1.txt", data, 0, LEAF_CNT*LEN_SEQ);      
    end
 
    integer l, z;
@@ -235,7 +235,7 @@ module merger_tree_tb;
    
    initial
      begin
-	$dumpfile("test_merger.vcd");
+	$dumpfile("test_merger_8_chunk.vcd");
 	$dumpvars(0, merger_tree_tb);
      end
    

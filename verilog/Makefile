@@ -14,7 +14,7 @@ datagen :
 	gcc -o datagen datagen.c
 
 chunk_data : datagen
-	./datagen 160 8 1 1; \
+	./datagen 4096 9 1 1; \
 	./datagen 40 64 1 1; \
 	./datagen 32 512 1 1; \
 	./datagen 32 4096 1 1;
@@ -431,7 +431,7 @@ test_tree_P32_L128 : compile_tree_P32_L128 filter_output_tree_P32_L128 out_no_ze
 test_coupler : compile_coupler filter_output_coupler out_no_zeros_1_128.txt ans_no_zeros_1_128.txt sim_coupler coupler
 	if [[ $$(diff -u out_no_zeros_1_128.txt ans_no_zeros_1_128.txt) ]]; then \
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST COUPLER' 1>&2; \
-	else \
+	else \	
 		echo 'SUCESS! coupler' 1>&2; \
 	fi
 
@@ -449,6 +449,22 @@ test_tree_P4_L4_512_chunk: chunk_data
 
 test_tree_P4_L4_4096_chunk: chunk_data
 	iverilog -o tree_P4_L4_4096_chunk MERGER_TREE_P4_L4_4096_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
+	vvp tree_P4_L4_4096_chunk
+
+test_tree_P4_L4_integrated: chunk_data
+	iverilog -o tree_P4_L4_8_chunk MERGER_TREE_P4_L4_8_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
+	iverilog -o tree_P4_L4_64_chunk MERGER_TREE_P4_L4_64_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
+	iverilog -o tree_P4_L4_512_chunk MERGER_TREE_P4_L4_512_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
+	iverilog -o tree_P4_L4_4096_chunk MERGER_TREE_P4_L4_4096_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
+	vvp tree_P4_L4_8_chunk
+	python clean_data.py out_P4_L4_8_chunk.txt out.txt;
+	cat out.txt | uniq > data_P4_L4_64_chunk.txt;
+	vvp tree_P4_L4_64_chunk
+	python clean_data.py out_P4_L4_64_chunk.txt;
+	cat out.txt | uniq > data_P4_L4_512_chunk.txt;
+	vvp tree_P4_L4_512_chunk
+	python clean_data.py out_P4_L4_512_chunk.txt out.txt;
+	cat out.txt | uniq > data_P4_L4_4096_chunk.txt
 	vvp tree_P4_L4_4096_chunk
 
 test_all : test_coupler test_merger_4 test_tree_P2_L8_global_reset test_tree_P2_L8 test_merger_2 test_tree_P1_L64_global_reset test_tree_P1_L64 test_tree_P1_L32_global_reset test_tree_P1_L32 test_tree_P1_L16_global_reset test_tree_P1_L16 data test_tree_P1_L8 test_tree_P1_L8_global_reset test_merger_1 

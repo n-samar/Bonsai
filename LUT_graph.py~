@@ -1,0 +1,42 @@
+import matplotlib.pyplot as plt
+
+plt.rcParams['font.family'] = 'serif'
+
+data_1 = {1: 300, 2: 978, 4: 2346, 8: 5107, 16: 10530, 32: 21420, 64: 43224, 128: 87365}
+L_1 = sorted(list(data_1.keys()))
+LUT_1 = sorted(list(data_1.values()))
+
+data_2 = {1: 622, 2: 1225, 4: 2890, 8: 5618, 16: 11025, 32: 21875, 64: 43765, 128: 86702}
+L_2 = sorted(list(data_2.keys()))
+LUT_2 = sorted(list(data_2.values()))
+
+data_4 = {1: 1555, 2: 3384, 4: 5139, 8: 7879, 16: 13394, 32: 24105, 64: 45763, 128: 89011}
+L_4 = sorted(list(data_4.keys()))
+LUT_4 = sorted(list(data_4.values()))
+
+data_8 = {1: 3620, 2: 7912, 4: 11427, 8: 15068, 16: 20308, 32: 31152, 64: 52978, 128: 96262}
+L_8 = sorted(list(data_8.keys()))
+LUT_8 = sorted(list(data_8.values()))
+
+data_16 = {1: 8500, 2: 17875, 4: 26050, 8: 33669, 16: 40239, 32: 51079, 64: 73275, 128: 115325}
+L_16 = sorted(list(data_16.keys()))
+LUT_16 = sorted(list(data_16.values()))
+
+data_32 = {1: 18853, 2: 39761, 4: 58483, 8: 75165, 16: 89480, 32: 103600, 64: 130000, 128: 169724}
+L_32 = sorted(list(data_32.keys()))
+LUT_32 = sorted(list(data_32.values()))
+
+fig, axs = plt.subplots();
+
+plt.xscale('log')
+axs.plot(L_1, LUT_1, '.-');
+axs.plot(L_2, LUT_2, '.-');
+axs.plot(L_4, LUT_4, '.-');
+axs.plot(L_8, LUT_8, '.-');
+axs.plot(L_16, LUT_16, '.-');
+axs.plot(L_32, LUT_32, '.-');
+plt.xlabel("number of leaves")
+plt.ylabel("LUTs")
+fig.suptitle('Merge Tree Resource Utilization')
+
+plt.show()

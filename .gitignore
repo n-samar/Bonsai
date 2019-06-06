@@ -2,3 +2,6 @@
 *.txt~
 *.vcd
 *.vcd~
+object
+merger*
+tree_*

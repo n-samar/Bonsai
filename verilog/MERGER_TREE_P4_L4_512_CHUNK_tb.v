@@ -101,7 +101,7 @@ module merger_tree_tb;
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_32_512_1.txt", data, 0, LEAF_CNT*LEN_SEQ);      
+      $readmemh("data_P4_L4_512_chunk.txt", data, 0, LEAF_CNT*LEN_SEQ);      
    end
 
    integer l, z;
@@ -235,7 +235,7 @@ module merger_tree_tb;
    
    initial
      begin
-	$dumpfile("test_merger.vcd");
+	$dumpfile("test_merger_512_chunk.vcd");
 	$dumpvars(0, merger_tree_tb);
      end
    
