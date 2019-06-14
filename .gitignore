@@ -1,3 +1,4 @@
+#*#
 *.txt
 *.txt~
 *.vcd
@@ -5,3 +6,4 @@
 object
 merger*
 tree_*
+P4_L4/*
