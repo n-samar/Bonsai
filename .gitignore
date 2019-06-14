@@ -1,4 +1,7 @@
 verilog/#*
+verilog/.#*
+verilog/*~
+*~
 *.txt
 *.txt~
 *.vcd

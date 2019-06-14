@@ -1,2 +1,0 @@
-module control();
-   reg [2:0] state
