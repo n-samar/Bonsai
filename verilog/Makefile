@@ -459,9 +459,9 @@ test_tree_P4_L4_4096_chunk: chunk_data
 	python clean_data.py out_P4_L4_4096_chunk.txt out.txt;
 	cat out.txt | uniq > result.txt
 	sort data_4096_9_1.txt | uniq > sort.txt
-	sed -i '/^$/d' sort.txt;
-	sed -i '/^00000000$/d' result.txt;
-	sed -i '/^00000000$/d' sort.txt;
+	sed -i '/^$$/d' sort.txt;
+	sed -i '/^00000000$$/d' result.txt;
+	sed -i '/^00000000$$/d' sort.txt;
 	if [[ $$(diff -u result.txt sort.txt) ]]; then \
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST 4096' 1>&2; \
 	else \
@@ -486,9 +486,9 @@ test_tree_P4_L4_integrated: chunk_data
 	python clean_data.py out_P4_L4_4096_chunk.txt out.txt;
 	cat out.txt | uniq > result.txt;
 	sort data_4096_9_1.txt | uniq > sort.txt
-	sed -i '/^$/d' sort.txt;
-	sed -i '/^00000000$/d' sort.txt;
-	sed -i '/^00000000$/d' result.txt;
+	sed -i '/^$$/d' sort.txt;
+	sed -i '/^00000000$$/d' sort.txt;
+	sed -i '/^00000000$$/d' result.txt;
 	if [[ $$(diff -u result.txt sort.txt) ]]; then \
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST 4096' 1>&2; \
 	else \
