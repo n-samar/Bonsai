@@ -456,6 +456,17 @@ test_tree_P4_L4_512_chunk: chunk_data
 test_tree_P4_L4_4096_chunk: chunk_data
 	iverilog -o tree_P4_L4_4096_chunk MERGER_TREE_P4_L4_4096_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
 	vvp tree_P4_L4_4096_chunk
+	python clean_data.py out_P4_L4_4096_chunk.txt out.txt;
+	cat out.txt | uniq > result.txt
+	sort data_4096_9_1.txt | uniq > sort.txt
+	sed -i '/^$/d' sort.txt;
+	sed -i '/^00000000$/d' result.txt;
+	sed -i '/^00000000$/d' sort.txt;
+	if [[ $$(diff -u result.txt sort.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST 4096' 1>&2; \
+	else \
+		echo 'SUCESS! TEST 4096' 1>&2; \
+	fi
 
 test_tree_P4_L4_integrated: chunk_data
 	iverilog -o tree_P4_L4_8_chunk MERGER_TREE_P4_L4_8_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
@@ -472,6 +483,17 @@ test_tree_P4_L4_integrated: chunk_data
 	cat out.txt | uniq > data_P4_L4_4096_chunk.txt
 	iverilog -o tree_P4_L4_4096_chunk MERGER_TREE_P4_L4_4096_CHUNK_tb.v MERGER_TREE_P4_L4.v MERGER.v MERGER_2.v MERGER_4.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v COUPLER.v FIFO.v CONTROL.v
 	vvp tree_P4_L4_4096_chunk
+	python clean_data.py out_P4_L4_4096_chunk.txt out.txt;
+	cat out.txt | uniq > result.txt;
+	sort data_4096_9_1.txt | uniq > sort.txt
+	sed -i '/^$/d' sort.txt;
+	sed -i '/^00000000$/d' sort.txt;
+	sed -i '/^00000000$/d' result.txt;
+	if [[ $$(diff -u result.txt sort.txt) ]]; then \
+		echo 'ERROR! OUTPUT MISMATCH FOR TEST 4096' 1>&2; \
+	else \
+		echo 'SUCESS! TEST 4096' 1>&2; \
+	fi
 
 test_all : test_coupler test_merger_4 test_tree_P2_L8_global_reset test_tree_P2_L8 test_merger_2 test_tree_P1_L64_global_reset test_tree_P1_L64 test_tree_P1_L32_global_reset test_tree_P1_L32 test_tree_P1_L16_global_reset test_tree_P1_L16 data test_tree_P1_L8 test_tree_P1_L8_global_reset test_merger_1 
 	echo "All tests run." 1>&2;

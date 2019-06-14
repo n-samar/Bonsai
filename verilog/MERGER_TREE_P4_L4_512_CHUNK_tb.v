@@ -155,7 +155,7 @@ module merger_tree_tb;
 				   data[0],
 				   data[0],
 				   data[0],
-				   data[0]};	       
+				   data[0]};	  
 	       end	       
 	    end 
 	    else begin
@@ -175,7 +175,7 @@ module merger_tree_tb;
    integer x;
    always @ (posedge clk) begin
       for(x=0; x<LEAF_CNT; x=x+1) begin
-	 if (~buffer_empty[x]) begin
+	 if (~buffer_empty[x] & ~(buffer_out[x][32*buffer_ptr[x]+31] === 1'bx)) begin
 	    in_fifo[x] <= {buffer_out[x][32*buffer_ptr[x]+31],
 			   buffer_out[x][32*buffer_ptr[x]+30],
 			   buffer_out[x][32*buffer_ptr[x]+29],
