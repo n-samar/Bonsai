@@ -7,8 +7,8 @@ LIST_INPUT_SIZE := 128
 clean :
 	rm -f *.txt datagen *.vcd *.txt~
 
-merger_1 : MERGER.v AUTO_tb.v BITONIC_NETWORK.v FIFO.v
-	iverilog -o merger FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  AUTO_tb.v
+merger_1 : MERGER.v MERGER_tb.v BITONIC_NETWORK.v FIFO.v
+	iverilog -o merger FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  MERGER_tb.v
 
 datagen :
 	gcc -o datagen datagen.c
@@ -62,8 +62,8 @@ data : datagen
 compile_coupler : data FIFO.v COUPLER.v COUPLER_tb.v
 	$(VERILOG) -o coupler FIFO.v COUPLER.v COUPLER_tb.v
 
-compile_merger_1 : data FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  AUTO_tb.v
-	$(VERILOG) -o merger_1 FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  AUTO_tb.v
+compile_merger_1 : data FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  MERGER_tb.v
+	$(VERILOG) -o merger_1 FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  MERGER_tb.v
 
 compile_merger_2 : data FIFO.v MERGER_2.v CONTROL.v BITONIC_NETWORK_4.v  MERGER_2_AUTO_tb.v
 	$(VERILOG) -o merger_2 FIFO.v MERGER_2.v CONTROL.v BITONIC_NETWORK_4.v  MERGER_2_AUTO_tb.v;
