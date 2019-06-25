@@ -1,0 +1,309 @@
+#-----------------------------------------------------------
+# Vivado v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:36:41 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Wed May 15 17:43:01 2019
+# Process ID: 26121
+# Current directory: /curr/dzonilakoni/research_helpers
+# Command line: vivado
+# Log file: /curr/dzonilakoni/research_helpers/vivado.log
+# Journal file: /curr/dzonilakoni/research_helpers/vivado.jou
+#-----------------------------------------------------------
+start_gui
+create_project merger_tree_P32_L128 /curr/dzonilakoni/research_helpers/merger_tree_P32_L128 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:28 ; elapsed = 00:00:15 . Memory (MB): peak = 6632.586 ; gain = 110.043 ; free physical = 55816 ; free virtual = 56762
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_32.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P32_L128.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Wed May 15 17:48:02 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L128/merger_tree_P32_L128.runs/synth_1/runme.log
+[Wed May 15 17:48:02 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L128/merger_tree_P32_L128.runs/impl_1/runme.log
+CRITICAL WARNING: [Common 17-1649] The Vivado message database '/curr/dzonilakoni/research_helpers/merger_tree_P32_L128/merger_tree_P32_L128.runs/synth_1/vivado.pb' contains 79800 messages. Restoring all messages from this message database will impact Vivado performance, so only WARNING, CRITICAL WARNING, and ERROR messages will be restored. To restore all messages from this file use the tcl command 'set_param messaging.loadPbLimit 79801' and re-open the project.
+open_run impl_1
+INFO: [Common 17-41] Interrupt caught. Command should exit soon.
+INFO: [Netlist 29-17] Analyzing 4228 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2018.3
+open_run: Time (s): cpu = 00:00:49 ; elapsed = 00:01:55 . Memory (MB): peak = 7609.480 ; gain = 877.020 ; free physical = 54864 ; free virtual = 56257
+INFO: [Common 17-344] 'open_run' was cancelled
+open_run impl_1
+INFO: [Netlist 29-17] Analyzing 4228 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2018.3
+INFO: [Device 21-403] Loading part xcvu9p-fsgd2104-2L-e
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Reading XDEF placement.
+Reading placer database...
+Reading XDEF routing.
+Read XDEF File: Time (s): cpu = 00:00:17 ; elapsed = 00:00:16 . Memory (MB): peak = 9616.875 ; gain = 241.383 ; free physical = 52314 ; free virtual = 53707
+Restored from archive | CPU: 17.560000 secs | Memory: 314.365257 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:17 ; elapsed = 00:00:16 . Memory (MB): peak = 9616.875 ; gain = 241.383 ; free physical = 52315 ; free virtual = 53709
+Netlist sorting complete. Time (s): cpu = 00:00:00.33 ; elapsed = 00:00:00.33 . Memory (MB): peak = 9616.875 ; gain = 0.000 ; free physical = 52388 ; free virtual = 53781
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+open_run: Time (s): cpu = 00:02:44 ; elapsed = 00:02:40 . Memory (MB): peak = 9957.723 ; gain = 2348.242 ; free physical = 51972 ; free virtual = 53366
+open_report: Time (s): cpu = 00:00:51 ; elapsed = 00:00:06 . Memory (MB): peak = 10165.465 ; gain = 196.668 ; free physical = 51435 ; free virtual = 52828
+CRITICAL WARNING: [Timing 38-282] The design failed to meet the timing requirements. Please see the timing summary report for details on the timing violations.
+report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose -max_paths 10 -input_pins -routable_nets -name timing_1
+INFO: [Timing 38-91] UpdateTimingParams: Speed grade: -2L, Temperature grade: E, Delay Type: min_max.
+INFO: [Timing 38-191] Multithreading enabled for timing update using a maximum of 8 CPUs
+WARNING: [Timing 38-242] The property HD.CLK_SRC of clock port "i_clk" is not set. In out-of-context mode, this prevents timing estimation for clock delay/skew
+Resolution: Set the HD.CLK_SRC property of the out-of-context port to the location of the clock buffer instance in the top-level design
+report_timing_summary: Time (s): cpu = 00:04:15 ; elapsed = 00:01:52 . Memory (MB): peak = 12667.555 ; gain = 2311.473 ; free physical = 49298 ; free virtual = 50692
+close_project
+close_project: Time (s): cpu = 00:00:30 ; elapsed = 00:00:27 . Memory (MB): peak = 12667.555 ; gain = 0.000 ; free physical = 50318 ; free virtual = 51714
+create_project merger_tree_P1_L32 /curr/dzonilakoni/research_helpers/merger_tree_P1_L32 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:09 . Memory (MB): peak = 12667.555 ; gain = 0.000 ; free physical = 50350 ; free virtual = 51746
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P1_L32.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Wed May 15 19:10:20 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P1_L32/merger_tree_P1_L32.runs/synth_1/runme.log
+[Wed May 15 19:10:20 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P1_L32/merger_tree_P1_L32.runs/impl_1/runme.log
+open_run impl_1
+INFO: [Netlist 29-17] Analyzing 378 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2018.3
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Reading XDEF placement.
+Reading placer database...
+Reading XDEF routing.
+Read XDEF File: Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 12667.555 ; gain = 0.000 ; free physical = 52869 ; free virtual = 54492
+Restored from archive | CPU: 2.030000 secs | Memory: 36.996979 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:02 ; elapsed = 00:00:02 . Memory (MB): peak = 12667.555 ; gain = 0.000 ; free physical = 52868 ; free virtual = 54492
+Netlist sorting complete. Time (s): cpu = 00:00:00.03 ; elapsed = 00:00:00.03 . Memory (MB): peak = 12667.555 ; gain = 0.000 ; free physical = 52866 ; free virtual = 54490
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+open_run: Time (s): cpu = 00:00:56 ; elapsed = 00:00:27 . Memory (MB): peak = 12732.098 ; gain = 64.543 ; free physical = 52521 ; free virtual = 54144
+close_project
+create_project merger_tree_P2_L2 /curr/dzonilakoni/research_helpers/merger_tree_P2_L2 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:15 ; elapsed = 00:00:09 . Memory (MB): peak = 13103.277 ; gain = 0.000 ; free physical = 50474 ; free virtual = 52109
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P2_L2.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Thu May 16 11:57:41 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P2_L2/merger_tree_P2_L2.runs/synth_1/runme.log
+[Thu May 16 11:57:41 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P2_L2/merger_tree_P2_L2.runs/impl_1/runme.log
+close_project
+create_project merger_tree_P2_L32 /curr/dzonilakoni/research_helpers/merger_tree_P2_L32 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:18 ; elapsed = 00:00:08 . Memory (MB): peak = 13103.277 ; gain = 0.000 ; free physical = 47315 ; free virtual = 48986
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P2_L32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Thu May 16 12:26:53 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P2_L32/merger_tree_P2_L32.runs/synth_1/runme.log
+[Thu May 16 12:26:53 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P2_L32/merger_tree_P2_L32.runs/impl_1/runme.log
+close_project
+create_project merger_tree_P4_L2 /curr/dzonilakoni/research_helpers/merger_tree_P4_L2 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:12 ; elapsed = 00:00:08 . Memory (MB): peak = 13103.277 ; gain = 0.000 ; free physical = 45907 ; free virtual = 47787
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P4_L2.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Thu May 16 12:54:02 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P4_L2/merger_tree_P4_L2.runs/synth_1/runme.log
+[Thu May 16 12:54:02 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P4_L2/merger_tree_P4_L2.runs/impl_1/runme.log
+close_project
+create_project merger_tree_P4_L16 /curr/dzonilakoni/research_helpers/merger_tree_P4_L16 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:14 ; elapsed = 00:00:09 . Memory (MB): peak = 13103.277 ; gain = 0.000 ; free physical = 49354 ; free virtual = 51543
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P4_L16.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Thu May 16 15:13:23 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P4_L16/merger_tree_P4_L16.runs/synth_1/runme.log
+[Thu May 16 15:13:23 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P4_L16/merger_tree_P4_L16.runs/impl_1/runme.log
+close_project
+create_project merger_tree_P8_L2 /curr/dzonilakoni/research_helpers/merger_tree_P8_L2 -part xc7vx485tffg1157-1
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:08 . Memory (MB): peak = 13103.277 ; gain = 0.000 ; free physical = 33760 ; free virtual = 36503
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P8_L2.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+export_ip_user_files -of_objects  [get_files /curr/dzonilakoni/research_helpers/verilog/MERGER.v] -no_script -reset -force -quiet
+remove_files  /curr/dzonilakoni/research_helpers/verilog/MERGER.v
+set_property top MERGER_TREE_P8_L2 [current_fileset]
+update_compile_order -fileset sources_1
+launch_runs impl_1 -jobs 28
+[Thu May 16 15:44:12 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L2/merger_tree_P8_L2.runs/synth_1/runme.log
+[Thu May 16 15:44:12 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L2/merger_tree_P8_L2.runs/impl_1/runme.log
+open_run impl_1
+INFO: [Netlist 29-17] Analyzing 468 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-479] Netlist was created with Vivado 2018.3
+INFO: [Device 21-403] Loading part xc7vx485tffg1157-1
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Timing 38-478] Restoring timing data from binary archive.
+INFO: [Timing 38-479] Binary timing data restore complete.
+INFO: [Project 1-856] Restoring constraints from binary archive.
+INFO: [Project 1-853] Binary constraint restore complete.
+Reading XDEF placement.
+Reading placer database...
+Reading XDEF routing.
+Read XDEF File: Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 13103.277 ; gain = 0.000 ; free physical = 44349 ; free virtual = 46818
+Restored from archive | CPU: 1.090000 secs | Memory: 16.920227 MB |
+Finished XDEF File Restore: Time (s): cpu = 00:00:01 ; elapsed = 00:00:01 . Memory (MB): peak = 13103.277 ; gain = 0.000 ; free physical = 44349 ; free virtual = 46818
+Netlist sorting complete. Time (s): cpu = 00:00:00.02 ; elapsed = 00:00:00.01 . Memory (MB): peak = 13103.277 ; gain = 0.000 ; free physical = 44367 ; free virtual = 46836
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+open_run: Time (s): cpu = 00:00:43 ; elapsed = 00:00:38 . Memory (MB): peak = 13161.305 ; gain = 58.027 ; free physical = 44093 ; free virtual = 46562
+CRITICAL WARNING: [Timing 38-282] The design failed to meet the timing requirements. Please see the timing summary report for details on the timing violations.
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+WARNING: [Project 1-153] The current project device 'xc7vx485tffg1157-1' does not match with the device on the 'XILINX.COM:VCU1525:PART0:1.2' board part. A device change to match the device on 'XILINX.COM:VCU1525:PART0:1.2' board part is being done. Please upgrade the IP in the project via the upgrade_ip command or by selecting Reports => Reports IP Status.
+INFO: [Project 1-152] Project part set to virtexuplus (xcvu9p-fsgd2104-2l-e)
+reset_property board_connections [get_projects merger_tree_P8_L2]
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+reset_property board_connections [get_projects merger_tree_P8_L2]
+reset_run synth_1
+launch_runs impl_1 -jobs 28
+[Thu May 16 16:02:29 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L2/merger_tree_P8_L2.runs/synth_1/runme.log
+[Thu May 16 16:02:29 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L2/merger_tree_P8_L2.runs/impl_1/runme.log
+close_project
+create_project merger_tree_P16_L2 /curr/dzonilakoni/research_helpers/merger_tree_P16_L2 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:06 ; elapsed = 00:00:08 . Memory (MB): peak = 13161.305 ; gain = 0.000 ; free physical = 26709 ; free virtual = 30150
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P16_L2.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+export_ip_user_files -of_objects  [get_files /curr/dzonilakoni/research_helpers/verilog/MERGER.v] -no_script -reset -force -quiet
+remove_files  /curr/dzonilakoni/research_helpers/verilog/MERGER.v
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+set_property top MERGER_TREE_P16_L2 [current_fileset]
+launch_runs impl_1 -jobs 28
+[Thu May 16 18:28:28 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P16_L2/merger_tree_P16_L2.runs/synth_1/runme.log
+[Thu May 16 18:28:28 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P16_L2/merger_tree_P16_L2.runs/impl_1/runme.log
+close_project
+create_project merger_tree_P16_L8 /curr/dzonilakoni/research_helpers/merger_tree_P16_L8 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:11 ; elapsed = 00:00:09 . Memory (MB): peak = 13161.305 ; gain = 0.000 ; free physical = 42307 ; free virtual = 45640
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P16_L8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Thu May 16 19:11:09 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P16_L8/merger_tree_P16_L8.runs/synth_1/runme.log
+[Thu May 16 19:11:09 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P16_L8/merger_tree_P16_L8.runs/impl_1/runme.log
+close_project
+create_project merger_tree_P32_L2 /curr/dzonilakoni/research_helpers/merger_tree_P32_L2 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:16 ; elapsed = 00:00:10 . Memory (MB): peak = 13161.305 ; gain = 0.000 ; free physical = 29569 ; free virtual = 32559
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_32.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P32_L2.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Thu May 16 19:48:11 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L2/merger_tree_P32_L2.runs/synth_1/runme.log
+[Thu May 16 19:48:11 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L2/merger_tree_P32_L2.runs/impl_1/runme.log
+close_project
+create_project merger_tree_P32_L16 /curr/dzonilakoni/research_helpers/merger_tree_P32_L16 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:08 . Memory (MB): peak = 13161.305 ; gain = 0.000 ; free physical = 22403 ; free virtual = 24205
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P32_L16.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Thu May 16 20:39:03 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L16/merger_tree_P32_L16.runs/synth_1/runme.log
+[Thu May 16 20:39:03 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L16/merger_tree_P32_L16.runs/impl_1/runme.log
+export_ip_user_files -of_objects  [get_files /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v] -no_script -reset -force -quiet
+remove_files  /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v
+update_compile_order -fileset sources_1
+set_property top MERGER_TREE_P16_L16 [current_fileset]
+reset_run synth_1
+launch_runs impl_1 -jobs 28
+[Thu May 16 20:59:56 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L16/merger_tree_P32_L16.runs/synth_1/runme.log
+[Thu May 16 20:59:56 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L16/merger_tree_P32_L16.runs/impl_1/runme.log
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_32.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v}
+update_compile_order -fileset sources_1
+reset_run synth_1
+launch_runs impl_1 -jobs 28
+[Thu May 16 21:03:11 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L16/merger_tree_P32_L16.runs/synth_1/runme.log
+[Thu May 16 21:03:11 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L16/merger_tree_P32_L16.runs/impl_1/runme.log
+CRITICAL WARNING: [Common 17-1649] The Vivado message database '/curr/dzonilakoni/research_helpers/merger_tree_P32_L16/merger_tree_P32_L16.runs/synth_1/vivado.pb' contains 32593 messages. Restoring all messages from this message database will impact Vivado performance, so only WARNING, CRITICAL WARNING, and ERROR messages will be restored. To restore all messages from this file use the tcl command 'set_param messaging.loadPbLimit 32594' and re-open the project.
