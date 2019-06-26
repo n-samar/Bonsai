@@ -25,14 +25,13 @@ module CONTROL(input i_clk,
    reg                ready;
    
 
-   always @(negedge i_clk) begin
-      new_state = (state == TOGGLE) ? (((~i_a_min_zero & ~i_b_min_zero) ? NOMINAL : TOGGLE)) :
+   always @(*) begin
+      new_state <= (state == TOGGLE) ? (((~i_a_min_zero & ~i_b_min_zero) ? NOMINAL : TOGGLE)) :
 		      (state == DONE_A) ? ((i_b_min_zero ? TOGGLE : DONE_A)) :
 		      (state == DONE_B) ? ((i_a_min_zero ? TOGGLE : DONE_B)) :
 		      (state == NOMINAL) ? (i_a_min_zero ? DONE_A :
 					    (i_b_min_zero ? DONE_B : NOMINAL)) :
 		      FINISHED;
-      ready = ~ready;
    end
    
    assign stall = (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty) | (state == TOGGLE & (i_a_empty | ~i_a_min_zero) & (i_b_empty | ~i_b_min_zero) & (i_a_min_zero | i_b_min_zero));
@@ -45,7 +44,7 @@ module CONTROL(input i_clk,
 	switch_output <= 1'b0;
      end
 
-   always @(ready) begin
+   always @(negedge i_clk) begin
       if (~stall) begin
 	     state <= new_state;
 	     switch_output <= (new_state == TOGGLE & state != TOGGLE);
