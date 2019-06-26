@@ -1,0 +1,1475 @@
+/*
+
+Xilinx Vivado v2018.3 (64-bit) [Major: 2018, Minor: 3]
+SW Build: 2405991 on Thu Dec  6 23:36:41 MST 2018
+IP Build: 2404404 on Fri Dec  7 01:43:56 MST 2018
+
+Process ID (PID): 40133
+License: Customer
+
+Current time: 	Thu May 16 12:31:25 PDT 2019
+Time zone: 	Pacific Standard Time (America/Los_Angeles)
+
+OS: Ubuntu
+OS Version: 4.4.0-140-generic
+OS Architecture: amd64
+Available processors (cores): 56
+
+Display: localhost:11.0
+Screen size: 1920x1080
+Screen resolution (DPI): 96
+Available screens: 2
+Available disk space: 983 GB
+Default font: family=Dialog,name=Dialog,style=plain,size=12
+
+Java version: 	9.0.4 64-bit
+Java home: 	/opt/tools/xilinx/Vivado/2018.3/tps/lnx64/jre9.0.4
+Java executable location: 	/opt/tools/xilinx/Vivado/2018.3/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	128 MB
+Java maximum memory (-Xmx):	 3 GB
+
+
+User name: 	dzonilakoni
+User home directory: /curr/dzonilakoni
+User working directory: /curr/dzonilakoni/research_helpers
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /opt/tools/xilinx/Vivado
+HDI_APPROOT: /opt/tools/xilinx/Vivado/2018.3
+RDI_DATADIR: /opt/tools/xilinx/Vivado/2018.3/data
+RDI_BINDIR: /opt/tools/xilinx/Vivado/2018.3/bin
+
+Vivado preferences file location: /curr/dzonilakoni/.Xilinx/Vivado/2018.3/vivado.xml
+Vivado preferences directory: /curr/dzonilakoni/.Xilinx/Vivado/2018.3/
+Vivado layouts directory: /curr/dzonilakoni/.Xilinx/Vivado/2018.3/layouts
+PlanAhead jar file location: 	/opt/tools/xilinx/Vivado/2018.3/lib/classes/planAhead.jar
+Vivado log file location: 	/curr/dzonilakoni/research_helpers/vivado.log
+Vivado journal file location: 	/curr/dzonilakoni/research_helpers/vivado.jou
+Engine tmp dir: 	./.Xil/Vivado-40133-u7-dzonilakoni
+
+Xilinx Environment Variables
+----------------------------
+XILINX: /opt/tools/xilinx/Vivado/2018.3/ids_lite/ISE
+XILINXD_LICENSE_FILE: 10004@trumpet
+XILINX_DSP: /opt/tools/xilinx/Vivado/2018.3/ids_lite/ISE
+XILINX_PLANAHEAD: /opt/tools/xilinx/Vivado/2018.3
+XILINX_SDK: /opt/tools/xilinx/SDK/2018.3
+XILINX_SDX: /opt/tools/xilinx/SDx/2018.3
+XILINX_VIVADO: /opt/tools/xilinx/Vivado/2018.3
+XILINX_VIVADO_HLS: /opt/tools/xilinx/Vivado/2018.3
+XILINX_XRT: /opt/xilinx/xrt
+
+
+GUI allocated memory:	170 MB
+GUI max memory:		3,072 MB
+Engine allocated memory: 5,236 MB
+
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+// TclEventType: START_GUI
+// Tcl Message: start_gui 
+// HMemoryUtils.trashcanNow. Engine heap size: 5,241 MB. GUI used memory: 39 MB. Current time: 5/16/19, 12:31:27 PM PDT
+selectButton(PAResourceEtoH.GettingStartedView_CREATE_NEW_PROJECT, "Create Project"); // x (w, cp)
+// Run Command: PAResourceCommand.PACommandNames_NEW_PROJECT
+// [GUI Memory]: 56 MB (+56457kb) [00:00:30]
+// [Engine Memory]: 5,243 MB (+5346400kb) [00:00:30]
+// [GUI Memory]: 76 MB (+17695kb) [00:00:33]
+// [GUI Memory]: 93 MB (+14122kb) [00:00:34]
+// f (cp): New Project: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  3251 ms.
+// Elapsed time: 10 seconds
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// Elapsed time: 10 seconds
+setText(PAResourceOtoP.ProjectNameChooser_PROJECT_NAME, "merger_tree_P2_L64"); // Y (Q, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  3958 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 5,266 MB. GUI used memory: 48 MB. Current time: 5/16/19, 12:32:09 PM PDT
+// Elapsed time: 30 seconds
+String[] filenames31467 = {"/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v", "/curr/dzonilakoni/research_helpers/verilog/CONTROL.v", "/curr/dzonilakoni/research_helpers/verilog/COUPLER.v", "/curr/dzonilakoni/research_helpers/verilog/FIFO.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_2.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P2_L64.v"};
+setFileChooser(filenames31467);
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceAtoD.ConstraintsChooserPanel_ADD_FILES, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  3752 ms.
+setFileChooser("/curr/dzonilakoni/constraints.xdc");
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  2563 ms.
+selectTab(PAResourceOtoP.PartChooser_TABBED_PANE, (HResource) null, "Boards", 1); // i (T, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  1556 ms.
+setText("PAResourceAtoD.BoardChooser_BOARD_TABLE_SEARCH_FIELD", "vcu"); // OverlayTextField (I, f)
+selectTable(PAResourceAtoD.BoardChooser_BOARD_TABLE, "Virtex UltraScale+ VCU1525 Acceleration Development Board ; Virtex UltraScale+ VCU1525 Acceleration Development Board ; xilinx.com ; 1.2 ; xcvu9p-fsgd2104-2L-e ; 2104 ; 1.0 ; 676 ; 1182240 ; 2364480 ; 2160 ; 960 ; 6840 ; 76 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 76 ; 6 ; 30 ; 0 ; 100 ; 100 ; E ; 0.825 ; 0.850 ; 0.876", 3, "Virtex UltraScale+ VCU1525 Acceleration Development Board", 0); // e (Q, f)
+// HOptionPane Error: 'Default HTML viewers not found in path (Open HTML)'
+selectButton("PAResourceOtoP.PAEnvUtils_OPEN_HTML_OK", "OK"); // JButton (C, J)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// bx (f):  Create Project : addNotify
+// TclEventType: DEBUG_PROBE_SET_CHANGE
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_ADD
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: create_project merger_tree_P2_L64 /curr/dzonilakoni/research_helpers/merger_tree_P2_L64 -part xcvu9p-fsgd2104-2L-e 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'. 
+// TclEventType: PROJECT_NEW
+// [GUI Memory]: 111 MB (+13514kb) [00:02:04]
+// WARNING: HEventQueue.dispatchEvent() is taking  5325 ms.
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// HMemoryUtils.trashcanNow. Engine heap size: 5,340 MB. GUI used memory: 51 MB. Current time: 5/16/19, 12:33:11 PM PDT
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: create_project: Time (s): cpu = 00:00:29 ; elapsed = 00:00:17 . Memory (MB): peak = 6599.293 ; gain = 75.988 ; free physical = 46459 ; free virtual = 48188 
+// TclEventType: BOARD_MODIFIED
+// Tcl Message: set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project] 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P2_L64.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v} 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc 
+// Elapsed time: 19 seconds
+selectButton("FINISH", "Finish"); // JButton (j, f)
+// 'g' command handler elapsed time: 102 seconds
+dismissDialog("Create Project"); // bx (f)
+dismissDialog("New Project"); // f (cp)
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 941ms to process. Increasing delay to 3000 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1132ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1133 ms.
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 859ms to process. Increasing delay to 5000 ms.
+// Elapsed time: 28 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false, false, false, false, true, false); // u (Q, cp) - Popup Trigger
+// WARNING: HEventQueue.dispatchEvent() is taking  2163 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 5,391 MB. GUI used memory: 54 MB. Current time: 5/16/19, 12:33:48 PM PDT
+selectMenuItem(PAResourceCommand.PACommandNames_SYNTH_SETTINGS, "Synthesis Settings..."); // af (al, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_SYNTH_SETTINGS
+// Tcl Command: 'rdi::info_commands {device::*}'
+// Tcl Command: 'rdi::info_commands {debug::*}'
+// Tcl Command: 'rdi::info_commands {*}'
+// F (cp): Settings: addNotify
+// 'dy' command handler elapsed time: 7 seconds
+// WARNING: HEventQueue.dispatchEvent() is taking  7167 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1404 ms.
+// [GUI Memory]: 117 MB (+302kb) [00:03:00]
+// [GUI Memory]: 125 MB (+2247kb) [00:03:00]
+// [GUI Memory]: 133 MB (+2357kb) [00:03:00]
+// [GUI Memory]: 142 MB (+1901kb) [00:03:00]
+// [GUI Memory]: 152 MB (+3053kb) [00:03:02]
+// [GUI Memory]: 162 MB (+2493kb) [00:03:04]
+// Elapsed time: 19 seconds
+selectButton(RDIResource.BaseDialog_APPLY, "Apply"); // a (F)
+// [GUI Memory]: 175 MB (+5366kb) [00:03:06]
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_OPTIONS_MODIFIED
+// Tcl Message: set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1] 
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (F)
+// [GUI Memory]: 192 MB (+9216kb) [00:03:09]
+dismissDialog("Settings"); // F (cp)
+selectButton(PAResourceItoN.MainToolbarMgr_RUN, (String) null); // az (f, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1513 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION, "Run Implementation"); // af (cp)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// f (cp): Launch Runs: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  3632 ms.
+selectButton("PAResourceQtoS.RunImplementation_THERE_NO_NETLIST_AVAILABLE_OK_OK", "OK"); // JButton (C, I)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// bx (cp):  Starting Design Runs : addNotify
+dismissDialog("Launch Runs"); // f (cp)
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 28 
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Thu May 16 12:34:36 2019] Launched synth_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P2_L64/merger_tree_P2_L64.runs/synth_1/runme.log [Thu May 16 12:34:36 2019] Launched impl_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P2_L64/merger_tree_P2_L64.runs/impl_1/runme.log 
+// 'c' command handler elapsed time: 13 seconds
+dismissDialog("Starting Design Runs"); // bx (cp)
+// [GUI Memory]: 221 MB (+19941kb) [00:11:12]
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 1414 ms. Increasing delay to 4242 ms.
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STEP_COMPLETED
+// Elapsed time: 659 seconds
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "FF", 11); // ax (Q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1310 ms.
+// TclEventType: RUN_COMPLETED
+// WARNING: HTimer (ExpRunMgr Pending Runs Timer) is taking 1301ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1301 ms.
+// ah (cp): Implementation Completed: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  3104 ms.
+// Elapsed time: 997 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cp)
+// HMemoryUtils.trashcanNow. Engine heap size: 5,410 MB. GUI used memory: 123 MB. Current time: 5/16/19, 1:03:53 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 5,410 MB. GUI used memory: 112 MB. Current time: 5/16/19, 1:33:53 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 5,410 MB. GUI used memory: 110 MB. Current time: 5/16/19, 2:03:53 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 5,410 MB. GUI used memory: 110 MB. Current time: 5/16/19, 2:33:53 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 5,410 MB. GUI used memory: 110 MB. Current time: 5/16/19, 3:03:53 PM PDT
+// WARNING: HEventQueue.dispatchEvent() is taking  2033 ms.
+// Elapsed time: 8423 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ac (cp)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ac (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1837 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_NEW_PROJECT, "New..."); // af (cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// Run Command: PAResourceCommand.PACommandNames_NEW_PROJECT
+// f (cp): New Project: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  4093 ms.
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// Elapsed time: 16 seconds
+setText(PAResourceOtoP.ProjectNameChooser_PROJECT_NAME, "merger_tree_P4_L64"); // Y (Q, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// Elapsed time: 30 seconds
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  7538 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 5,430 MB. GUI used memory: 114 MB. Current time: 5/16/19, 3:23:45 PM PDT
+// Elapsed time: 36 seconds
+String[] filenames16706 = {"/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v", "/curr/dzonilakoni/research_helpers/verilog/CONTROL.v", "/curr/dzonilakoni/research_helpers/verilog/COUPLER.v", "/curr/dzonilakoni/research_helpers/verilog/FIFO.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_2.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P4_L64.v"};
+setFileChooser(filenames16706);
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceAtoD.ConstraintsChooserPanel_ADD_FILES, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  4826 ms.
+// Elapsed time: 12 seconds
+setFileChooser("/curr/dzonilakoni/constraints.xdc");
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  2511 ms.
+selectTab(PAResourceOtoP.PartChooser_TABBED_PANE, (HResource) null, "Boards", 1); // i (T, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  1666 ms.
+setText("PAResourceAtoD.BoardChooser_BOARD_TABLE_SEARCH_FIELD", "vcu"); // OverlayTextField (I, f)
+selectTable(PAResourceAtoD.BoardChooser_BOARD_TABLE, "Virtex UltraScale+ VCU1525 Acceleration Development Board ; Virtex UltraScale+ VCU1525 Acceleration Development Board ; xilinx.com ; 1.2 ; xcvu9p-fsgd2104-2L-e ; 2104 ; 1.0 ; 676 ; 1182240 ; 2364480 ; 2160 ; 960 ; 6840 ; 76 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 76 ; 6 ; 30 ; 0 ; 100 ; 100 ; E ; 0.825 ; 0.850 ; 0.876", 3, "Virtex UltraScale+ VCU1525 Acceleration Development Board", 0); // e (Q, f)
+// HOptionPane Error: 'Default HTML viewers not found in path (Open HTML)'
+// WARNING: HEventQueue.dispatchEvent() is taking  1074 ms.
+selectButton("PAResourceOtoP.PAEnvUtils_OPEN_HTML_OK", "OK"); // JButton (C, J)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  1126 ms.
+// TclEventType: PROJECT_CLOSE
+// HMemoryUtils.trashcanNow. Engine heap size: 5,397 MB. GUI used memory: 106 MB. Current time: 5/16/19, 3:24:48 PM PDT
+// bx (f):  Create Project : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1978 ms.
+selectButton("PAResourceItoN.NewProjectWizard_WOULD_YOU_LIKE_TO_CLOSE_CURRENTLY_Yes", "Yes"); // JButton (C, J)
+// Tcl Message: close_project 
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_ADD
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: create_project merger_tree_P4_L64 /curr/dzonilakoni/research_helpers/merger_tree_P4_L64 -part xcvu9p-fsgd2104-2L-e 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'. 
+// TclEventType: PROJECT_NEW
+// WARNING: HEventQueue.dispatchEvent() is taking  3315 ms.
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: create_project: Time (s): cpu = 00:00:15 ; elapsed = 00:00:08 . Memory (MB): peak = 6806.730 ; gain = 0.000 ; free physical = 38211 ; free virtual = 40585 
+// TclEventType: BOARD_MODIFIED
+// Tcl Message: set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project] 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P4_L64.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v} 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc 
+selectButton("FINISH", "Finish"); // JButton (j, f)
+// 'g' command handler elapsed time: 136 seconds
+dismissDialog("Create Project"); // bx (f)
+dismissDialog("New Project"); // f (cp)
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1047ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1047 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2281 ms.
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false, false, false, false, true, false); // u (Q, cp) - Popup Trigger
+// WARNING: HEventQueue.dispatchEvent() is taking  1849 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_SYNTH_SETTINGS, "Synthesis Settings..."); // af (al, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_SYNTH_SETTINGS
+// F (cp): Settings: addNotify
+// 'dy' command handler elapsed time: 5 seconds
+// WARNING: HEventQueue.dispatchEvent() is taking  5961 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1092ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1092 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1021 ms.
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1102ms to process. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1102 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 5,479 MB. GUI used memory: 99 MB. Current time: 5/16/19, 3:25:23 PM PDT
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1090ms to process. Increasing delay to 6000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1090 ms.
+// Elapsed time: 16 seconds
+selectButton(RDIResource.BaseDialog_APPLY, "Apply"); // a (F)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_OPTIONS_MODIFIED
+// Tcl Message: set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1] 
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (F)
+dismissDialog("Settings"); // F (cp)
+selectButton(PAResourceItoN.MainToolbarMgr_RUN, (String) null); // az (f, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2065 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION, "Run Implementation"); // af (cp)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// f (cp): Launch Runs: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  4027 ms.
+selectButton("PAResourceQtoS.RunImplementation_THERE_NO_NETLIST_AVAILABLE_OK_OK", "OK"); // JButton (C, I)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// bx (cp):  Starting Design Runs : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1135 ms.
+dismissDialog("Launch Runs"); // f (cp)
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 28 
+// Tcl Message: [Thu May 16 15:25:43 2019] Launched synth_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P4_L64/merger_tree_P4_L64.runs/synth_1/runme.log [Thu May 16 15:25:43 2019] Launched impl_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P4_L64/merger_tree_P4_L64.runs/impl_1/runme.log 
+// 'c' command handler elapsed time: 10 seconds
+dismissDialog("Starting Design Runs"); // bx (cp)
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STEP_COMPLETED
+// WARNING: HEventQueue.dispatchEvent() is taking  1786 ms.
+// Elapsed time: 1297 seconds
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "LUT", 10); // ax (Q, cp)
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "LUT", 10); // ax (Q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1910 ms.
+// Elapsed time: 37 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// Elapsed time: 19 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_TEXT_EDITOR, "Text Editor"); // ac (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1654 ms.
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// TclEventType: RUN_COMPLETED
+// WARNING: HTimer (ExpRunMgr Pending Runs Timer) is taking 1574ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1575 ms.
+// ah (cp): Implementation Completed: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  4102 ms.
+// Elapsed time: 394 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cp)
+// HMemoryUtils.trashcanNow. Engine heap size: 5,487 MB. GUI used memory: 111 MB. Current time: 5/16/19, 3:55:28 PM PDT
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 1716 ms. Increasing delay to 5148 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1472 ms.
+// Elapsed time: 672 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ac (cp)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ac (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1411 ms.
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ac (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1492 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_NEW_PROJECT, "New..."); // af (cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// Run Command: PAResourceCommand.PACommandNames_NEW_PROJECT
+// f (cp): New Project: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  3180 ms.
+// 'g' command handler elapsed time: 31 seconds
+// Elapsed time: 31 seconds
+dismissDialog("New Project"); // f (cp)
+// HMemoryUtils.trashcanNow. Engine heap size: 5,487 MB. GUI used memory: 109 MB. Current time: 5/16/19, 4:25:28 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 5,487 MB. GUI used memory: 106 MB. Current time: 5/16/19, 4:55:28 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 5,487 MB. GUI used memory: 106 MB. Current time: 5/16/19, 5:25:28 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 5,487 MB. GUI used memory: 110 MB. Current time: 5/16/19, 5:55:28 PM PDT
+// Elapsed time: 7123 seconds
+selectButton(PAResourceItoN.MainToolbarMgr_RUN, (String) null); // az (f, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1890 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION, "Run Implementation"); // af (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1731 ms.
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ac (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1782 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_NEW_PROJECT, "New..."); // af (cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// Run Command: PAResourceCommand.PACommandNames_NEW_PROJECT
+// f (cp): New Project: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  3713 ms.
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// Elapsed time: 18 seconds
+setText(PAResourceOtoP.ProjectNameChooser_PROJECT_NAME, "merger_tree_P8_L64"); // Y (Q, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  4840 ms.
+// [Engine Memory]: 5,507 MB (+2035kb) [05:35:10]
+// HMemoryUtils.trashcanNow. Engine heap size: 5,507 MB. GUI used memory: 115 MB. Current time: 5/16/19, 6:06:15 PM PDT
+// Elapsed time: 23 seconds
+String[] filenames29306 = {"/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v", "/curr/dzonilakoni/research_helpers/verilog/CONTROL.v", "/curr/dzonilakoni/research_helpers/verilog/COUPLER.v", "/curr/dzonilakoni/research_helpers/verilog/FIFO.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_2.v"};
+setFileChooser(filenames29306);
+selectTableHeader(PAResourceQtoS.SrcChooserTable_SRC_CHOOSER_TABLE, "Index", 1, false, true, false, false, false); // bQ (Q, f) - Control Key
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  4793 ms.
+// Elapsed time: 27 seconds
+String[] filenames17995 = {"/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_8.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P8_L64.v"};
+setFileChooser(filenames17995);
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceAtoD.ConstraintsChooserPanel_ADD_FILES, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  4593 ms.
+// Elapsed time: 11 seconds
+setFileChooser("/curr/dzonilakoni/constraints.xdc");
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  2531 ms.
+selectTab(PAResourceOtoP.PartChooser_TABBED_PANE, (HResource) null, "Boards", 1); // i (T, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  1571 ms.
+setText("PAResourceAtoD.BoardChooser_BOARD_TABLE_SEARCH_FIELD", "vcu"); // OverlayTextField (I, f)
+selectTable(PAResourceAtoD.BoardChooser_BOARD_TABLE, "Virtex UltraScale+ VCU1525 Acceleration Development Board ; Virtex UltraScale+ VCU1525 Acceleration Development Board ; xilinx.com ; 1.2 ; xcvu9p-fsgd2104-2L-e ; 2104 ; 1.0 ; 676 ; 1182240 ; 2364480 ; 2160 ; 960 ; 6840 ; 76 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 76 ; 6 ; 30 ; 0 ; 100 ; 100 ; E ; 0.825 ; 0.850 ; 0.876", 3, "Virtex UltraScale+ VCU1525 Acceleration Development Board", 0); // e (Q, f)
+// HOptionPane Error: 'Default HTML viewers not found in path (Open HTML)'
+// WARNING: HEventQueue.dispatchEvent() is taking  1322 ms.
+selectButton("PAResourceOtoP.PAEnvUtils_OPEN_HTML_OK", "OK"); // JButton (C, J)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  1182 ms.
+// TclEventType: PROJECT_CLOSE
+// HMemoryUtils.trashcanNow. Engine heap size: 5,469 MB. GUI used memory: 105 MB. Current time: 5/16/19, 6:07:41 PM PDT
+// bx (f):  Create Project : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2571 ms.
+selectButton("PAResourceItoN.NewProjectWizard_WOULD_YOU_LIKE_TO_CLOSE_CURRENTLY_Yes", "Yes"); // JButton (C, J)
+// Tcl Message: close_project 
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_ADD
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: create_project merger_tree_P8_L64 /curr/dzonilakoni/research_helpers/merger_tree_P8_L64 -part xcvu9p-fsgd2104-2L-e 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'. 
+// TclEventType: PROJECT_NEW
+// WARNING: HEventQueue.dispatchEvent() is taking  3536 ms.
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: create_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:08 . Memory (MB): peak = 6888.914 ; gain = 0.000 ; free physical = 37494 ; free virtual = 40376 
+// TclEventType: BOARD_MODIFIED
+// Tcl Message: set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project] 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P8_L64.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v} 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc 
+selectButton("FINISH", "Finish"); // JButton (j, f)
+// 'g' command handler elapsed time: 128 seconds
+dismissDialog("Create Project"); // bx (f)
+dismissDialog("New Project"); // f (cp)
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 975ms to process. Increasing delay to 3000 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 990ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2233 ms.
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// Elapsed time: 11 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false, false, false, false, true, false); // u (Q, cp) - Popup Trigger
+// WARNING: HEventQueue.dispatchEvent() is taking  2056 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_SYNTH_SETTINGS, "Synthesis Settings..."); // af (al, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_SYNTH_SETTINGS
+// F (cp): Settings: addNotify
+// 'dy' command handler elapsed time: 5 seconds
+// WARNING: HEventQueue.dispatchEvent() is taking  5502 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 864ms to process. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1143 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1106ms to process. Increasing delay to 6000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1106 ms.
+// [GUI Memory]: 233 MB (+510kb) [05:37:17]
+// Elapsed time: 16 seconds
+selectButton(RDIResource.BaseDialog_APPLY, "Apply"); // a (F)
+// [GUI Memory]: 245 MB (+343kb) [05:37:18]
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_OPTIONS_MODIFIED
+// Tcl Message: set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1] 
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (F)
+dismissDialog("Settings"); // F (cp)
+selectButton(PAResourceItoN.MainToolbarMgr_RUN, (String) null); // az (f, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2041 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION, "Run Implementation"); // af (cp)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// WARNING: HEventQueue.dispatchEvent() is taking  1302 ms.
+// f (cp): Launch Runs: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  5162 ms.
+selectButton("PAResourceQtoS.RunImplementation_THERE_NO_NETLIST_AVAILABLE_OK_OK", "OK"); // JButton (C, I)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// bx (cp):  Starting Design Runs : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1121 ms.
+dismissDialog("Launch Runs"); // f (cp)
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// [GUI Memory]: 257 MB (+22kb) [05:37:38]
+// Tcl Message: launch_runs impl_1 -jobs 28 
+// Tcl Message: [Thu May 16 18:08:42 2019] Launched synth_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L64/merger_tree_P8_L64.runs/synth_1/runme.log [Thu May 16 18:08:42 2019] Launched impl_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L64/merger_tree_P8_L64.runs/impl_1/runme.log 
+// 'c' command handler elapsed time: 11 seconds
+dismissDialog("Starting Design Runs"); // bx (cp)
+// WARNING: HTimer (ExpRunMonitor Update Timer) is taking 507ms to process. Increasing delay to 3000 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 1631 ms. Increasing delay to 4893 ms.
+// [GUI Memory]: 272 MB (+2699kb) [05:46:44]
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STEP_COMPLETED
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1072 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1111 ms.
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// WARNING: HEventQueue.dispatchEvent() is taking  1031 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1109 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 5,526 MB. GUI used memory: 154 MB. Current time: 5/16/19, 6:37:43 PM PDT
+// TclEventType: RUN_COMPLETED
+// WARNING: HTimer (ExpRunMgr Pending Runs Timer) is taking 1071ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1072 ms.
+// ah (cp): Implementation Completed: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  3518 ms.
+// Elapsed time: 1989 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cp)
+// HMemoryUtils.trashcanNow. Engine heap size: 5,526 MB. GUI used memory: 151 MB. Current time: 5/16/19, 7:07:43 PM PDT
+// WARNING: HEventQueue.dispatchEvent() is taking  2750 ms.
+// Elapsed time: 2089 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ac (cp)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ac (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2609 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_NEW_PROJECT, "New..."); // af (cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// Run Command: PAResourceCommand.PACommandNames_NEW_PROJECT
+// f (cp): New Project: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  4268 ms.
+selectButton("NEXT", "Next >"); // JButton (j, f)
+setText(PAResourceOtoP.ProjectNameChooser_PROJECT_NAME, "merger_tree_P16_L16"); // Y (Q, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  6436 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 5,541 MB. GUI used memory: 152 MB. Current time: 5/16/19, 7:17:14 PM PDT
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 618ms to process. Increasing delay to 2000 ms.
+// Elapsed time: 29 seconds
+String[] filenames2600 = {"/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v", "/curr/dzonilakoni/research_helpers/verilog/CONTROL.v", "/curr/dzonilakoni/research_helpers/verilog/COUPLER.v", "/curr/dzonilakoni/research_helpers/verilog/FIFO.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_16.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_2.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_8.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P16_L16.v"};
+setFileChooser(filenames2600);
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceAtoD.ConstraintsChooserPanel_ADD_FILES, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  4802 ms.
+setFileChooser("/curr/dzonilakoni/constraints.xdc");
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  2358 ms.
+selectTab(PAResourceOtoP.PartChooser_TABBED_PANE, (HResource) null, "Boards", 1); // i (T, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  1534 ms.
+setText("PAResourceAtoD.BoardChooser_BOARD_TABLE_SEARCH_FIELD", "vcu"); // OverlayTextField (I, f)
+selectTable(PAResourceAtoD.BoardChooser_BOARD_TABLE, "Virtex UltraScale+ VCU1525 Acceleration Development Board ; Virtex UltraScale+ VCU1525 Acceleration Development Board ; xilinx.com ; 1.2 ; xcvu9p-fsgd2104-2L-e ; 2104 ; 1.0 ; 676 ; 1182240 ; 2364480 ; 2160 ; 960 ; 6840 ; 76 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 76 ; 6 ; 30 ; 0 ; 100 ; 100 ; E ; 0.825 ; 0.850 ; 0.876", 3, "Virtex UltraScale+ VCU1525 Acceleration Development Board", 0); // e (Q, f)
+// HOptionPane Error: 'Default HTML viewers not found in path (Open HTML)'
+// WARNING: HEventQueue.dispatchEvent() is taking  1227 ms.
+selectButton("PAResourceOtoP.PAEnvUtils_OPEN_HTML_OK", "OK"); // JButton (C, J)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  2043 ms.
+// TclEventType: PROJECT_CLOSE
+// HMemoryUtils.trashcanNow. Engine heap size: 5,471 MB. GUI used memory: 144 MB. Current time: 5/16/19, 7:18:08 PM PDT
+// bx (f):  Create Project : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2517 ms.
+selectButton("PAResourceItoN.NewProjectWizard_WOULD_YOU_LIKE_TO_CLOSE_CURRENTLY_Yes", "Yes"); // JButton (C, J)
+// Tcl Message: close_project 
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_ADD
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: create_project merger_tree_P16_L16 /curr/dzonilakoni/research_helpers/merger_tree_P16_L16 -part xcvu9p-fsgd2104-2L-e 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'. 
+// TclEventType: PROJECT_NEW
+// WARNING: HEventQueue.dispatchEvent() is taking  3051 ms.
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: create_project: Time (s): cpu = 00:00:11 ; elapsed = 00:00:08 . Memory (MB): peak = 6912.922 ; gain = 0.000 ; free physical = 39116 ; free virtual = 42481 
+// TclEventType: BOARD_MODIFIED
+// Tcl Message: set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project] 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc 
+selectButton("FINISH", "Finish"); // JButton (j, f)
+// 'g' command handler elapsed time: 90 seconds
+dismissDialog("Create Project"); // bx (f)
+dismissDialog("New Project"); // f (cp)
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 855ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1425 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 989ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1596 ms.
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false, false, false, false, true, false); // u (Q, cp) - Popup Trigger
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+selectMenuItem(PAResourceCommand.PACommandNames_SYNTH_SETTINGS, "Synthesis Settings..."); // af (al, Popup.HeavyWeightWindow)
+// Run Command: PAResourceCommand.PACommandNames_SYNTH_SETTINGS
+// F (cp): Settings: addNotify
+// 'dy' command handler elapsed time: 4 seconds
+// WARNING: HEventQueue.dispatchEvent() is taking  5020 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 889ms to process. Increasing delay to 5000 ms.
+// [GUI Memory]: 288 MB (+1705kb) [06:47:47]
+// [GUI Memory]: 303 MB (+698kb) [06:47:49]
+// Elapsed time: 26 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (F)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_OPTIONS_MODIFIED
+// Tcl Message: set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1] 
+dismissDialog("Settings"); // F (cp)
+selectButton(PAResourceItoN.MainToolbarMgr_RUN, (String) null); // az (f, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1823 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION, "Run Implementation"); // af (cp)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// WARNING: HEventQueue.dispatchEvent() is taking  1201 ms.
+// f (cp): Launch Runs: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  4875 ms.
+selectButton("PAResourceQtoS.RunImplementation_THERE_NO_NETLIST_AVAILABLE_OK_OK", "OK"); // JButton (C, I)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// bx (cp):  Starting Design Runs : addNotify
+dismissDialog("Launch Runs"); // f (cp)
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 28 
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Thu May 16 19:19:16 2019] Launched synth_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P16_L16/merger_tree_P16_L16.runs/synth_1/runme.log [Thu May 16 19:19:16 2019] Launched impl_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P16_L16/merger_tree_P16_L16.runs/impl_1/runme.log 
+// 'c' command handler elapsed time: 14 seconds
+dismissDialog("Starting Design Runs"); // bx (cp)
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 1090 ms. Increasing delay to 3270 ms.
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STEP_COMPLETED
+// [GUI Memory]: 321 MB (+3493kb) [07:02:48]
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 3261 ms. Increasing delay to 9783 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 5,494 MB. GUI used memory: 192 MB. Current time: 5/16/19, 7:48:09 PM PDT
+// TclEventType: RUN_COMPLETED
+// WARNING: HTimer (ExpRunMgr Pending Runs Timer) is taking 1109ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1110 ms.
+// ah (cp): Implementation Completed: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  3740 ms.
+// Elapsed time: 1842 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1563 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1805 ms.
+// Elapsed time: 48 seconds
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; route_design Complete, Failed Timing! ; -0.0783551037311554 ; -0.1744208037853241 ; 0.04599999636411667 ; 0.0 ; 0.0 ; 3.1949760913848877 ; 0 ; 40860 ; 44559 ; 0.0 ; 0 ; 0 ; Thu May 16 19:27:51 PDT 2019 ; 00:21:58 ; Vivado Implementation Defaults (Vivado Implementation 2018) ; Vivado Implementation Default Reports (Vivado Implementation 2018) ; xcvu9p-fsgd2104-2L-e ; u7-dzonilakoni ; Default settings for Implementation.", 1, "100", 3, false); // ax (Q, cp)
+// PAPropertyPanels.initPanels (impl_1) elapsed time: 0.3s
+// WARNING: HEventQueue.dispatchEvent() is taking  1408 ms.
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; route_design Complete, Failed Timing! ; -0.0783551037311554 ; -0.1744208037853241 ; 0.04599999636411667 ; 0.0 ; 0.0 ; 3.1949760913848877 ; 0 ; 40860 ; 44559 ; 0.0 ; 0 ; 0 ; Thu May 16 19:27:51 PDT 2019 ; 00:21:58 ; Vivado Implementation Defaults (Vivado Implementation 2018) ; Vivado Implementation Default Reports (Vivado Implementation 2018) ; xcvu9p-fsgd2104-2L-e ; u7-dzonilakoni ; Default settings for Implementation.", 1, "route_design Complete, Failed Timing!", 2, false); // ax (Q, cp)
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; route_design Complete, Failed Timing! ; -0.0783551037311554 ; -0.1744208037853241 ; 0.04599999636411667 ; 0.0 ; 0.0 ; 3.1949760913848877 ; 0 ; 40860 ; 44559 ; 0.0 ; 0 ; 0 ; Thu May 16 19:27:51 PDT 2019 ; 00:21:58 ; Vivado Implementation Defaults (Vivado Implementation 2018) ; Vivado Implementation Default Reports (Vivado Implementation 2018) ; xcvu9p-fsgd2104-2L-e ; u7-dzonilakoni ; Default settings for Implementation.", 1, "route_design Complete, Failed Timing!", 2, false, false, false, false, false, true); // ax (Q, cp) - Double Click
+// bx (cp):  Open Implemented Design : addNotify
+// Tcl Message: open_run impl_1 
+// HMemoryUtils.trashcanNow. Engine heap size: 5,594 MB. GUI used memory: 190 MB. Current time: 5/16/19, 7:51:44 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 5,788 MB. GUI used memory: 190 MB. Current time: 5/16/19, 7:51:59 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 6,576 MB. GUI used memory: 190 MB. Current time: 5/16/19, 7:52:19 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 6,673 MB. GUI used memory: 190 MB. Current time: 5/16/19, 7:52:34 PM PDT
+// TclEventType: SDC_CONSTRAINT_ADD
+// TclEventType: POWER_CNS_STALE
+// TclEventType: FLOORPLAN_MODIFY
+// TclEventType: DESIGN_NEW
+// HMemoryUtils.trashcanNow. Engine heap size: 7,053 MB. GUI used memory: 190 MB. Current time: 5/16/19, 7:52:50 PM PDT
+// [Engine Memory]: 7,053 MB (+1332449kb) [07:21:45]
+// Xgd.load filename: /opt/tools/xilinx/Vivado/2018.3/data/parts/xilinx/virtexuplus/devint/virtexuplus/xcvu9p/xcvu9p.xgd; ZipEntry: xcvu9p_floorplan.xgd elapsed time: 0.6s
+// Xgd.load filename: /opt/tools/xilinx/Vivado/2018.3/data/parts/xilinx/virtexuplus/devint/virtexuplus/xcvu9p/xcvu9p.xgd; ZipEntry: xcvu9p_detail.xgd elapsed time: 2.2s
+// [Engine Memory]: 7,454 MB (+49999kb) [07:21:48]
+// TclEventType: DESIGN_NEW
+// [GUI Memory]: 350 MB (+13777kb) [07:21:54]
+// Device: addNotify
+// DeviceView Instantiated
+// PAPropertyPanels.initPanels (impl_1) elapsed time: 0.2s
+// WARNING: HEventQueue.dispatchEvent() is taking  5859 ms.
+// Tcl Message: INFO: [Netlist 29-17] Analyzing 1146 Unisim elements for replacement INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds INFO: [Project 1-479] Netlist was created with Vivado 2018.3 INFO: [Device 21-403] Loading part xcvu9p-fsgd2104-2L-e INFO: [Project 1-570] Preparing netlist for logic optimization INFO: [Timing 38-478] Restoring timing data from binary archive. INFO: [Timing 38-479] Binary timing data restore complete. INFO: [Project 1-856] Restoring constraints from binary archive. INFO: [Project 1-853] Binary constraint restore complete. 
+// Tcl Message: Reading XDEF placement. Reading placer database... Reading XDEF routing. 
+// Tcl Message: Read XDEF File: Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 8400.000 ; gain = 62.289 ; free physical = 22570 ; free virtual = 25994 
+// Tcl Message: Restored from archive | CPU: 4.170000 secs | Memory: 78.387558 MB | 
+// Tcl Message: Finished XDEF File Restore: Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 8400.000 ; gain = 62.289 ; free physical = 22554 ; free virtual = 25978 Netlist sorting complete. Time (s): cpu = 00:00:00.08 ; elapsed = 00:00:00.08 . Memory (MB): peak = 8400.000 ; gain = 0.000 ; free physical = 22511 ; free virtual = 25937 
+// TclEventType: CURR_DESIGN_SET
+// Tcl Message: INFO: [Project 1-111] Unisim Transformation Summary: No Unisim elements were transformed.  
+// WARNING: HEventQueue.dispatchEvent() is taking  1036 ms.
+// Tcl Message: open_run: Time (s): cpu = 00:01:52 ; elapsed = 00:02:10 . Memory (MB): peak = 8900.727 ; gain = 1987.805 ; free physical = 22109 ; free virtual = 25539 
+// ExpRunCommands.openImplResults elapsed time: 132.5s
+// TclEventType: DRC_ADDED
+// Device view-level: 0.0
+// TclEventType: HFED_INIT_ROUTE_STORAGE_COMPLETED
+// RouteApi::loadEngineXgd elapsed time: 12.2s
+// [Engine Memory]: 8,368 MB (+567656kb) [07:21:58]
+// WARNING: HEventQueue.dispatchEvent() is taking  1273 ms.
+// TclEventType: DRC_ADDED
+// TclEventType: METHODOLOGY_ADDED
+// PAPropertyPanels.initPanels (impl_1) elapsed time: 0.2s
+// HMemoryUtils.trashcanNow. Engine heap size: 8,368 MB. GUI used memory: 289 MB. Current time: 5/16/19, 7:53:06 PM PDT
+// Device view-level: 0.1
+// WARNING: HEventQueue.dispatchEvent() is taking  1429 ms.
+// TclEventType: METHODOLOGY_ADDED
+// TclEventType: POWER_UPDATED
+// [GUI Memory]: 369 MB (+1051kb) [07:22:12]
+// WARNING: HEventQueue.dispatchEvent() is taking  13639 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 8,456 MB. GUI used memory: 321 MB. Current time: 5/16/19, 7:53:23 PM PDT
+// WARNING: HTimer (WrapperUtils Delayed Delete Timer) is taking 1091ms to process. Increasing delay to 2000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1091 ms.
+// TclEventType: TIMING_SUMMARY_UPDATED
+// WARNING: HEventQueue.dispatchEvent() is taking  1161 ms.
+// Elapsed time: 154 seconds
+dismissDialog("Open Implemented Design"); // bx (cp)
+// HMemoryUtils.trashcanNow. Engine heap size: 8,911 MB. GUI used memory: 322 MB. Current time: 5/16/19, 7:53:54 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,581 MB. GUI used memory: 321 MB. Current time: 5/16/19, 7:54:14 PM PDT
+// RouteApi::initDelayMediator elapsed time: 81.7s
+// RouteApi: Init Delay Mediator Swing Worker Finished
+// [Engine Memory]: 9,573 MB (+824925kb) [07:23:46]
+// Elapsed time: 141 seconds
+expandTree(PAResourceItoN.NavigableTimingReportTab_TIMING_REPORT_NAVIGATION_TREE, "[Root, Intra-Clock Paths]", 5); // a (Q, cp)
+expandTree(PAResourceItoN.NavigableTimingReportTab_TIMING_REPORT_NAVIGATION_TREE, "[Root, Intra-Clock Paths, i_clk]", 6); // a (Q, cp)
+selectTree(PAResourceItoN.NavigableTimingReportTab_TIMING_REPORT_NAVIGATION_TREE, "[Root, Intra-Clock Paths, i_clk, Setup -0.078 ns]", 7, false); // a (Q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2143 ms.
+selectTableHeader(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "To", 5); // i (Q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2054 ms.
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2145 ms.
+selectMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // X (q, cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_REPORTS, "Reports"); // X (q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1713 ms.
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1806 ms.
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1577 ms.
+selectMenu(PAResourceItoN.MainMenuMgr_EDIT, "Edit"); // X (q, cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_EDIT, "Edit"); // X (q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2062 ms.
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+selectMenu(PAResourceItoN.MainMenuMgr_PROJECT, "Project"); // ac (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1736 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_NEW_PROJECT, "New..."); // af (cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// Run Command: PAResourceCommand.PACommandNames_NEW_PROJECT
+// f (cp): New Project: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  4879 ms.
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// Elapsed time: 17 seconds
+setText(PAResourceOtoP.ProjectNameChooser_PROJECT_NAME, "merger_tree_P32_L4"); // Y (Q, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceQtoS.SrcChooserPanel_ADD_HDL_AND_NETLIST_FILES_TO_YOUR_PROJECT, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  5366 ms.
+// Elapsed time: 43 seconds
+String[] filenames20791 = {"/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v", "/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v", "/curr/dzonilakoni/research_helpers/verilog/CONTROL.v", "/curr/dzonilakoni/research_helpers/verilog/COUPLER.v", "/curr/dzonilakoni/research_helpers/verilog/FIFO.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_16.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_32.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_8.v", "/curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P32_L4.v"};
+setFileChooser(filenames20791);
+selectButton("NEXT", "Next >"); // JButton (j, f)
+selectButton(PAResourceAtoD.ConstraintsChooserPanel_ADD_FILES, "Add Files"); // a (C, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  5398 ms.
+// Elapsed time: 10 seconds
+setFileChooser("/curr/dzonilakoni/constraints.xdc");
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  2037 ms.
+selectTab(PAResourceOtoP.PartChooser_TABBED_PANE, (HResource) null, "Boards", 1); // i (T, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  1502 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2034 ms.
+// [GUI Memory]: 452 MB (+67215kb) [07:26:55]
+// WARNING: HEventQueue.dispatchEvent() is taking  1788 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2148 ms.
+// Elapsed time: 10 seconds
+setText("PAResourceAtoD.BoardChooser_BOARD_TABLE_SEARCH_FIELD", "vcu"); // OverlayTextField (I, f)
+selectTable(PAResourceAtoD.BoardChooser_BOARD_TABLE, "Virtex UltraScale+ VCU1525 Acceleration Development Board ; Virtex UltraScale+ VCU1525 Acceleration Development Board ; xilinx.com ; 1.2 ; xcvu9p-fsgd2104-2L-e ; 2104 ; 1.0 ; 676 ; 1182240 ; 2364480 ; 2160 ; 960 ; 6840 ; 76 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 0 ; 76 ; 6 ; 30 ; 0 ; 100 ; 100 ; E ; 0.825 ; 0.850 ; 0.876", 3, "Virtex UltraScale+ VCU1525 Acceleration Development Board", 0); // e (Q, f)
+// HOptionPane Error: 'Default HTML viewers not found in path (Open HTML)'
+// WARNING: HEventQueue.dispatchEvent() is taking  1414 ms.
+selectButton("PAResourceOtoP.PAEnvUtils_OPEN_HTML_OK", "OK"); // JButton (C, J)
+selectButton("NEXT", "Next >"); // JButton (j, f)
+// WARNING: HEventQueue.dispatchEvent() is taking  1136 ms.
+// TclEventType: PROJECT_CLOSE
+// HMemoryUtils.trashcanNow. Engine heap size: 9,560 MB. GUI used memory: 279 MB. Current time: 5/16/19, 7:58:15 PM PDT
+// TclEventType: TIMING_RESULTS_UNLOAD
+// Engine heap size: 9,560 MB. GUI used memory: 305 MB. Current time: 5/16/19, 7:58:16 PM PDT
+// TclEventType: DESIGN_CLOSE
+// bx (f):  Create Project : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  5154 ms.
+selectButton("PAResourceItoN.NewProjectWizard_WOULD_YOU_LIKE_TO_CLOSE_CURRENTLY_Yes", "Yes"); // JButton (C, J)
+// Tcl Message: close_project 
+// TclEventType: FILE_SET_NEW
+// TclEventType: RUN_ADD
+// TclEventType: RUN_CURRENT
+// TclEventType: PROJECT_DASHBOARD_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_DASHBOARD_GADGET_NEW
+// TclEventType: PROJECT_DASHBOARD_GADGET_CHANGE
+// TclEventType: PROJECT_NEW
+// Tcl Message: create_project merger_tree_P32_L4 /curr/dzonilakoni/research_helpers/merger_tree_P32_L4 -part xcvu9p-fsgd2104-2L-e 
+// Tcl Message: INFO: [IP_Flow 19-234] Refreshing IP repositories INFO: [IP_Flow 19-1704] No user IP repositories specified 
+// Tcl Message: INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'. 
+// TclEventType: PROJECT_NEW
+// WARNING: HEventQueue.dispatchEvent() is taking  3040 ms.
+// TclEventType: FILE_SET_OPTIONS_CHANGE
+// Tcl Message: create_project: Time (s): cpu = 00:00:13 ; elapsed = 00:00:08 . Memory (MB): peak = 10954.609 ; gain = 0.000 ; free physical = 27273 ; free virtual = 28307 
+// TclEventType: BOARD_MODIFIED
+// Tcl Message: set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project] 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_32.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P32_L4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v} 
+// TclEventType: FILE_SET_CHANGE
+// Tcl Message: add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc 
+selectButton("FINISH", "Finish"); // JButton (j, f)
+// 'g' command handler elapsed time: 122 seconds
+dismissDialog("Create Project"); // bx (f)
+dismissDialog("New Project"); // f (cp)
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1134ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1134 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1168ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1168 ms.
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// Tcl Message: update_compile_order -fileset sources_1 
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1148ms to process. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1149 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 1193ms to process. Increasing delay to 6000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1193 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1516 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1494 ms.
+// Elapsed time: 32 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Synthesis, Run Synthesis]", 14, false, false, false, false, true, false); // u (Q, cp) - Popup Trigger
+selectMenuItem(PAResourceCommand.PACommandNames_SYNTH_SETTINGS, "Synthesis Settings..."); // af (al, cp)
+// Run Command: PAResourceCommand.PACommandNames_SYNTH_SETTINGS
+// F (cp): Settings: addNotify
+// 'dy' command handler elapsed time: 5 seconds
+// WARNING: HEventQueue.dispatchEvent() is taking  5707 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1007 ms.
+// Elapsed time: 21 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (F)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_OPTIONS_MODIFIED
+// Tcl Message: set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1] 
+dismissDialog("Settings"); // F (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1901 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1592 ms.
+selectButton(PAResourceItoN.MainToolbarMgr_RUN, (String) null); // az (f, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1670 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION, "Run Implementation"); // af (cp)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// f (cp): Launch Runs: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  4271 ms.
+selectButton("PAResourceQtoS.RunImplementation_THERE_NO_NETLIST_AVAILABLE_OK_OK", "OK"); // JButton (C, I)
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// bx (cp):  Starting Design Runs : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1003 ms.
+dismissDialog("Launch Runs"); // f (cp)
+// TclEventType: RUN_LAUNCH
+// Tcl Message: launch_runs impl_1 -jobs 28 
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_MODIFY
+// Tcl Message: [Thu May 16 19:59:45 2019] Launched synth_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L4/merger_tree_P32_L4.runs/synth_1/runme.log [Thu May 16 19:59:45 2019] Launched impl_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L4/merger_tree_P32_L4.runs/impl_1/runme.log 
+// 'c' command handler elapsed time: 9 seconds
+dismissDialog("Starting Design Runs"); // bx (cp)
+// TclEventType: RUN_FAILED
+// WARNING: HTimer (ExpRunMgr Pending Runs Timer) is taking 987ms to process. Increasing delay to 3000 ms.
+// ah (cp): Synthesis Failed: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  3743 ms.
+// Elapsed time: 71 seconds
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (ah)
+// Run Command: PAResourceCommand.PACommandNames_MESSAGE_WINDOW
+dismissDialog("Synthesis Failed"); // ah (cp)
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 2063 ms. Increasing delay to 6189 ms.
+// Elapsed time: 136 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P16_L4 (MERGER_TREE_P32_L4.v)]", 1, false); // B (D, cp)
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P16_L4 (MERGER_TREE_P32_L4.v)]", 1); // B (D, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1036 ms.
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P16_L4 (MERGER_TREE_P32_L4.v)]", 1, true); // B (D, cp) - Node
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P16_L4 (MERGER_TREE_P32_L4.v)]", 1, true, false, false, false, false, true); // B (D, cp) - Double Click - Node
+// WARNING: HEventQueue.dispatchEvent() is taking  1046 ms.
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// TclEventType: DG_GRAPH_STALE
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P32_L4 (MERGER_TREE_P32_L4.v)]", 1, false); // B (D, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1743 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1829 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1765 ms.
+// Elapsed time: 18 seconds
+selectButton(PAResourceItoN.MainToolbarMgr_RUN, (String) null); // az (f, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1669 ms.
+// Elapsed time: 43 seconds
+selectMenuItem(PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION, "Run Implementation"); // af (cp)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// WARNING: HEventQueue.dispatchEvent() is taking  1084 ms.
+// bx (cp):  Resetting Runs : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1013 ms.
+selectButton("PAResourceQtoS.RunImplementation_THERE_NO_NETLIST_AVAILABLE_OK_OK", "OK"); // JButton (C, I)
+// TclEventType: RUN_MODIFY
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// f (cp): Launch Runs: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  4612 ms.
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// bx (cp):  Starting Design Runs : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1076 ms.
+dismissDialog("Launch Runs"); // f (cp)
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 28 
+// Tcl Message: [Thu May 16 20:04:39 2019] Launched synth_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L4/merger_tree_P32_L4.runs/synth_1/runme.log [Thu May 16 20:04:39 2019] Launched impl_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L4/merger_tree_P32_L4.runs/impl_1/runme.log 
+// 'c' command handler elapsed time: 12 seconds
+dismissDialog("Starting Design Runs"); // bx (cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1810 ms.
+// Elapsed time: 13 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_VIEW, "View"); // X (q, cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_VIEW, "View"); // X (q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1986 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1686 ms.
+// Elapsed time: 148 seconds
+selectTab((HResource) null, (HResource) null, "Design Runs", 4); // aI (aF, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  8567 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1637 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 586 ms to process. Increasing delay to 2000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1206 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 501ms to process. Increasing delay to 2000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1183 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 1199 ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  6664 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 1947 ms. Increasing delay to 3000 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 2157ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2654 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1729 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 4028ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  4028 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 1508 ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1542 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  3286 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1100 ms.
+// WARNING: HTimer (ExpRunMonitor Open Timer) is taking 1244ms to process. Increasing delay to 6000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1244 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1088 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 1688ms to process. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1689 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 1660ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1660 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 1018ms to process. Increasing delay to 6000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1018 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 2338 ms to process. Increasing delay to 5000 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 2026 ms. Increasing delay to 4000 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 3284ms to process. Increasing delay to 7000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  3284 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1441 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 1497ms to process. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1497 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1271 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1102 ms.
+// WARNING: HTimer (ExpRunMonitor Update Timer) is taking 761ms to process. Increasing delay to 3000 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 6055 ms. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  3563 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 4232 ms. Increasing delay to 6000 ms.
+// WARNING: HTimer (ExpRunMonitor Open Timer) is taking 3169ms to process. Increasing delay to 7000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  3169 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1579 ms.
+// WARNING: HTimer (a Update Status Timer) is taking 468ms to process. Increasing delay to 3000 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 2417ms to process. Increasing delay to 6000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2417 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1690 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2390 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 2878ms to process. Increasing delay to 8000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2878 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 8795 ms. Increasing delay to 7000 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 5215 ms. Increasing delay to 15645 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 1638ms to process. Increasing delay to 7000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1638 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 4598 ms to process. Increasing delay to 6000 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 22285ms to process. Increasing delay to 7000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  22286 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 3509 ms to process. Increasing delay to 7000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2463 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 9816 ms. Increasing delay to 29448 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 20520 ms. Increasing delay to 8000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1135 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1123 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1033 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 2279ms to process. Increasing delay to 8000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2279 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 6323 ms to process. Increasing delay to 8000 ms.
+// WARNING: HTimer (a Update Status Timer) is taking 12548ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  3317 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1277 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 18463 ms. Increasing delay to 9000 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 4573ms to process. Increasing delay to 9000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  4573 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2600 ms.
+// WARNING: HTimer (ExpRunMonitor Open Timer) is taking 1497ms to process. Increasing delay to 8000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1497 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1143 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1035 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 232 ms. Decreasing delay to 2232 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1283 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1223 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 2898 ms. Increasing delay to 8694 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1034 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 19743ms to process. Increasing delay to 9000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  3029 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 23045 ms. Increasing delay to 10000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2040 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 21959 ms. Increasing delay to 65877 ms.
+// WARNING: HTimer (ActiveMsgMonitor Process Messages Timer) is taking 4767ms to process. Increasing delay to 8000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  4767 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1407 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1446 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 4610ms to process. Increasing delay to 10000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  4610 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 10394ms to process. Increasing delay to 10000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  10394 ms.
+// Thread: Timer-0
+// 	at java.base@9.0.4/java.lang.Object.wait(Native Method)
+// 	at java.base@9.0.4/java.util.TimerThread.mainLoop(Unknown Source)
+// 	at java.base@9.0.4/java.util.TimerThread.run(Unknown Source)
+// Thread: Process Messages
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at ui.frmwork.d.h.construct(SourceFile:132)
+// 	at ui.frmwork.y.run(SourceFile:204)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// Thread: Image Animator 0
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at java.desktop@9.0.4/sun.awt.image.GifFrame.dispose(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.GifImageDecoder.readImage(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.GifImageDecoder.produceImage(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.InputStreamImageSource.doFetch(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageFetcher.fetchloop(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageFetcher.run(Unknown Source)
+// Thread: SyntheticaAnimation 50
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at ui.utils.lnf.b.run(SourceFile:99)
+// Thread: SyntheticaCleanerThread
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at de.javasoft.plaf.synthetica.StyleFactory$ComponentPropertyStore$1.run(StyleFactory.java:1846)
+// Thread: hw_ila_monitor
+// 	at java.base@9.0.4/java.lang.Object.wait(Native Method)
+// 	at java.base@9.0.4/java.lang.Object.wait(Unknown Source)
+// 	at java.base@9.0.4/java.util.TimerThread.mainLoop(Unknown Source)
+// 	at java.base@9.0.4/java.util.TimerThread.run(Unknown Source)
+// Thread: AWT-XAWT
+// 	at java.desktop@9.0.4/sun.awt.X11.XToolkit.waitForEvents(Native Method)
+// 	at java.desktop@9.0.4/sun.awt.X11.XToolkit.run(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.X11.XToolkit.run(Unknown Source)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// Thread: TimerQueue
+// 	at java.base@9.0.4/jdk.internal.misc.Unsafe.park(Native Method)
+// 	at java.base@9.0.4/java.util.concurrent.locks.LockSupport.parkNanos(Unknown Source)
+// 	at java.base@9.0.4/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(Unknown Source)
+// 	at java.base@9.0.4/java.util.concurrent.DelayQueue.take(Unknown Source)
+// 	at java.desktop@9.0.4/javax.swing.TimerQueue.run(Unknown Source)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// Thread: Common-Cleaner
+// 	at java.base@9.0.4/java.lang.Object.wait(Native Method)
+// 	at java.base@9.0.4/java.lang.ref.ReferenceQueue.remove(Unknown Source)
+// 	at java.base@9.0.4/jdk.internal.ref.CleanerImpl.run(Unknown Source)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// 	at java.base@9.0.4/jdk.internal.misc.InnocuousThread.run(Unknown Source)
+// Thread: Reference Handler
+// 	at java.base@9.0.4/java.lang.ref.Reference.waitForReferencePendingList(Native Method)
+// 	at java.base@9.0.4/java.lang.ref.Reference.processPendingReferences(Unknown Source)
+// 	at java.base@9.0.4/java.lang.ref.Reference.access$000(Unknown Source)
+// 	at java.base@9.0.4/java.lang.ref.Reference$ReferenceHandler.run(Unknown Source)
+// Thread: AWT-Shutdown
+// 	at java.base@9.0.4/java.lang.Object.wait(Native Method)
+// 	at java.base@9.0.4/java.lang.Object.wait(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.AWTAutoShutdown.run(Unknown Source)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// Thread: Batik CleanerThread
+// 	at java.base@9.0.4/java.lang.Object.wait(Native Method)
+// 	at java.base@9.0.4/java.lang.ref.ReferenceQueue.remove(Unknown Source)
+// 	at java.base@9.0.4/java.lang.ref.ReferenceQueue.remove(Unknown Source)
+// 	at org.apache.batik.util.CleanerThread.run(CleanerThread.java:106)
+// Thread: AWT-EventQueue-1
+// 	at ui.project.projecti.Project_getSourceMgmtMode(Native Method)
+// 	at ui.project.r.eqL(SourceFile:2331)
+// 	at ui.project.r.eqJ(SourceFile:2315)
+// 	at ui.data.design.o.agI(SourceFile:206)
+// 	at ui.data.design.o.f(SourceFile:66)
+// 	at ui.data.design.p.da(SourceFile:180)
+// 	at ui.utils.C.actionPerformed(SourceFile:65)
+// 	at java.desktop@9.0.4/javax.swing.Timer.fireActionPerformed(Unknown Source)
+// 	at ui.utils.B.fireActionPerformed(SourceFile:116)
+// 	at java.desktop@9.0.4/javax.swing.Timer$DoPostEvent.run(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.event.InvocationEvent.dispatch(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventQueue.dispatchEventImpl(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventQueue.access$500(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventQueue$3.run(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventQueue$3.run(Unknown Source)
+// 	at java.base@9.0.4/java.security.AccessController.doPrivileged(Native Method)
+// 	at java.base@9.0.4/java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventQueue.dispatchEvent(Unknown Source)
+// 	at ui.frmwork.b.d.dispatchEvent(SourceFile:88)
+// 	at java.desktop@9.0.4/java.awt.EventDispatchThread.pumpOneEventForFilters(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventDispatchThread.pumpEventsForFilter(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventDispatchThread.pumpEventsForHierarchy(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventDispatchThread.pumpEvents(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.EventDispatchThread.run(Unknown Source)
+// Thread: Thread-1
+// Thread: Monitor HEventQueue
+// 	at java.base@9.0.4/java.lang.Thread.dumpThreads(Native Method)
+// 	at java.base@9.0.4/java.lang.Thread.getAllStackTraces(Unknown Source)
+// 	at ui.utils.d.c.exx(SourceFile:484)
+// 	at ui.frmwork.b.e.construct(SourceFile:140)
+// 	at ui.frmwork.y.run(SourceFile:204)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// Thread: Finalizer
+// 	at java.base@9.0.4/java.lang.Object.wait(Native Method)
+// 	at java.base@9.0.4/java.lang.ref.ReferenceQueue.remove(Unknown Source)
+// 	at java.base@9.0.4/java.lang.ref.ReferenceQueue.remove(Unknown Source)
+// 	at java.base@9.0.4/java.lang.ref.Finalizer$FinalizerThread.run(Unknown Source)
+// Thread: Update Runs Swing Worker
+// 	at ui.project.projecti.HAPRRunMgr_updateAllRuns(Native Method)
+// 	at ui.data.experiment.y.aJH(SourceFile:185)
+// 	at ui.data.experiment.A.construct(SourceFile:321)
+// 	at ui.frmwork.y.run(SourceFile:204)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// Thread: Monitor File Timestamp Swing Worker
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at ui.views.e.construct(SourceFile:231)
+// 	at ui.frmwork.y.run(SourceFile:204)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// Thread: Java2D Disposer
+// 	at java.base@9.0.4/java.lang.Object.wait(Native Method)
+// 	at java.base@9.0.4/java.lang.ref.ReferenceQueue.remove(Unknown Source)
+// 	at java.base@9.0.4/java.lang.ref.ReferenceQueue.remove(Unknown Source)
+// 	at java.desktop@9.0.4/sun.java2d.Disposer.run(Unknown Source)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// Thread: Attach Listener
+// Thread: main
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at ui.PlanAhead.b(SourceFile:1030)
+// 	at ui.PlanAhead.jswMain(SourceFile:1084)
+// Thread: Refresh Filesets Swing Worker
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at ui.data.design.w.construct(SourceFile:2446)
+// 	at ui.frmwork.y.run(SourceFile:204)
+// 	at java.base@9.0.4/java.lang.Thread.run(Unknown Source)
+// Thread: SyntheticaAnimation 50
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at com.jidesoft.plaf.synthetica.AnimationThreadFactory$AnimationThread.run(AnimationThreadFactory.java:99)
+// Thread: SyntheticaAnimation 70
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at de.javasoft.plaf.synthetica.painter.AnimationThreadFactory$AnimationThread.run(AnimationThreadFactory.java:119)
+// Thread: SyntheticaAnimation 50
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at de.javasoft.plaf.synthetica.painter.AnimationThreadFactory$AnimationThread.run(AnimationThreadFactory.java:119)
+// Thread: Image Animator 0
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at ui.utils.i.j.aD.imageUpdate(SourceFile:96)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageWatched$WeakLink.lambda$update$0(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageWatched$WeakLink$$Lambda$180/130245786.run(Unknown Source)
+// 	at java.base@9.0.4/java.security.AccessController.doPrivileged(Native Method)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageWatched$WeakLink.update(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageWatched$WeakLink.newInfo(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageWatched.newInfo(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageRepresentation.imageComplete(Unknown Source)
+// 	at java.desktop@9.0.4/java.awt.image.ImageFilter.imageComplete(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageDecoder.imageComplete(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.GifFrame.dispose(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.GifImageDecoder.readImage(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.GifImageDecoder.produceImage(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.InputStreamImageSource.doFetch(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageFetcher.fetchloop(Unknown Source)
+// 	at java.desktop@9.0.4/sun.awt.image.ImageFetcher.run(Unknown Source)
+// Thread: SyntheticaAnimation 25
+// 	at java.base@9.0.4/java.lang.Thread.sleep(Native Method)
+// 	at de.javasoft.plaf.synthetica.painter.AnimationThreadFactory$AnimationThread.run(AnimationThreadFactory.java:119)
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 21151 ms. Increasing delay to 10000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  5762 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1466 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1137 ms.
+// WARNING: HTimer (FileMgr Design Graph Update Timer) is taking 2511ms to process. Increasing delay to 11000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2511 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 52 ms. Decreasing delay to 2052 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1015 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1136 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 1473 ms. Increasing delay to 4419 ms.
+// WARNING: HTimer (StateMonitor Timer) is taking 7551ms to process. Increasing delay to 11000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  7551 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 5567 ms. Increasing delay to 16701 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 7178 ms to process. Increasing delay to 9000 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 33715 ms to process. Increasing delay to 10000 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 7093 ms to process. Increasing delay to 10000 ms.
+// WARNING: HSwingWorker (Monitor File Timestamp Swing Worker) is taking 8716 ms to process. Increasing delay to 10000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  109266 ms.
+// WARNING: HTimer (a Update Status Timer) is taking 33749ms to process. Increasing delay to 5000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  33750 ms.
+// WARNING: HTimer (a Update Status Timer) is taking 36636ms to process. Increasing delay to 3000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  36636 ms.
+// WARNING: HSwingWorker (Update Runs Swing Worker) is taking 175612 ms. Increasing delay to 10000 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 179025 ms. Increasing delay to 537075 ms.
+// TclEventType: RUN_COMPLETED
+// TclEventType: RUN_STEP_COMPLETED
+// WARNING: HEventQueue.dispatchEvent() is taking  1063 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 221 MB. Current time: 5/16/19, 8:28:17 PM PDT
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 12 ms. Decreasing delay to 2012 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 3341 ms. Increasing delay to 10023 ms.
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 13 ms. Decreasing delay to 2013 ms.
+// TclEventType: RUN_COMPLETED
+// WARNING: HTimer (ExpRunMgr Pending Runs Timer) is taking 1119ms to process. Increasing delay to 4000 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1119 ms.
+// ah (cp): Implementation Completed: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  3847 ms.
+// Elapsed time: 2726 seconds
+selectButton(RDIResource.BaseDialog_CANCEL, "Cancel"); // a (ah)
+dismissDialog("Implementation Completed"); // ah (cp)
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "TNS", 4); // ax (Q, cp)
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "WNS", 3); // ax (Q, cp)
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 1525 ms. Increasing delay to 4575 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 214 MB. Current time: 5/16/19, 8:58:17 PM PDT
+// WARNING: HSwingWorker (Refresh Filesets Swing Worker) is taking 2496 ms. Increasing delay to 7488 ms.
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/16/19, 9:28:17 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/16/19, 9:58:17 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/16/19, 10:28:17 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/16/19, 10:58:17 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/16/19, 11:28:17 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/16/19, 11:58:17 PM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 12:28:17 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 12:58:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 1:28:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 1:58:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 2:28:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 2:58:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 3:28:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 3:58:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 4:28:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 4:58:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 5:28:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 5:58:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 6:28:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 6:58:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 7:28:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 7:58:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 8:28:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 8:58:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 9:28:18 AM PDT
+// HMemoryUtils.trashcanNow. Engine heap size: 9,543 MB. GUI used memory: 210 MB. Current time: 5/17/19, 9:58:18 AM PDT
+// Elapsed time: 47365 seconds
+selectTree(PAResourceEtoH.FlowNavigatorTreePanel_FLOW_NAVIGATOR_TREE, "[, Implementation, Open Implemented Design]", 18, true); // u (Q, cp) - Node
+// Run Command: PAResourceCommand.PACommandNames_GOTO_IMPLEMENTED_DESIGN
+// bx (cp):  Open Implemented Design : addNotify
+// Tcl Message: open_run impl_1 
+// TclEventType: SDC_CONSTRAINT_ADD
+// TclEventType: POWER_CNS_STALE
+// HMemoryUtils.trashcanNow. Engine heap size: 9,607 MB. GUI used memory: 211 MB. Current time: 5/17/19, 10:02:53 AM PDT
+// TclEventType: FLOORPLAN_MODIFY
+// TclEventType: DESIGN_NEW
+// HMemoryUtils.trashcanNow. Engine heap size: 9,607 MB. GUI used memory: 210 MB. Current time: 5/17/19, 10:03:01 AM PDT
+// Xgd.load filename: /opt/tools/xilinx/Vivado/2018.3/data/parts/xilinx/virtexuplus/devint/virtexuplus/xcvu9p/xcvu9p.xgd; ZipEntry: xcvu9p_detail.xgd elapsed time: 2.1s
+// TclEventType: DESIGN_NEW
+// Device: addNotify
+// DeviceView Instantiated
+// WARNING: HEventQueue.dispatchEvent() is taking  2892 ms.
+// Tcl Message: INFO: [Netlist 29-17] Analyzing 1900 Unisim elements for replacement INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds INFO: [Project 1-479] Netlist was created with Vivado 2018.3 INFO: [Project 1-570] Preparing netlist for logic optimization INFO: [Timing 38-478] Restoring timing data from binary archive. INFO: [Timing 38-479] Binary timing data restore complete. INFO: [Project 1-856] Restoring constraints from binary archive. INFO: [Project 1-853] Binary constraint restore complete. 
+// Tcl Message: Reading XDEF placement. Reading placer database... Reading XDEF routing. 
+// Tcl Message: Read XDEF File: Time (s): cpu = 00:00:08 ; elapsed = 00:00:06 . Memory (MB): peak = 10954.609 ; gain = 0.000 ; free physical = 37363 ; free virtual = 39778 
+// Tcl Message: Restored from archive | CPU: 8.220000 secs | Memory: 117.305466 MB | 
+// Tcl Message: Finished XDEF File Restore: Time (s): cpu = 00:00:08 ; elapsed = 00:00:07 . Memory (MB): peak = 10954.609 ; gain = 0.000 ; free physical = 37363 ; free virtual = 39778 Netlist sorting complete. Time (s): cpu = 00:00:00.07 ; elapsed = 00:00:00.07 . Memory (MB): peak = 10954.609 ; gain = 0.000 ; free physical = 37386 ; free virtual = 39801 
+// Tcl Message: INFO: [Project 1-111] Unisim Transformation Summary: No Unisim elements were transformed.  
+// TclEventType: CURR_DESIGN_SET
+// Tcl Message: open_run: Time (s): cpu = 00:00:59 ; elapsed = 00:00:51 . Memory (MB): peak = 10969.605 ; gain = 14.996 ; free physical = 37140 ; free virtual = 39555 
+// Device view-level: 0.0
+// ExpRunCommands.openImplResults elapsed time: 53.3s
+// TclEventType: DRC_ADDED
+// TclEventType: METHODOLOGY_ADDED
+// TclEventType: POWER_UPDATED
+// RouteApi::initDelayMediator elapsed time: 3.6s
+// TclEventType: HFED_INIT_ROUTE_STORAGE_COMPLETED
+// RouteApi::loadEngineXgd elapsed time: 15.6s
+// [Engine Memory]: 10,505 MB (+475431kb) [21:32:15]
+// WARNING: HEventQueue.dispatchEvent() is taking  13222 ms.
+// RouteApi: Init Delay Mediator Swing Worker Finished
+// HMemoryUtils.trashcanNow. Engine heap size: 10,505 MB. GUI used memory: 341 MB. Current time: 5/17/19, 10:03:25 AM PDT
+// WARNING: HEventQueue.dispatchEvent() is taking  1134 ms.
+// TclEventType: TIMING_SUMMARY_UPDATED
+// Device view-level: 0.1
+// TclEventType: TIMING_SUMMARY_UPDATED
+// 'dQ' command handler elapsed time: 70 seconds
+// S (cp): Critical Messages: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  4535 ms.
+// Elapsed time: 71 seconds
+dismissDialog("Open Implemented Design"); // bx (cp)
+selectButton(PAResourceAtoD.CmdMsgDialog_OK, "OK"); // f (S)
+dismissDialog("Critical Messages"); // S (cp)
+selectButton(PAResourceAtoD.DesignTimingSumSectionPanel_WORST_NEGATIVE_SLACK, "-0.110 ns"); // h (Q, cp)
+// PAPropertyPanels.initPanels (Path 1) elapsed time: 1s
+// WARNING: HEventQueue.dispatchEvent() is taking  1294 ms.
+selectTableHeader(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "From", 4); // i (Q, cp)
+selectTableHeader(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "From", 4); // i (Q, cp)
+selectTableHeader(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "To", 5); // i (Q, cp)
+// Elapsed time: 37 seconds
+selectTable(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "Path 1 ; -0.11035528 ; 7 ; 128 ; IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C ; IN[2].genblk1[0].fifo/in_deq_reg/D ; 1.9 ; 0.6650001 ; 1.235 ; 2.0 ; i_clk ; i_clk ;  ; 0.23535535", 0, "IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C", 4); // i (Q, cp)
+// HMemoryUtils.trashcanNow. Engine heap size: 10,497 MB. GUI used memory: 346 MB. Current time: 5/17/19, 10:04:26 AM PDT
+// WARNING: HEventQueue.dispatchEvent() is taking  1240 ms.
+selectButton(PAResourceCommand.PACommandNames_SCHEMATIC, "TimingPathsResultPanel_run_schematic"); // B (f, cp)
+// Run Command: PAResourceCommand.PACommandNames_SCHEMATIC
+// Schematic: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1970 ms.
+// Elapsed time: 17 seconds
+selectButton(PAResourceCommand.PACommandNames_ZOOM_IN, "Schematic_zoom_in"); // B (f, cp)
+// Run Command: PAResourceCommand.PACommandNames_ZOOM_IN
+// WARNING: HEventQueue.dispatchEvent() is taking  1796 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1672 ms.
+// Elapsed time: 127 seconds
+selectTable(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "Path 1 ; -0.11035528 ; 7 ; 128 ; IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C ; IN[2].genblk1[0].fifo/in_deq_reg/D ; 1.9 ; 0.6650001 ; 1.235 ; 2.0 ; i_clk ; i_clk ;  ; 0.23535535", 0, "IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C", 4); // i (Q, cp)
+selectTable(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "Path 1 ; -0.11035528 ; 7 ; 128 ; IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C ; IN[2].genblk1[0].fifo/in_deq_reg/D ; 1.9 ; 0.6650001 ; 1.235 ; 2.0 ; i_clk ; i_clk ;  ; 0.23535535", 0, "IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C", 4, false, false, false, false, true); // i (Q, cp) - Double Click
+selectTable(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "Path 1 ; -0.11035528 ; 7 ; 128 ; IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C ; IN[2].genblk1[0].fifo/in_deq_reg/D ; 1.9 ; 0.6650001 ; 1.235 ; 2.0 ; i_clk ; i_clk ;  ; 0.23535535", 0, "IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C", 4); // i (Q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1628 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1681 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1816 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1669 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1693 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1761 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1703 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1752 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1771 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1824 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1864 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1998 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2011 ms.
+// Elapsed time: 340 seconds
+selectTable(PAResourceOtoP.PathReportTableView_DESCRIPTION, "net (fo=128, routed) ; 0.472 ; 0.552 ;  ;  ; IN[2].genblk1[0].fifo/in_fifo/FIFO[456].fifo16/second_elem_reg[456]_0", 1, "IN[2].genblk1[0].fifo/in_fifo/FIFO[456].fifo16/second_elem_reg[456]_0", 5); // C (p, cp)
+// [GUI Memory]: 474 MB (+376kb) [21:41:29]
+// WARNING: HEventQueue.dispatchEvent() is taking  2370 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2009 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2148 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2236 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2209 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2158 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2176 ms.
+// [GUI Memory]: 499 MB (+386kb) [21:41:54]
+// WARNING: HEventQueue.dispatchEvent() is taking  2059 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1690 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1577 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1624 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1636 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1889 ms.
+// Elapsed time: 47 seconds
+selectButton(PAResourceCommand.PACommandNames_SCHEMATIC, "TimingPathsResultPanel_run_schematic"); // B (f, cp)
+// Run Command: PAResourceCommand.PACommandNames_SCHEMATIC
+// Schematic: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2483 ms.
+selectTable(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "Path 1 ; -0.11035528 ; 7 ; 128 ; IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C ; IN[2].genblk1[0].fifo/in_deq_reg/D ; 1.9 ; 0.6650001 ; 1.235 ; 2.0 ; i_clk ; i_clk ;  ; 0.23535535", 0, "Path 1", 0); // i (Q, cp)
+selectTable(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "Path 1 ; -0.11035528 ; 7 ; 128 ; IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C ; IN[2].genblk1[0].fifo/in_deq_reg/D ; 1.9 ; 0.6650001 ; 1.235 ; 2.0 ; i_clk ; i_clk ;  ; 0.23535535", 0, "Path 1", 0); // i (Q, cp)
+selectTable(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "Path 1 ; -0.11035528 ; 7 ; 128 ; IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C ; IN[2].genblk1[0].fifo/in_deq_reg/D ; 1.9 ; 0.6650001 ; 1.235 ; 2.0 ; i_clk ; i_clk ;  ; 0.23535535", 0, "Path 1", 0); // i (Q, cp)
+selectTable(PAResourceTtoZ.TimingItemFlatTablePanel_TABLE, "Path 1 ; -0.11035528 ; 7 ; 128 ; IN[2].genblk1[0].fifo/in_fifo/adr_reg[0]_rep__1/C ; IN[2].genblk1[0].fifo/in_deq_reg/D ; 1.9 ; 0.6650001 ; 1.235 ; 2.0 ; i_clk ; i_clk ;  ; 0.23535535", 0, "Path 1", 0, false, false, false, false, true); // i (Q, cp) - Double Click
+selectButton(PAResourceCommand.PACommandNames_SCHEMATIC, "TimingPathsResultPanel_run_schematic"); // B (f, cp)
+// Run Command: PAResourceCommand.PACommandNames_SCHEMATIC
+// Schematic: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  2410 ms.
+// TclEventType: DG_GRAPH_STALE
+// TclEventType: FILE_SET_CHANGE
+// WARNING: HEventQueue.dispatchEvent() is taking  1012 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1926 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  1909 ms.
+// Elapsed time: 193 seconds
+selectMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+dismissMenu(PAResourceItoN.MainMenuMgr_FILE, "File"); // X (q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1194 ms.
+// Elapsed time: 10 seconds
+selectTab("PlanAheadTabBaseWorkspace_JideTabbedPane", (HResource) null, "MERGER_TREE_P32_L4.v", 2); // k (j, cp)
+selectButton(PAResourceOtoP.PlanAheadTab_SHOW_FLOW_NAVIGATOR, "Flow Navigator"); // z (L, cp)
+// Elapsed time: 22 seconds
+selectTab((HResource) null, (HResource) null, "Sources", 0); // aI (aF, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  10801 ms.
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P32_L4 (MERGER_TREE_P32_L4.v)]", 1); // B (D, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1801 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2140 ms.
+// WARNING: HEventQueue.dispatchEvent() is taking  2182 ms.
+// Elapsed time: 14 seconds
+expandTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P32_L4 (MERGER_TREE_P32_L4.v), merger : MERGER_32 (MERGER_32.v)]", 2); // B (D, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2110 ms.
+// Elapsed time: 17 seconds
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P32_L4 (MERGER_TREE_P32_L4.v), IN[4].genblk1[1].genblk1.fifo : COUPLER (COUPLER.v)]", 12, false); // B (D, cp)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P32_L4 (MERGER_TREE_P32_L4.v), IN[4].genblk1[1].genblk1.fifo : COUPLER (COUPLER.v)]", 12, false); // B (D, cp)
+selectTree(PAResourceEtoH.FileSetPanel_FILE_SET_PANEL_TREE, "[root, Design Sources, MERGER_TREE_P32_L4 (MERGER_TREE_P32_L4.v), IN[4].genblk1[1].genblk1.fifo : COUPLER (COUPLER.v)]", 12, true, false, false, false, false, true); // B (D, cp) - Double Click - Node
+// WARNING: HEventQueue.dispatchEvent() is taking  2239 ms.
+selectCodeEditor("COUPLER.v", 278, 129); // cl (w, cp)
+// Elapsed time: 14 seconds
+selectCodeEditor("COUPLER.v", 464, 220); // cl (w, cp)
+// Elapsed time: 11 seconds
+selectButton(PAResourceItoN.MainToolbarMgr_RUN, (String) null); // az (f, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2051 ms.
+selectMenuItem(PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION, "Run Implementation"); // af (cp)
+// Run Command: PAResourceCommand.PACommandNames_RUN_IMPLEMENTATION
+// A (cp): Synthesis is Out-of-date: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  5283 ms.
+selectButton(RDIResource.BaseDialog_YES, "Yes"); // a (A)
+// 'c' command handler elapsed time: 9 seconds
+// bx (cp):  Resetting Runs : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1324 ms.
+dismissDialog("Synthesis is Out-of-date"); // A (cp)
+// TclEventType: RUN_MODIFY
+// TclEventType: DESIGN_STALE
+// TclEventType: RUN_RESET
+// Tcl Message: reset_run synth_1 
+// TclEventType: RUN_RESET
+// TclEventType: RUN_MODIFY
+// f (cp): Launch Runs: addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  5491 ms.
+selectButton(RDIResource.BaseDialog_OK, "OK"); // a (f)
+// bx (cp):  Starting Design Runs : addNotify
+// WARNING: HEventQueue.dispatchEvent() is taking  1220 ms.
+// TclEventType: RUN_LAUNCH
+dismissDialog("Launch Runs"); // f (cp)
+// TclEventType: DESIGN_STALE
+// TclEventType: RUN_LAUNCH
+// TclEventType: RUN_MODIFY
+// Tcl Message: launch_runs impl_1 -jobs 28 
+// Tcl Message: [Fri May 17 10:18:56 2019] Launched synth_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L4/merger_tree_P32_L4.runs/synth_1/runme.log [Fri May 17 10:18:57 2019] Launched impl_1... Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P32_L4/merger_tree_P32_L4.runs/impl_1/runme.log 
+dismissDialog("Starting Design Runs"); // bx (cp)
+// Elapsed time: 64 seconds
+selectTab((HResource) null, (HResource) null, "Design Runs", 4); // aI (aF, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  11364 ms.
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "Failed Routes", 9); // ax (Q, cp)
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "Failed Routes", 9); // ax (Q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  1543 ms.
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "impl_1 ; constrs_1 ; Queued... ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; 00:00:00 ; Vivado Implementation Defaults (Vivado Implementation 2018) ; Vivado Implementation Default Reports (Vivado Implementation 2018) ; xcvu9p-fsgd2104-2L-e ;  ; Default settings for Implementation.", 1, (String) null, 9, false); // ax (Q, cp)
+// PAPropertyPanels.initPanels (impl_1) elapsed time: 0.2s
+// WARNING: HEventQueue.dispatchEvent() is taking  1406 ms.
+selectTreeTable(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "synth_1 ; constrs_1 ; Running synth_design... ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ;  ; Fri May 17 10:18:58 PDT 2019 ; 00:01:04 ; Vivado Synthesis Defaults* (Vivado Synthesis 2018) ; Vivado Synthesis Default Reports (Vivado Synthesis 2018) ; xcvu9p-fsgd2104-2L-e ; u7-dzonilakoni ; Vivado Synthesis Defaults", 0, (String) null, 8, true); // ax (Q, cp) - Node
+// WARNING: HEventQueue.dispatchEvent() is taking  1186 ms.
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "THS", 6); // ax (Q, cp)
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "WHS", 5); // ax (Q, cp)
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "TNS", 4); // ax (Q, cp)
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "TNS", 4); // ax (Q, cp)
+selectTreeTableHeader(PAResourceEtoH.ExpRunTreePanel_EXP_RUN_TREE_TABLE, "WNS", 3); // ax (Q, cp)
+// WARNING: HEventQueue.dispatchEvent() is taking  2160 ms.

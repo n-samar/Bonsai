@@ -1,0 +1,161 @@
+#-----------------------------------------------------------
+# Vivado v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:36:41 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Wed May 15 17:43:01 2019
+# Process ID: 26121
+# Current directory: /curr/dzonilakoni/research_helpers
+# Command line: vivado
+# Log file: /curr/dzonilakoni/research_helpers/vivado.log
+# Journal file: /curr/dzonilakoni/research_helpers/vivado.jou
+#-----------------------------------------------------------
+start_gui
+create_project merger_tree_P32_L128 /curr/dzonilakoni/research_helpers/merger_tree_P32_L128 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_32.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P32_L128.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+open_run impl_1
+open_run impl_1
+report_timing_summary -delay_type min_max -report_unconstrained -check_timing_verbose -max_paths 10 -input_pins -routable_nets -name timing_1
+close_project
+create_project merger_tree_P1_L32 /curr/dzonilakoni/research_helpers/merger_tree_P1_L32 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P1_L32.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+open_run impl_1
+close_project
+create_project merger_tree_P2_L2 /curr/dzonilakoni/research_helpers/merger_tree_P2_L2 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P2_L2.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+close_project
+create_project merger_tree_P2_L32 /curr/dzonilakoni/research_helpers/merger_tree_P2_L32 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P2_L32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+close_project
+create_project merger_tree_P4_L2 /curr/dzonilakoni/research_helpers/merger_tree_P4_L2 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P4_L2.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+close_project
+create_project merger_tree_P4_L16 /curr/dzonilakoni/research_helpers/merger_tree_P4_L16 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P4_L16.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+close_project
+create_project merger_tree_P8_L2 /curr/dzonilakoni/research_helpers/merger_tree_P8_L2 -part xc7vx485tffg1157-1
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P8_L2.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+export_ip_user_files -of_objects  [get_files /curr/dzonilakoni/research_helpers/verilog/MERGER.v] -no_script -reset -force -quiet
+remove_files  /curr/dzonilakoni/research_helpers/verilog/MERGER.v
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top MERGER_TREE_P8_L2 [current_fileset]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sources_1
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+open_run impl_1
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+reset_property board_connections [get_projects merger_tree_P8_L2]
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+reset_property board_connections [get_projects merger_tree_P8_L2]
+reset_run synth_1
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+close_project
+create_project merger_tree_P16_L2 /curr/dzonilakoni/research_helpers/merger_tree_P16_L2 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P16_L2.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+export_ip_user_files -of_objects  [get_files /curr/dzonilakoni/research_helpers/verilog/MERGER.v] -no_script -reset -force -quiet
+remove_files  /curr/dzonilakoni/research_helpers/verilog/MERGER.v
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top MERGER_TREE_P16_L2 [current_fileset]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+close_project
+create_project merger_tree_P16_L8 /curr/dzonilakoni/research_helpers/merger_tree_P16_L8 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P16_L8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+close_project
+create_project merger_tree_P32_L2 /curr/dzonilakoni/research_helpers/merger_tree_P32_L2 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_32.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P32_L2.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+close_project
+create_project merger_tree_P32_L16 /curr/dzonilakoni/research_helpers/merger_tree_P32_L16 -part xcvu9p-fsgd2104-2L-e
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_4.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_32.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P32_L16.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v /curr/dzonilakoni/research_helpers/verilog/MERGER_16.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+export_ip_user_files -of_objects  [get_files /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v] -no_script -reset -force -quiet
+remove_files  /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v
+update_compile_order -fileset sources_1
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top MERGER_TREE_P16_L16 [current_fileset]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+reset_run synth_1
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/MERGER_32.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_64.v}
+update_compile_order -fileset sources_1
+reset_run synth_1
+launch_runs impl_1 -jobs 28
+wait_on_run impl_1

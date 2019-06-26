@@ -1,0 +1,45 @@
+#-----------------------------------------------------------
+# Vivado v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:36:41 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Thu May 16 15:53:51 2019
+# Process ID: 31142
+# Current directory: /curr/dzonilakoni/research_helpers
+# Command line: vivado
+# Log file: /curr/dzonilakoni/research_helpers/vivado.log
+# Journal file: /curr/dzonilakoni/research_helpers/vivado.jou
+#-----------------------------------------------------------
+start_gui
+create_project merger_tree_P8_L16 /curr/dzonilakoni/research_helpers/merger_tree_P8_L16 -part xcvu9p-fsgd2104-2L-e
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/opt/tools/xilinx/Vivado/2018.3/data/ip'.
+create_project: Time (s): cpu = 00:00:28 ; elapsed = 00:00:15 . Memory (MB): peak = 6618.848 ; gain = 85.258 ; free physical = 41722 ; free virtual = 44191
+set_property board_part xilinx.com:vcu1525:part0:1.2 [current_project]
+add_files -norecurse {/curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_4.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_8.v /curr/dzonilakoni/research_helpers/verilog/CONTROL.v /curr/dzonilakoni/research_helpers/verilog/MERGER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_4_tb.v /curr/dzonilakoni/research_helpers/verilog/MERGER_8.v /curr/dzonilakoni/research_helpers/verilog/MERGER_TREE_P8_L16.v /curr/dzonilakoni/research_helpers/verilog/FIFO.v /curr/dzonilakoni/research_helpers/verilog/BITONIC_NETWORK_16.v /curr/dzonilakoni/research_helpers/verilog/COUPLER.v /curr/dzonilakoni/research_helpers/verilog/MERGER_2.v}
+add_files -fileset constrs_1 -norecurse /curr/dzonilakoni/constraints.xdc
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+set_property -name {STEPS.SYNTH_DESIGN.ARGS.MORE OPTIONS} -value {-mode out_of_context} -objects [get_runs synth_1]
+launch_runs impl_1 -jobs 28
+[Thu May 16 15:58:44 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L16/merger_tree_P8_L16.runs/synth_1/runme.log
+[Thu May 16 15:58:44 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L16/merger_tree_P8_L16.runs/impl_1/runme.log
+add_files -norecurse /curr/dzonilakoni/research_helpers/verilog/MERGER_4.v
+update_compile_order -fileset sources_1
+reset_run synth_1
+launch_runs impl_1 -jobs 28
+[Thu May 16 16:01:37 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L16/merger_tree_P8_L16.runs/synth_1/runme.log
+[Thu May 16 16:01:37 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L16/merger_tree_P8_L16.runs/impl_1/runme.log
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+reset_run impl_1
+reset_run synth_1
+launch_runs impl_1 -jobs 28
+[Fri May 17 10:24:47 2019] Launched synth_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L16/merger_tree_P8_L16.runs/synth_1/runme.log
+[Fri May 17 10:24:48 2019] Launched impl_1...
+Run output will be captured here: /curr/dzonilakoni/research_helpers/merger_tree_P8_L16/merger_tree_P8_L16.runs/impl_1/runme.log
