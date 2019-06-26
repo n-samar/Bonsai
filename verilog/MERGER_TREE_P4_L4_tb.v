@@ -39,8 +39,8 @@ module merger_tree_tb;
    wire [LEAF_CNT-1:0] 	   buffer_empty;
    wire [LEAF_CNT-1:0] 	   buffer_full;
    reg [31:0] 			   readmemh_data[0:15];
-   
-   reg [511:0] 		   buffer_in [0:LEAF_CNT-1];   
+  
+    reg [511:0] 		   buffer_in [0:LEAF_CNT-1];   
    wire [511:0]        buffer_out [0:LEAF_CNT-1];
    
 
