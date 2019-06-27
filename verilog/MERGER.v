@@ -1,36 +1,36 @@
 `timescale 1 ns/10 ps
 
 /* NOTE: The size of FIFO_C should be at least log(P)*(log(P)+1)/2 + 1 */
-module MERGER_1 (input i_clk,
-	      input [31:0] 	 i_fifo_1,
+module MERGER_1 #(parameter DATA_WIDTH = 80) (input i_clk,
+	      input [DATA_WIDTH-1:0] 	 i_fifo_1,
 	      input 		 i_fifo_1_empty,
-	      input [31:0] 	 i_fifo_2,
+	      input [DATA_WIDTH-1:0] 	 i_fifo_2,
 	      input 		 i_fifo_2_empty,
 	      input 		 i_fifo_out_ready,
 	      output 		 o_fifo_1_read,
 	      output 		 o_fifo_2_read,
 	      output 		 o_out_fifo_write,
-	      output wire [31:0] o_data);
+	      output wire [DATA_WIDTH-1:0] o_data);
 
    wire 			 i_write_a, i_write_b;
    wire 			 i_c_read;
    wire 			 select_A;
    wire 			 stall;
-   reg [31:0] 			 R_A;
-   reg [31:0] 			 R_B;
+   reg [DATA_WIDTH-1:0] 			 R_A;
+   reg [DATA_WIDTH-1:0] 			 R_B;
    wire 			 fifo_a_empty, fifo_b_empty, fifo_c_empty, fifo_a_full, fifo_b_full, fifo_c_full;
    wire 			 overrun_a, overrun_b, overrun_c, underrun_a, underrun_b, underrun_c;
    reg 				 i_c_write; 			 
-   reg [31:0] 			 i_fifo_c;
-   wire [31:0] 			 fifo_a_out;
-   wire [31:0] 			 fifo_b_out;
+   reg [DATA_WIDTH-1:0] 			 i_fifo_c;
+   wire [DATA_WIDTH-1:0] 			 fifo_a_out;
+   wire [DATA_WIDTH-1:0] 			 fifo_b_out;
    wire 			 a_min_zero, b_min_zero, a_lte_b;
    wire 			 switch_output;
-   reg [31:0] 			 i_data_2_top;
-   wire [31:0] 			 o_data_2_top;   
-   wire [31:0] 			 data_2_bottom;   
-   wire [31:0] 			 data_3_bigger;
-   wire [31:0] 			 data_3_smaller;   
+   reg [DATA_WIDTH-1:0] 			 i_data_2_top;
+   wire [DATA_WIDTH-1:0] 			 o_data_2_top;   
+   wire [DATA_WIDTH-1:0] 			 data_2_bottom;   
+   wire [DATA_WIDTH-1:0] 			 data_3_bigger;
+   wire [DATA_WIDTH-1:0] 			 data_3_smaller;   
    wire 			 switch_output_2;
    wire 			 switch_output_3;
    wire 			 stall_2;
@@ -46,7 +46,7 @@ module MERGER_1 (input i_clk,
    
    assign a_min_zero = (fifo_a_out == 0);
    assign b_min_zero = (fifo_b_out == 0);
-   assign a_lte_b = (fifo_a_out[31:0] <= fifo_b_out[31:0]);
+   assign a_lte_b = (fifo_a_out[DATA_WIDTH-1:0] <= fifo_b_out[DATA_WIDTH-1:0]);
 
    assign o_fifo_1_read = ~i_fifo_1_empty & (~fifo_a_full);
    assign i_write_a = ~i_fifo_1_empty & (~fifo_a_full);

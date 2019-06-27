@@ -106,9 +106,9 @@ int main(int argc, char ** argv) {
       FILE *ans = fopen(ans_filename, "w+");
       for (i=0; i<n; i++){
 	if (i%out_records_per_tuple == out_records_per_tuple-1) {
-	  fprintf(ans, "%08x\n", buf[i-out_records_per_tuple+1]);
+	  fprintf(ans, "%20x\n", buf[i-out_records_per_tuple+1]);
 	} else {
-	  fprintf(ans, "%08x", buf[i+out_records_per_tuple-1-2*(i%out_records_per_tuple)]);	  
+	  fprintf(ans, "%20x", buf[i+out_records_per_tuple-1-2*(i%out_records_per_tuple)]);	  
 	}
       }
       fclose(ans);

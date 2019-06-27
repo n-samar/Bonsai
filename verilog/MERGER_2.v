@@ -1,35 +1,34 @@
-module MERGER_2 (input i_clk,
-	      input [DATA_WIDTH-1:0] 	     i_fifo_1,
+module MERGER_2 #(parameter DATA_WIDTH = 80) (input i_clk,
+	      input [2*DATA_WIDTH-1:0] 	     i_fifo_1,
 	      input 		     i_fifo_1_empty,
-	      input [DATA_WIDTH-1:0] 	     i_fifo_2,
+	      input [2*DATA_WIDTH-1:0] 	     i_fifo_2,
 	      input 		     i_fifo_2_empty,
 	      input 		     i_fifo_out_ready,
 	      output 		     o_fifo_1_read,
 	      output 		     o_fifo_2_read,
 	      output 		     o_out_fifo_write,
-	      output wire [DATA_WIDTH-1:0] o_data);
+	      output wire [2*DATA_WIDTH-1:0] o_data);
 
-   parameter DATA_WIDTH = 64;
    wire 			     i_write_a, i_write_b;
    wire 			     i_c_read;
    wire 			     select_A;
    wire 			     stall;
-   reg [DATA_WIDTH-1:0] 		     R_A;
-   reg [DATA_WIDTH-1:0] 		     R_B;
+   reg [2*DATA_WIDTH-1:0] 		     R_A;
+   reg [2*DATA_WIDTH-1:0] 		     R_B;
    wire 			     fifo_a_empty, fifo_b_empty, fifo_c_empty, fifo_a_full, fifo_b_full, fifo_c_full;
    wire 			     overrun_a, overrun_b, overrun_c, underrun_a, underrun_b, underrun_c;
    reg 				     i_c_write; 			 
-   reg [DATA_WIDTH-1:0] 		     i_fifo_c;
-   wire [DATA_WIDTH-1:0] 		     fifo_a_out;
-   wire [DATA_WIDTH-1:0] 		     fifo_b_out;
+   reg [2*DATA_WIDTH-1:0] 		     i_fifo_c;
+   wire [2*DATA_WIDTH-1:0] 		     fifo_a_out;
+   wire [2*DATA_WIDTH-1:0] 		     fifo_b_out;
    wire 			     a_min_zero, b_min_zero, a_lte_b;
    wire 			     r_a_min_zero, r_b_min_zero;
    wire 			     switch_output;
-   reg [DATA_WIDTH-1:0] 		     i_data_2_top;
-   wire [DATA_WIDTH-1:0] 		     o_data_2_top;   
-   wire [DATA_WIDTH-1:0] 		     data_2_bottom;   
-   wire [DATA_WIDTH-1:0] 		     data_3_bigger;
-   wire [DATA_WIDTH-1:0] 		     data_3_smaller;   
+   reg [2*DATA_WIDTH-1:0] 		     i_data_2_top;
+   wire [2*DATA_WIDTH-1:0] 		     o_data_2_top;   
+   wire [2*DATA_WIDTH-1:0] 		     data_2_bottom;   
+   wire [2*DATA_WIDTH-1:0] 		     data_3_bigger;
+   wire [2*DATA_WIDTH-1:0] 		     data_3_smaller;   
    wire 			     switch_output_2;
    wire 			     switch_output_3;
    wire 			     stall_2;
@@ -42,9 +41,9 @@ module MERGER_2 (input i_clk,
    
    parameter period = 4;
    
-   assign a_min_zero = (fifo_a_out[31:0] == 0);
-   assign b_min_zero = (fifo_b_out[31:0] == 0);
-   assign a_lte_b = (fifo_a_out[31:0] <= fifo_b_out[31:0]);
+   assign a_min_zero = (fifo_a_out[DATA_WIDTH-1:0] == 0);
+   assign b_min_zero = (fifo_b_out[DATA_WIDTH-1:0] == 0);
+   assign a_lte_b = (fifo_a_out[DATA_WIDTH-1:0] <= fifo_b_out[DATA_WIDTH-1:0]);
 
    assign o_fifo_1_read = ~i_fifo_1_empty & (~fifo_a_full);
    assign i_write_a = ~i_fifo_1_empty & (~fifo_a_full);
@@ -58,7 +57,7 @@ module MERGER_2 (input i_clk,
       i_fifo_out_ready_clocked <= 0; 
    end
 
-   IFIFO16 #(DATA_WIDTH) fifo_a(.i_clk(i_clk), 
+   IFIFO16 #(2*DATA_WIDTH) fifo_a(.i_clk(i_clk), 
 			.i_data(i_fifo_1), 
 			.o_data(fifo_a_out),
 			.i_enq(i_write_a), 		  
@@ -66,7 +65,7 @@ module MERGER_2 (input i_clk,
 			.o_empty(fifo_a_empty), 
 			.o_full(fifo_a_full));
 
-   IFIFO16 #(DATA_WIDTH) fifo_b(.i_clk(i_clk), 
+   IFIFO16 #(2*DATA_WIDTH) fifo_b(.i_clk(i_clk), 
 			.i_data(i_fifo_2), 
 			.o_data(fifo_b_out),
 			.i_enq(i_write_b), 
@@ -74,7 +73,7 @@ module MERGER_2 (input i_clk,
 			.o_empty(fifo_b_empty), 
 			.o_full(fifo_b_full));     
 
-   IFIFO16 #(DATA_WIDTH) fifo_c(.i_clk(i_clk), 
+   IFIFO16 #(2*DATA_WIDTH) fifo_c(.i_clk(i_clk), 
 			.i_data(i_fifo_c), 
 			.o_data(o_data),
 			.i_enq(i_c_write), 

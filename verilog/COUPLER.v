@@ -1,7 +1,7 @@
 `timescale 1ns/10ps
 
 module COUPLER #(
-  parameter P_WIDTH         = 32
+  parameter P_WIDTH         = 80
 ) (
   input wire                  i_clk,
   input wire [P_WIDTH-1:0]    i_data,

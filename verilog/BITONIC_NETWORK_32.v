@@ -1,11 +1,11 @@
 /* For 16-merger */
 
-module CAS (input i_clk,
+module CAS #(parameter DATA_WIDTH = 80) (input i_clk,
             input         stall,
-            input [31:0]  i_elems_0,
-            input [31:0]  i_elems_1,
-            output reg [31:0] o_elems_0,
-            output reg [31:0] o_elems_1);
+            input [DATA_WIDTH-1:0]  i_elems_0,
+            input [DATA_WIDTH-1:0]  i_elems_1,
+            output reg [DATA_WIDTH-1:0] o_elems_0,
+            output reg [DATA_WIDTH-1:0] o_elems_1);
    always @(posedge i_clk) begin
       if (~stall) begin
          if (i_elems_0 > i_elems_1) begin
@@ -23,19 +23,18 @@ module CAS (input i_clk,
 endmodule
    
 
-module BITONIC_NETWORK_32 (input i_clk,
+module BITONIC_NETWORK_32 #(parameter DATA_WIDTH = 80) (input i_clk,
 			  input 		switch_output,
 			  input 		stall,
-			  input [DATA_WIDTH-1:0] 	top_tuple,
-			  input [DATA_WIDTH-1:0] 	i_elems_0,
-			  input [DATA_WIDTH-1:0] 	i_elems_1, 
-			  output [DATA_WIDTH-1:0] o_elems_0,
-			  output [DATA_WIDTH-1:0] o_elems_1,
+			  input [16*DATA_WIDTH-1:0] 	top_tuple,
+			  input [16*DATA_WIDTH-1:0] 	i_elems_0,
+			  input [16*DATA_WIDTH-1:0] 	i_elems_1, 
+			  output [16*DATA_WIDTH-1:0] o_elems_0,
+			  output [16*DATA_WIDTH-1:0] o_elems_1,
 			  output reg 		o_switch_output,
 			  output reg 		o_stall,
-			  output reg [DATA_WIDTH-1:0] o_top_tuple);
+			  output reg [16*DATA_WIDTH-1:0] o_top_tuple);
 
-   parameter DATA_WIDTH = 512;
    
    reg                                    stall_1;
    reg                                    stall_2;
@@ -47,18 +46,18 @@ module BITONIC_NETWORK_32 (input i_clk,
    reg                                    switch_output_3;
    reg                                    switch_output_4;   
 
-   wire [DATA_WIDTH-1:0] 			top_tuple_1;
-   reg [DATA_WIDTH-1:0] 			top_tuple_2;
-   reg [DATA_WIDTH-1:0] 			top_tuple_3;
-   reg [DATA_WIDTH-1:0] 			top_tuple_4;         
+   wire [16*DATA_WIDTH-1:0] 			top_tuple_1;
+   reg [16*DATA_WIDTH-1:0] 			top_tuple_2;
+   reg [16*DATA_WIDTH-1:0] 			top_tuple_3;
+   reg [16*DATA_WIDTH-1:0] 			top_tuple_4;         
    
-   wire [2*DATA_WIDTH-1:0] 			elems_1;
+   wire [2*16*DATA_WIDTH-1:0] 			elems_1;
    
-   wire [2*DATA_WIDTH-1:0] 			elems_2;
+   wire [2*16*DATA_WIDTH-1:0] 			elems_2;
 
-   wire [2*DATA_WIDTH-1:0]             elems_3;
+   wire [2*16*DATA_WIDTH-1:0]             elems_3;
 
-   wire [2*DATA_WIDTH-1:0]             elems_4;
+   wire [2*16*DATA_WIDTH-1:0]             elems_4;
    
    initial begin
       stall_1 <= 1;
@@ -84,10 +83,10 @@ module BITONIC_NETWORK_32 (input i_clk,
       for (i=0; i<16; i=i+1) begin : GEN
          CAS cas(.i_clk(i_clk),
                  .stall(stall), 
-                 .i_elems_0(i_elems_0[(i+1)*32-1:i*32]), 
-                 .i_elems_1(i_elems_1[(16-i)*32-1:(16-i-1)*32]),
-                 .o_elems_0(elems_1[(i+1)*32-1:i*32]), 
-                 .o_elems_1(elems_1[(32-i)*32-1:(32-i-1)*32]));         
+                 .i_elems_0(i_elems_0[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH]), 
+                 .i_elems_1(i_elems_1[(16-i)*DATA_WIDTH-1:(16-i-1)*DATA_WIDTH]),
+                 .o_elems_0(elems_1[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH]), 
+                 .o_elems_1(elems_1[(DATA_WIDTH-i)*DATA_WIDTH-1:(DATA_WIDTH-i-1)*DATA_WIDTH]));         
       end
    endgenerate
 
@@ -97,10 +96,10 @@ module BITONIC_NETWORK_32 (input i_clk,
          for (i=0; i<8; i=i+1) begin
             CAS cas(.i_clk(i_clk),
                     .stall(stall_1), 
-                    .i_elems_0(elems_1[(16*j+i+1)*32-1:(16*j+i)*32]), 
-                    .i_elems_1(elems_1[(16*j+i+1+8)*32-1:(16*j+i+8)*32]),
-                    .o_elems_0(elems_2[(16*j+i+1)*32-1:(16*j+i)*32]), 
-                    .o_elems_1(elems_2[(16*j+i+1+8)*32-1:(16*j+i+8)*32]));
+                    .i_elems_0(elems_1[(16*j+i+1)*DATA_WIDTH-1:(16*j+i)*DATA_WIDTH]), 
+                    .i_elems_1(elems_1[(16*j+i+1+8)*DATA_WIDTH-1:(16*j+i+8)*DATA_WIDTH]),
+                    .o_elems_0(elems_2[(16*j+i+1)*DATA_WIDTH-1:(16*j+i)*DATA_WIDTH]), 
+                    .o_elems_1(elems_2[(16*j+i+1+8)*DATA_WIDTH-1:(16*j+i+8)*DATA_WIDTH]));
          end
       end
    endgenerate
@@ -111,10 +110,10 @@ module BITONIC_NETWORK_32 (input i_clk,
          for (i=0; i<4; i=i+1) begin
             CAS cas(.i_clk(i_clk),
                     .stall(stall_2),
-                    .i_elems_0(elems_2[(8*j+i+1)*32-1:(8*j+i)*32]), 
-                    .i_elems_1(elems_2[(8*j+i+1+4)*32-1:(8*j+i+4)*32]),
-                    .o_elems_0(elems_3[(8*j+i+1)*32-1:(8*j+i)*32]), 
-                    .o_elems_1(elems_3[(8*j+i+1+4)*32-1:(8*j+i+4)*32]));       
+                    .i_elems_0(elems_2[(8*j+i+1)*DATA_WIDTH-1:(8*j+i)*DATA_WIDTH]), 
+                    .i_elems_1(elems_2[(8*j+i+1+4)*DATA_WIDTH-1:(8*j+i+4)*DATA_WIDTH]),
+                    .o_elems_0(elems_3[(8*j+i+1)*DATA_WIDTH-1:(8*j+i)*DATA_WIDTH]), 
+                    .o_elems_1(elems_3[(8*j+i+1+4)*DATA_WIDTH-1:(8*j+i+4)*DATA_WIDTH]));       
          end
       end
    endgenerate
@@ -125,10 +124,10 @@ module BITONIC_NETWORK_32 (input i_clk,
          for (i=0; i<2; i=i+1) begin
             CAS cas(.i_clk(i_clk),
                     .stall(stall_3),
-                    .i_elems_0(elems_3[(4*j+i+1)*32-1:(4*j+i)*32]), 
-                    .i_elems_1(elems_3[(4*j+i+1+2)*32-1:(4*j+i+2)*32]),
-                    .o_elems_0(elems_4[(4*j+i+1)*32-1:(4*j+i)*32]), 
-                    .o_elems_1(elems_4[(4*j+i+1+2)*32-1:(4*j+i+2)*32]));       
+                    .i_elems_0(elems_3[(4*j+i+1)*DATA_WIDTH-1:(4*j+i)*DATA_WIDTH]), 
+                    .i_elems_1(elems_3[(4*j+i+1+2)*DATA_WIDTH-1:(4*j+i+2)*DATA_WIDTH]),
+                    .o_elems_0(elems_4[(4*j+i+1)*DATA_WIDTH-1:(4*j+i)*DATA_WIDTH]), 
+                    .o_elems_1(elems_4[(4*j+i+1+2)*DATA_WIDTH-1:(4*j+i+2)*DATA_WIDTH]));       
          end
       end
    endgenerate   
@@ -138,16 +137,16 @@ module BITONIC_NETWORK_32 (input i_clk,
       for (i=0; i<16; i=i+2) begin : GEN5
             CAS cas1(.i_clk(i_clk),
                     .stall(stall_4),
-                    .i_elems_0(elems_4[(i+1)*32-1:i*32]), 
-                    .i_elems_1(elems_4[(i+2)*32-1:(i+1)*32]),
-                    .o_elems_0(o_elems_0[(i+1)*32-1:i*32]), 
-                    .o_elems_1(o_elems_0[(i+2)*32-1:(i+1)*32]));
+                    .i_elems_0(elems_4[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH]), 
+                    .i_elems_1(elems_4[(i+2)*DATA_WIDTH-1:(i+1)*DATA_WIDTH]),
+                    .o_elems_0(o_elems_0[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH]), 
+                    .o_elems_1(o_elems_0[(i+2)*DATA_WIDTH-1:(i+1)*DATA_WIDTH]));
             CAS cas2(.i_clk(i_clk),
                     .stall(stall_4),
-                    .i_elems_0(elems_4[16*32+(i+1)*32-1:16*32+i*32]), 
-                    .i_elems_1(elems_4[16*32+(i+2)*32-1:16*32+(i+1)*32]),
-                    .o_elems_0(o_elems_1[(i+1)*32-1:i*32]), 
-                    .o_elems_1(o_elems_1[(i+2)*32-1:(i+1)*32]));                
+                    .i_elems_0(elems_4[16*DATA_WIDTH+(i+1)*DATA_WIDTH-1:16*DATA_WIDTH+i*DATA_WIDTH]), 
+                    .i_elems_1(elems_4[16*DATA_WIDTH+(i+2)*DATA_WIDTH-1:16*DATA_WIDTH+(i+1)*DATA_WIDTH]),
+                    .o_elems_0(o_elems_1[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH]), 
+                    .o_elems_1(o_elems_1[(i+2)*DATA_WIDTH-1:(i+1)*DATA_WIDTH]));                
       end
    endgenerate         
    
@@ -196,7 +195,7 @@ module BITONIC_NETWORK_32 (input i_clk,
 	     o_top_tuple <= top_tuple_4;
       end
    end    
-endmodule // BITONIC_NETWORK_32
+endmodule // BITONIC_NETWORK_DATA_WIDTH
 
 
 

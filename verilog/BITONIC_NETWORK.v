@@ -1,17 +1,17 @@
 `timescale 1 ns/10 ps
 
 /* For 1-merger */
-module BITONIC_NETWORK_2 (input i_clk,
-			  input 	    switch_output,
-			  input 	    stall,
-			  input [31:0] 	    top_tuple,
-			  input [31:0] 	    i_elems_0,
-			  input [31:0] 	    i_elems_1, 
-			  output reg [31:0] o_elems_0,
-			  output reg [31:0] o_elems_1,
-			  output reg 	    o_switch_output,
-			  output reg 	    o_stall,
-			  output [31:0]     o_top_tuple);
+module BITONIC_NETWORK_2 #(parameter DATA_WIDTH = 80) (input i_clk,
+						       input 			   switch_output,
+						       input 			   stall,
+						       input [DATA_WIDTH-1:0] 	   top_tuple,
+						       input [DATA_WIDTH-1:0] 	   i_elems_0,
+						       input [DATA_WIDTH-1:0] 	   i_elems_1, 
+						       output reg [DATA_WIDTH-1:0] o_elems_0,
+						       output reg [DATA_WIDTH-1:0] o_elems_1,
+						       output reg 		   o_switch_output,
+						       output reg 		   o_stall,
+						       output [DATA_WIDTH-1:0] 	   o_top_tuple);
 
    initial begin
       o_stall <= 0;
