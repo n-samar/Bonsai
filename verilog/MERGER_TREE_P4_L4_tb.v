@@ -41,6 +41,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 80);
    
    reg [479:0] 		   buffer_in [0:LEAF_CNT-1];   
    wire [479:0]        buffer_out [0:LEAF_CNT-1];
+
    
 
    assign read_fifo_out = ~fifo_out_empty;
