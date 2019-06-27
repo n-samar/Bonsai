@@ -298,7 +298,7 @@ int main(int argc, char** argv)
     cl_event readevent;
 
     err = 0;
-    err |= clEnqueueReadBuffer( commands, d_in_ptr, CL_TRUE, sizeof(cl_uint) * number_of_words, sizeof(cl_uint) * number_of_words - 8*512/8, h_in_ptr_output, 0, NULL, &readevent );
+    err |= clEnqueueReadBuffer( commands, d_in_ptr, CL_TRUE, sizeof(cl_uint) * number_of_words, sizeof(cl_uint) * number_of_words, h_in_ptr_output, 0, NULL, &readevent );
 
     if (err != CL_SUCCESS) {
             printf("Error: Failed to read output array! %d\n", err);
