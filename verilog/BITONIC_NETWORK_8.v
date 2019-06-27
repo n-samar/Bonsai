@@ -1,5 +1,6 @@
 /* For 4-merger */
-module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
+module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128,
+			   parameter KEY_WIDTH = 80) (input i_clk,
 			  input 		switch_output,
 			  input 		stall,
 			  input [4*DATA_WIDTH-1:0] 	top_tuple,
@@ -43,7 +44,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 switch_output_1 <= switch_output;	 
 
 	 /* CAS(0, 7) */
-	 if (i_elems_0[DATA_WIDTH-1:0] > i_elems_1[4*DATA_WIDTH-1:3*DATA_WIDTH]) begin
+	 if (i_elems_0[KEY_WIDTH-1:0] > i_elems_1[3*DATA_WIDTH+KEY_WIDTH-1:3*DATA_WIDTH]) begin
 	    /* switch */
 	    elems_1_0[DATA_WIDTH-1:0] <= i_elems_1[4*DATA_WIDTH-1:3*DATA_WIDTH];
 	    elems_1_1[4*DATA_WIDTH-1:3*DATA_WIDTH] <= i_elems_0[DATA_WIDTH-1:0];
@@ -55,7 +56,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 end
 
 	 /* CAS(1, 6) */
-	 if (i_elems_0[2*DATA_WIDTH-1:DATA_WIDTH] > i_elems_1[3*DATA_WIDTH-1:2*DATA_WIDTH]) begin
+	 if (i_elems_0[DATA_WIDTH+KEY_WIDTH-1:DATA_WIDTH] > i_elems_1[2*DATA_WIDTH+KEY_WIDTH-1:2*DATA_WIDTH]) begin
 	    /* switch */
 	    elems_1_0[2*DATA_WIDTH-1:DATA_WIDTH] <= i_elems_1[3*DATA_WIDTH-1:2*DATA_WIDTH];
 	    elems_1_1[3*DATA_WIDTH-1:2*DATA_WIDTH] <= i_elems_0[2*DATA_WIDTH-1:DATA_WIDTH];
@@ -67,7 +68,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 end	 
 	 
 	 /* CAS(2, 5) */
-	 if (i_elems_0[3*DATA_WIDTH-1:2*DATA_WIDTH] > i_elems_1[2*DATA_WIDTH-1:DATA_WIDTH]) begin
+	 if (i_elems_0[2*DATA_WIDTH+KEY_WIDTH-1:2*DATA_WIDTH] > i_elems_1[DATA_WIDTH+KEY_WIDTH-1:DATA_WIDTH]) begin
 	    /* switch */
 	    elems_1_1[2*DATA_WIDTH-1:DATA_WIDTH] <= i_elems_0[3*DATA_WIDTH-1:2*DATA_WIDTH];
 	    elems_1_0[3*DATA_WIDTH-1:2*DATA_WIDTH] <= i_elems_1[2*DATA_WIDTH-1:DATA_WIDTH];
@@ -79,7 +80,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 end
 
 	 /* CAS(3, 4) */
-	 if (i_elems_0[4*DATA_WIDTH-1:3*DATA_WIDTH] > i_elems_1[DATA_WIDTH-1:0]) begin
+	 if (i_elems_0[3*DATA_WIDTH+KEY_WIDTH-1:3*DATA_WIDTH] > i_elems_1[KEY_WIDTH-1:0]) begin
 	    /* switch */
 	    elems_1_1[DATA_WIDTH-1:0] <= i_elems_0[4*DATA_WIDTH-1:3*DATA_WIDTH];
 	    elems_1_0[4*DATA_WIDTH-1:3*DATA_WIDTH] <= i_elems_1[DATA_WIDTH-1:0];
@@ -100,7 +101,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 top_tuple_2 <= top_tuple_1;
 
 	 /* CAS(0, 2) */
-	 if (elems_1_0[DATA_WIDTH-1:0] > elems_1_0[3*DATA_WIDTH-1:2*DATA_WIDTH]) begin
+	 if (elems_1_0[KEY_WIDTH-1:0] > elems_1_0[2*DATA_WIDTH+KEY_WIDTH-1:2*DATA_WIDTH]) begin
 	    /* switch */
 	    elems_2_0[DATA_WIDTH-1:0] <= elems_1_0[3*DATA_WIDTH-1:2*DATA_WIDTH];
 	    elems_2_0[3*DATA_WIDTH-1:2*DATA_WIDTH] <= elems_1_0[DATA_WIDTH-1:0];	    
@@ -112,7 +113,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 end
 	 
 	 /* CAS(1, 3) */
-	 if (elems_1_0[2*DATA_WIDTH-1:DATA_WIDTH] > elems_1_0[4*DATA_WIDTH-1:3*DATA_WIDTH]) begin
+	 if (elems_1_0[DATA_WIDTH+KEY_WIDTH-1:DATA_WIDTH] > elems_1_0[3*DATA_WIDTH+KEY_WIDTH-1:3*DATA_WIDTH]) begin
 	    /* switch */
 	    elems_2_0[2*DATA_WIDTH-1:DATA_WIDTH] <= elems_1_0[4*DATA_WIDTH-1:3*DATA_WIDTH];
 	    elems_2_0[4*DATA_WIDTH-1:3*DATA_WIDTH] <= elems_1_0[2*DATA_WIDTH-1:DATA_WIDTH];	    
@@ -124,7 +125,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 end
 
 	 /* CAS(4, 6) */
-	 if (elems_1_1[DATA_WIDTH-1:0] > elems_1_1[3*DATA_WIDTH-1:2*DATA_WIDTH]) begin
+	 if (elems_1_1[KEY_WIDTH-1:0] > elems_1_1[2*DATA_WIDTH+KEY_WIDTH-1:2*DATA_WIDTH]) begin
 	    /* switch */
 	    elems_2_1[DATA_WIDTH-1:0] <= elems_1_1[3*DATA_WIDTH-1:2*DATA_WIDTH];
 	    elems_2_1[3*DATA_WIDTH-1:2*DATA_WIDTH] <= elems_1_1[DATA_WIDTH-1:0];	    
@@ -136,7 +137,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 end
 	 
 	 /* CAS(5, 7) */
-	 if (elems_1_1[2*DATA_WIDTH-1:DATA_WIDTH] > elems_1_1[4*DATA_WIDTH-1:3*DATA_WIDTH]) begin
+	 if (elems_1_1[DATA_WIDTH+KEY_WIDTH-1:DATA_WIDTH] > elems_1_1[3*DATA_WIDTH+KEY_WIDTH-1:3*DATA_WIDTH]) begin
 	    /* switch */
 	    elems_2_1[2*DATA_WIDTH-1:DATA_WIDTH] <= elems_1_1[4*DATA_WIDTH-1:3*DATA_WIDTH];
 	    elems_2_1[4*DATA_WIDTH-1:3*DATA_WIDTH] <= elems_1_1[2*DATA_WIDTH-1:DATA_WIDTH];	    
@@ -157,7 +158,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 o_top_tuple <= top_tuple_2;
 
 	 /* CAS(0, 1) */
-	 if (elems_2_0[DATA_WIDTH-1:0] > elems_2_0[2*DATA_WIDTH-1:DATA_WIDTH]) begin
+	 if (elems_2_0[KEY_WIDTH-1:0] > elems_2_0[DATA_WIDTH+KEY_WIDTH-1:DATA_WIDTH]) begin
 	    /* switch */
 	    o_elems_0[DATA_WIDTH-1:0] <= elems_2_0[2*DATA_WIDTH-1:DATA_WIDTH];
 	    o_elems_0[2*DATA_WIDTH-1:DATA_WIDTH] <= elems_2_0[DATA_WIDTH-1:0];	    
@@ -169,7 +170,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 end
 	 
 	 /* CAS(2, 3) */
-	 if (elems_2_0[3*DATA_WIDTH-1:2*DATA_WIDTH] > elems_2_0[4*DATA_WIDTH-1:3*DATA_WIDTH]) begin
+	 if (elems_2_0[2*DATA_WIDTH+KEY_WIDTH-1:2*DATA_WIDTH] > elems_2_0[3*DATA_WIDTH+KEY_WIDTH-1:3*DATA_WIDTH]) begin
 	    /* switch */
 	    o_elems_0[3*DATA_WIDTH-1:2*DATA_WIDTH] <= elems_2_0[4*DATA_WIDTH-1:3*DATA_WIDTH];
 	    o_elems_0[4*DATA_WIDTH-1:3*DATA_WIDTH] <= elems_2_0[3*DATA_WIDTH-1:2*DATA_WIDTH];	    
@@ -181,7 +182,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 end
 
 	 /* CAS(4, 5) */
-	 if (elems_2_1[DATA_WIDTH-1:0] > elems_2_1[2*DATA_WIDTH-1:DATA_WIDTH]) begin
+	 if (elems_2_1[KEY_WIDTH-1:0] > elems_2_1[DATA_WIDTH+KEY_WIDTH-1:DATA_WIDTH]) begin
 	    /* switch */
 	    o_elems_1[DATA_WIDTH-1:0] <= elems_2_1[2*DATA_WIDTH-1:DATA_WIDTH];
 	    o_elems_1[2*DATA_WIDTH-1:DATA_WIDTH] <= elems_2_1[DATA_WIDTH-1:0];	    
@@ -193,7 +194,7 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 end
 	 
 	 /* CAS(6, 7) */
-	 if (elems_2_1[3*DATA_WIDTH-1:2*DATA_WIDTH] > elems_2_1[4*DATA_WIDTH-1:3*DATA_WIDTH]) begin
+	 if (elems_2_1[2*DATA_WIDTH+KEY_WIDTH-1:2*DATA_WIDTH] > elems_2_1[3*DATA_WIDTH+KEY_WIDTH-1:3*DATA_WIDTH]) begin
 	    /* switch */
 	    o_elems_1[3*DATA_WIDTH-1:2*DATA_WIDTH] <= elems_2_1[4*DATA_WIDTH-1:3*DATA_WIDTH];
 	    o_elems_1[4*DATA_WIDTH-1:3*DATA_WIDTH] <= elems_2_1[3*DATA_WIDTH-1:2*DATA_WIDTH];	    

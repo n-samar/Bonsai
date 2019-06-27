@@ -1,4 +1,5 @@
-module MERGER_8 #(parameter DATA_WIDTH = 128) (input i_clk,
+module MERGER_8 #(parameter DATA_WIDTH = 128,
+		  parameter DATA_WIDTH = 80) (input i_clk,
 	      input [8*DATA_WIDTH-1:0] 	     i_fifo_1,
 	      input 		     i_fifo_1_empty,
 	      input [8*DATA_WIDTH-1:0] 	     i_fifo_2,
@@ -42,7 +43,7 @@ module MERGER_8 #(parameter DATA_WIDTH = 128) (input i_clk,
    
    assign a_min_zero = (fifo_a_out[DATA_WIDTH-1:0] == 0);
    assign b_min_zero = (fifo_b_out[DATA_WIDTH-1:0] == 0);
-   assign a_lte_b = (fifo_a_out[DATA_WIDTH-1:0] <= fifo_b_out[DATA_WIDTH-1:0]);
+   assign a_lte_b = (fifo_a_out[KEY_WIDTH-1:0] <= fifo_b_out[KEY_WIDTH-1:0]);
 
    assign o_fifo_1_read = ~i_fifo_1_empty & (~fifo_a_full);
    assign i_write_a = ~i_fifo_1_empty & (~fifo_a_full);

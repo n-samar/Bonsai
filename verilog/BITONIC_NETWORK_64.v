@@ -1,6 +1,7 @@
 /* For 32-merger */
 
-module CAS_64 #(parameter DATA_WIDTH = 128) (input i_clk,
+module CAS_64 #(parameter DATA_WIDTH = 128,
+		parameter KEY_WIDTH = 80) (input i_clk,
             input         stall,
             input [DATA_WIDTH-1:0]  i_elems_0,
             input [DATA_WIDTH-1:0]  i_elems_1,
@@ -23,7 +24,8 @@ module CAS_64 #(parameter DATA_WIDTH = 128) (input i_clk,
 endmodule
    
 
-module BITONIC_NETWORK_64  #(parameter DATA_WIDTH = 128) (input i_clk,
+module BITONIC_NETWORK_64  #(parameter DATA_WIDTH = 128,
+			     parameter KEY_WIDTH = 80) (input i_clk,
 			  input 		switch_output,
 			  input 		stall,
 			  input [32*DATA_WIDTH-1:0] 	top_tuple,

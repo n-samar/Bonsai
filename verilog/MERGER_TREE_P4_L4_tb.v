@@ -122,17 +122,13 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128);
 	       rdaddr[l] <= rdaddr[l] + (512/DATA_WIDTH);
 	       buffer_counter <= (buffer_counter + 1) % (BURST_SIZE*LEAF_CNT);
 	       if (rdaddr[l] < (l+1)*LEN_SEQ) begin
-		  buffer_in[l] <= {data[rdaddr[l]+5],
-				   data[rdaddr[l]+4],
-				   data[rdaddr[l]+3],
+		  buffer_in[l] <= {data[rdaddr[l]+3],
 				   data[rdaddr[l]+2],
 				   data[rdaddr[l]+1],
 				   data[rdaddr[l]+0]};
 	       end
 	       else begin
 		  buffer_in[l] <= {data[0],
-				   data[0],
-				   data[0],
 				   data[0],
 				   data[0],
 				   data[0]};	       
@@ -312,15 +308,18 @@ buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+31],
    
    initial
      begin
-	    // $dumpfile("test_merger.vcd");
-	    // $dumpvars(0, merger_tree_tb);
+	    //$dumpfile("test_merger.vcd");
+	    //$dumpvars(0, merger_tree_tb);
      end
    
    initial begin
       f = $fopen("out_8_960_1_4.txt", "w+");
    end
 
-   always @(posedge clk) begin      
+   always @(posedge clk) begin
+      if (counter%100 == 0) begin
+	 $display("counter: %d, (total: %d)", counter, (LEAF_CNT*LEN_SEQ+10000)/7); 
+      end
       if(counter < (LEAF_CNT*LEN_SEQ+10000)/7) begin
 	     if(read_fifo_out) begin
 	        $fwrite(f, "%x\n", o_data);

@@ -1,6 +1,7 @@
 /* For 16-merger */
 
-module CAS #(parameter DATA_WIDTH = 128) (input i_clk,
+module CAS #(parameter DATA_WIDTH = 128,
+	     parameter KEY_WIDTH  = 80) (input i_clk,
             input         stall,
             input [DATA_WIDTH-1:0]  i_elems_0,
             input [DATA_WIDTH-1:0]  i_elems_1,
@@ -8,7 +9,7 @@ module CAS #(parameter DATA_WIDTH = 128) (input i_clk,
             output reg [DATA_WIDTH-1:0] o_elems_1);
    always @(posedge i_clk) begin
       if (~stall) begin
-         if (i_elems_0 > i_elems_1) begin
+         if (i_elems_0[KEY_WIDTH-1:0] > i_elems_1[KEY_WIDTH-1:0]) begin
 	        /* switch */
 	        o_elems_1 <= i_elems_0;
             o_elems_0 <= i_elems_1;
@@ -23,41 +24,39 @@ module CAS #(parameter DATA_WIDTH = 128) (input i_clk,
 endmodule
    
 
-module BITONIC_NETWORK_32 #(parameter DATA_WIDTH = 128) (input i_clk,
-			  input 		switch_output,
-			  input 		stall,
-			  input [16*DATA_WIDTH-1:0] 	top_tuple,
-			  input [16*DATA_WIDTH-1:0] 	i_elems_0,
-			  input [16*DATA_WIDTH-1:0] 	i_elems_1, 
-			  output [16*DATA_WIDTH-1:0] o_elems_0,
-			  output [16*DATA_WIDTH-1:0] o_elems_1,
-			  output reg 		o_switch_output,
-			  output reg 		o_stall,
-			  output reg [16*DATA_WIDTH-1:0] o_top_tuple);
+module BITONIC_NETWORK_32 #(parameter DATA_WIDTH = 128,
+			    parameter KEY_WIDTH = 80) (input i_clk,
+						       input 			      switch_output,
+						       input 			      stall,
+						       input [16*DATA_WIDTH-1:0]      top_tuple,
+						       input [16*DATA_WIDTH-1:0]      i_elems_0,
+						       input [16*DATA_WIDTH-1:0]      i_elems_1, 
+						       output [16*DATA_WIDTH-1:0]     o_elems_0,
+						       output [16*DATA_WIDTH-1:0]     o_elems_1,
+						       output reg 		      o_switch_output,
+						       output reg 		      o_stall,
+						       output reg [16*DATA_WIDTH-1:0] o_top_tuple);
 
    
-   reg                                    stall_1;
-   reg                                    stall_2;
-   reg                                    stall_3;
-   reg                                    stall_4;   
+   reg 										      stall_1;
+   reg 										      stall_2;
+   reg 										      stall_3;
+   reg 										      stall_4;   
    
-   reg                                    switch_output_1;
-   reg                                    switch_output_2;
-   reg                                    switch_output_3;
-   reg                                    switch_output_4;   
-
-   wire [16*DATA_WIDTH-1:0] 			top_tuple_1;
-   reg [16*DATA_WIDTH-1:0] 			top_tuple_2;
-   reg [16*DATA_WIDTH-1:0] 			top_tuple_3;
-   reg [16*DATA_WIDTH-1:0] 			top_tuple_4;         
+   reg 										      switch_output_1;
+   reg 										      switch_output_2;
+   reg 										      switch_output_3;
+   reg 										      switch_output_4;   
    
-   wire [2*16*DATA_WIDTH-1:0] 			elems_1;
+   wire [16*DATA_WIDTH-1:0] 							      top_tuple_1;
+   reg [16*DATA_WIDTH-1:0] 							      top_tuple_2;
+   reg [16*DATA_WIDTH-1:0] 							      top_tuple_3;
+   reg [16*DATA_WIDTH-1:0] 							      top_tuple_4;         
    
-   wire [2*16*DATA_WIDTH-1:0] 			elems_2;
-
-   wire [2*16*DATA_WIDTH-1:0]             elems_3;
-
-   wire [2*16*DATA_WIDTH-1:0]             elems_4;
+   wire [2*16*DATA_WIDTH-1:0] 							      elems_1;
+   wire [2*16*DATA_WIDTH-1:0] 							      elems_2;
+   wire [2*16*DATA_WIDTH-1:0] 							      elems_3;   
+   wire [2*16*DATA_WIDTH-1:0] 							      elems_4;
    
    initial begin
       stall_1 <= 1;

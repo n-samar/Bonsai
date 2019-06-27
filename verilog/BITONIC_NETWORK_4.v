@@ -1,5 +1,6 @@
 /* For 2-merger */
-module BITONIC_NETWORK_4 #(parameter DATA_WIDTH = 128) (input i_clk,
+module BITONIC_NETWORK_4 #(parameter DATA_WIDTH = 128,
+			   parameter KEY_WIDTH = 80) (input i_clk,
 			  input 		switch_output,
 			  input 		stall,
 			  input [2*DATA_WIDTH-1:0] 	top_tuple,
@@ -36,7 +37,7 @@ module BITONIC_NETWORK_4 #(parameter DATA_WIDTH = 128) (input i_clk,
       stall_1 <= stall;
       if (~stall) begin
 	 switch_output_1 <= switch_output;	 
-	 if (i_elems_1[2*DATA_WIDTH-1 : DATA_WIDTH] >= i_elems_0[2*DATA_WIDTH-1 : DATA_WIDTH]) begin
+	 if (i_elems_1[DATA_WIDTH+KEY_WIDTH-1 : DATA_WIDTH] >= i_elems_0[DATA_WIDTH+KEY_WIDTH-1 : DATA_WIDTH]) begin
 	    elems_1_1[2*DATA_WIDTH-1 : DATA_WIDTH] <= i_elems_1[2*DATA_WIDTH-1 : DATA_WIDTH];
 	    elems_1_0[2*DATA_WIDTH-1 : DATA_WIDTH] <= i_elems_0[2*DATA_WIDTH-1 : DATA_WIDTH];	 
 	 end
@@ -45,7 +46,7 @@ module BITONIC_NETWORK_4 #(parameter DATA_WIDTH = 128) (input i_clk,
 	    elems_1_0[2*DATA_WIDTH-1 : DATA_WIDTH] <= i_elems_1[2*DATA_WIDTH-1 : DATA_WIDTH];	 
 	 end
 
-	 if (i_elems_1[DATA_WIDTH-1:0] >= i_elems_0[DATA_WIDTH-1:0]) begin
+	 if (i_elems_1[KEY_WIDTH-1:0] >= i_elems_0[KEY_WIDTH-1:0]) begin
 	    elems_1_1[DATA_WIDTH-1:0] <= i_elems_1[DATA_WIDTH-1:0];
 	    elems_1_0[DATA_WIDTH-1:0] <= i_elems_0[DATA_WIDTH-1:0];	 
 	 end
@@ -65,7 +66,7 @@ module BITONIC_NETWORK_4 #(parameter DATA_WIDTH = 128) (input i_clk,
 	 o_elems_1[2*DATA_WIDTH-1 : DATA_WIDTH] <= elems_1_1[2*DATA_WIDTH-1 : DATA_WIDTH];
 	 o_elems_0[DATA_WIDTH-1:0] <= elems_1_0[DATA_WIDTH-1:0];
 	 
-	 if (elems_1_0[2*DATA_WIDTH-1 : DATA_WIDTH] >= elems_1_1[DATA_WIDTH-1:0]) begin
+	 if (elems_1_0[DATA_WIDTH+KEY_WIDTH-1 : DATA_WIDTH] >= elems_1_1[KEY_WIDTH-1:0]) begin
 	    o_elems_1[DATA_WIDTH-1:0] <= elems_1_0[2*DATA_WIDTH-1 : DATA_WIDTH];
 	    o_elems_0[2*DATA_WIDTH-1 : DATA_WIDTH] <= elems_1_1[DATA_WIDTH-1:0];	 
 	 end
