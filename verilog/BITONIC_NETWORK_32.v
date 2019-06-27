@@ -1,6 +1,6 @@
 /* For 16-merger */
 
-module CAS #(parameter DATA_WIDTH = 80) (input i_clk,
+module CAS #(parameter DATA_WIDTH = 128) (input i_clk,
             input         stall,
             input [DATA_WIDTH-1:0]  i_elems_0,
             input [DATA_WIDTH-1:0]  i_elems_1,
@@ -23,7 +23,7 @@ module CAS #(parameter DATA_WIDTH = 80) (input i_clk,
 endmodule
    
 
-module BITONIC_NETWORK_32 #(parameter DATA_WIDTH = 80) (input i_clk,
+module BITONIC_NETWORK_32 #(parameter DATA_WIDTH = 128) (input i_clk,
 			  input 		switch_output,
 			  input 		stall,
 			  input [16*DATA_WIDTH-1:0] 	top_tuple,
@@ -86,7 +86,7 @@ module BITONIC_NETWORK_32 #(parameter DATA_WIDTH = 80) (input i_clk,
                  .i_elems_0(i_elems_0[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH]), 
                  .i_elems_1(i_elems_1[(16-i)*DATA_WIDTH-1:(16-i-1)*DATA_WIDTH]),
                  .o_elems_0(elems_1[(i+1)*DATA_WIDTH-1:i*DATA_WIDTH]), 
-                 .o_elems_1(elems_1[(DATA_WIDTH-i)*DATA_WIDTH-1:(DATA_WIDTH-i-1)*DATA_WIDTH]));         
+                 .o_elems_1(elems_1[(32-i)*DATA_WIDTH-1:(32-i-1)*DATA_WIDTH]));         
       end
    endgenerate
 

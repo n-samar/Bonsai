@@ -1,4 +1,4 @@
-module MERGER_32   parameter 16*DATA_WIDTH = 512;
+module MERGER_32 #(parameter DATA_WIDTH = 128)
  (input i_clk,
 	      input [32*DATA_WIDTH-1:0] 	     i_fifo_1,
 	      input 		     i_fifo_1_empty,

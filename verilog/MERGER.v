@@ -1,7 +1,7 @@
 `timescale 1 ns/10 ps
 
 /* NOTE: The size of FIFO_C should be at least log(P)*(log(P)+1)/2 + 1 */
-module MERGER_1 #(parameter DATA_WIDTH = 80) (input i_clk,
+module MERGER_1 #(parameter DATA_WIDTH = 128) (input i_clk,
 	      input [DATA_WIDTH-1:0] 	 i_fifo_1,
 	      input 		 i_fifo_1_empty,
 	      input [DATA_WIDTH-1:0] 	 i_fifo_2,

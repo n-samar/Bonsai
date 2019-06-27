@@ -1,4 +1,4 @@
-module MERGER_4 #(parameter DATA_WIDTH = 80) (input i_clk,
+module MERGER_4 #(parameter DATA_WIDTH = 128) (input i_clk,
 	      input [4*DATA_WIDTH-1:0] 	     i_fifo_1,
 	      input 		     i_fifo_1_empty,
 	      input [4*DATA_WIDTH-1:0] 	     i_fifo_2,

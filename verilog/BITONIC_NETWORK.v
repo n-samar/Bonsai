@@ -1,7 +1,7 @@
 `timescale 1 ns/10 ps
 
 /* For 1-merger */
-module BITONIC_NETWORK_2 #(parameter DATA_WIDTH = 80) (input i_clk,
+module BITONIC_NETWORK_2 #(parameter DATA_WIDTH = 128) (input i_clk,
 						       input 			   switch_output,
 						       input 			   stall,
 						       input [DATA_WIDTH-1:0] 	   top_tuple,

@@ -1,6 +1,6 @@
 `timescale 1 ns/10 ps
 
-module merger_tree_tb #(parameter DATA_WIDTH = 80);
+module merger_tree_tb #(parameter DATA_WIDTH = 128);
    reg [2*L-1:0] write_fifo;
    wire read_fifo_out;
    
@@ -39,8 +39,8 @@ module merger_tree_tb #(parameter DATA_WIDTH = 80);
    wire [LEAF_CNT-1:0] 	   buffer_full;
    reg [DATA_WIDTH-1:0]    readmemh_data[0:15];
    
-   reg [479:0] 		   buffer_in [0:LEAF_CNT-1];   
-   wire [479:0]        buffer_out [0:LEAF_CNT-1];
+   reg [511:0] 		   buffer_in [0:LEAF_CNT-1];   
+   wire [511:0]        buffer_out [0:LEAF_CNT-1];
 
    
 
@@ -50,7 +50,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 80);
    genvar              fifo_index;
    generate
       for (fifo_index = 0; fifo_index < 2*L; fifo_index = fifo_index + 1) begin : IN
-	 IFIFO32 #(480) buffer(.i_clk(clk),
+	 IFIFO32 #(512) buffer(.i_clk(clk),
 			       .i_data(buffer_in[fifo_index]),
 			       .o_data(buffer_out[fifo_index]),
 			       .i_enq(buffer_enq[fifo_index]),
@@ -91,7 +91,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 80);
    always @ (negedge clk) begin
       counter <= counter + 1;	    
       for(i=0; i<LEAF_CNT; i=i+1) begin
-	 if (buffer_ptr[i] == 480/DATA_WIDTH-1 & ~buffer_empty[i] & ~fifo_full[i]) begin
+	 if (buffer_ptr[i] == 512/DATA_WIDTH-1 & ~buffer_empty[i] & ~fifo_full[i]) begin
 	    buffer_deq[i] <= 1;	   
 	 end
 	 else begin
@@ -109,7 +109,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 80);
       for (l = 0;  l < LEAF_CNT; l=l+1) begin
 	     if(~fifo_full[l] & ~buffer_empty[l]) begin
 	        write_fifo[l] <= 1;	       	 	    	       
-	        buffer_ptr[l] <= (buffer_ptr[l]+1)%(480/DATA_WIDTH);
+	        buffer_ptr[l] <= (buffer_ptr[l]+1)%(512/DATA_WIDTH);
 
 	     end
 	     else begin
@@ -119,7 +119,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 80);
 	 if (l == (buffer_counter/BURST_SIZE)%(LEAF_CNT)) begin
 	    if (available[l] | buffer_enq[l]) begin
 	       buffer_enq[l] <= 1;
-	       rdaddr[l] <= rdaddr[l] + (480/DATA_WIDTH);
+	       rdaddr[l] <= rdaddr[l] + (512/DATA_WIDTH);
 	       buffer_counter <= (buffer_counter + 1) % (BURST_SIZE*LEAF_CNT);
 	       if (rdaddr[l] < (l+1)*LEN_SEQ) begin
 		  buffer_in[l] <= {data[rdaddr[l]+5],
@@ -156,7 +156,56 @@ module merger_tree_tb #(parameter DATA_WIDTH = 80);
    always @ (posedge clk) begin
       for(x=0; x<LEAF_CNT; x=x+1) begin
 	 if (~buffer_empty[x]) begin
-	    in_fifo[x] <= {buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+15],
+	    in_fifo[x] <= {
+buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+31],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+30],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+29],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+28],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+27],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+26],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+25],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+24],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+23],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+22],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+21],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+20],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+19],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+18],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+17],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+16],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+15],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+14],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+13],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+12],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+11],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+10],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+9],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+8],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+7],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+6],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+5],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+4],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+3],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+2],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+1],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+0],			                          
+buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+31],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+30],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+29],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+28],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+27],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+26],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+25],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+24],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+23],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+22],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+21],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+20],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+19],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+18],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+17],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+16],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+15],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+14],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+13],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+12],
@@ -171,7 +220,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 80);
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+3],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+2],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+1],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+0],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+0],			                          
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+31],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+30],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+29],
@@ -263,23 +312,23 @@ module merger_tree_tb #(parameter DATA_WIDTH = 80);
    
    initial
      begin
-	$dumpfile("test_merger.vcd");
-	$dumpvars(0, merger_tree_tb);
+	    // $dumpfile("test_merger.vcd");
+	    // $dumpvars(0, merger_tree_tb);
      end
    
    initial begin
       f = $fopen("out_8_960_1_4.txt", "w+");
    end
 
-   always @(posedge clk) begin
+   always @(posedge clk) begin      
       if(counter < (LEAF_CNT*LEN_SEQ+10000)/7) begin
-	 if(read_fifo_out) begin
-	    $fwrite(f, "%x\n", o_data);
-	 end
+	     if(read_fifo_out) begin
+	        $fwrite(f, "%x\n", o_data);
+	     end
       end
       else if(counter == (LEAF_CNT*LEN_SEQ+10000)/7) begin
-	 $fclose(f);
-	 $finish;
+	     $fclose(f);
+	     $finish;
       end
    end
 endmodule // merger_tb

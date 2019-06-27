@@ -1,5 +1,5 @@
 /* For 4-merger */
-module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 80) (input i_clk,
+module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128) (input i_clk,
 			  input 		switch_output,
 			  input 		stall,
 			  input [4*DATA_WIDTH-1:0] 	top_tuple,

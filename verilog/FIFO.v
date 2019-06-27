@@ -42,7 +42,7 @@ module shift_right_logical_32E (Q, A0, A1, A2, A3, A4, CE, CLK, D);
 endmodule // shift_right_logical_32E
 
 module IFIFO32 #(
-  parameter P_WIDTH         = 80
+  parameter P_WIDTH         = 128
 ) (
   input wire 		    i_clk,
   input wire [P_WIDTH-1:0]  i_data,
@@ -78,7 +78,7 @@ module IFIFO32 #(
 endmodule
 
 module IFIFO16 #(
-  parameter P_WIDTH         = 80
+  parameter P_WIDTH         = 128
 ) (
   input wire 		    i_clk,
   input wire [P_WIDTH-1:0]  i_data,
@@ -208,7 +208,7 @@ endmodule
 
 
 
-module FIFO_EMPTY #(parameter DATA_WIDTH = 80) (
+module FIFO_EMPTY #(parameter DATA_WIDTH = 128) (
 	    input 		      i_clk,
 	    input [(DATA_WIDTH-1):0]  i_item,
 	    input 		      i_write,
