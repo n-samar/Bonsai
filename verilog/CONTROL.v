@@ -51,43 +51,4 @@ module CONTROL(input i_clk,
 	     select_A <= (new_state == NOMINAL & i_a_lte_b) | (new_state == DONE_B) | (new_state == TOGGLE & i_a_min_zero & ~i_a_empty);
       end
    end
-   
-   /*
-   always @(i_a_empty or i_b_empty or i_r_a_min_zero or i_r_b_min_zero or i_a_min_zero or i_b_min_zero or state)
-     begin
-	casez(state)
-	  TOGGLE: begin
-	     if (i_a_empty) 
-	       new_state <= DONE_A;
-	     else if (i_b_empty)
-	       new_state <= DONE_B;
-	     else if (~i_a_min_zero & ~i_b_min_zero)
-	       new_state <= NOMINAL;
-	     else
-	       new_state <= TOGGLE;
-	  end
-	  DONE_A: begin
-	     if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
-	       new_state <= FINISHED;
-	     else if (i_b_min_zero)
-	       new_state <= TOGGLE;
-	  end
-	  DONE_B: begin
-	     if (i_a_empty & i_b_empty & i_r_a_min_zero & i_r_b_min_zero)
-	       new_state <= FINISHED;
-	     else if (i_a_min_zero)
-	       new_state <= TOGGLE;	  
-	  end       
-	  FINISHED: begin 
-	  end       
-	  NOMINAL: begin
-	     if (i_a_min_zero)
-		new_state <= DONE_A;
-	     else if (i_b_min_zero)
-	       new_state <= DONE_B;			 
-	  end    
-	  default: begin end
-	endcase // casez (state)
-     end
-    */
 endmodule
