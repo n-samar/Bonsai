@@ -18,7 +18,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128);
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
    parameter BURST_SIZE = 20;
-   parameter LEN_SEQ = 960;
+   parameter LEN_SEQ = 264;
    integer 	  data_file;
    
    reg [31:0] 	  buffer_counter = 0;   
@@ -101,7 +101,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128);
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_8_960_1.txt", data, 0, LEAF_CNT*LEN_SEQ);      
+      $readmemh("data_8_8_32_1_4.txt", data, 0, LEAF_CNT*LEN_SEQ);      
    end
 
    integer l, z;
@@ -128,10 +128,10 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128);
 				   data[rdaddr[l]+0]};
 	       end
 	       else begin
-		  buffer_in[l] <= {data[0],
-				   data[0],
-				   data[0],
-				   data[0]};	       
+		  buffer_in[l] <= {data[LEN_SEQ*LEAF_CNT-1],
+				   data[LEN_SEQ*LEAF_CNT-1],
+				   data[LEN_SEQ*LEAF_CNT-1],
+				   data[LEN_SEQ*LEAF_CNT-1]};	       
 	       end	       
 	    end 
 	    else begin
@@ -184,7 +184,7 @@ buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+31],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+3],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+2],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+1],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+0],			                          
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+0],
 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+31],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+30],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+29],
@@ -216,7 +216,7 @@ buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+31],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+3],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+2],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+1],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+0],			                          
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+0],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+31],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+30],
 			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+29],
@@ -308,12 +308,12 @@ buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+31],
    
    initial
      begin
-	    //$dumpfile("test_merger.vcd");
-	    //$dumpvars(0, merger_tree_tb);
+	    // $dumpfile("test_merger.vcd");
+	    // $dumpvars(0, merger_tree_tb);
      end
    
    initial begin
-      f = $fopen("out_8_960_1_4.txt", "w+");
+      f = $fopen("out_8_8_32_1_4.txt", "w+");
    end
 
    always @(posedge clk) begin

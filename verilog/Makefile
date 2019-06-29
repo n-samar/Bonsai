@@ -20,6 +20,7 @@ chunk_data : datagen
 	./datagen 32 4096 1 1;
 
 data : datagen
+	python datagen.py \
 	./datagen 2 $(LIST_INPUT_SIZE) 1; \
 	./datagen 16 $(LIST_INPUT_SIZE) 1; \
 	./datagen 32 $(LIST_INPUT_SIZE) 1; \
@@ -225,8 +226,8 @@ filter_output_tree_P1_L8 : data sim_tree_P1_L8
 	sed '/^00000000$$/d' ans_16_128.txt > ans_no_zeros_16_128.txt
 
 filter_output_tree_P4_L4 : data sim_tree_P4_L4
-	sed '/^00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' out_8_960_1_4.txt > out_no_zeros_8_960_1_4.txt
-	sed '/^00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' ans_8_960_1_4.txt > ans_no_zeros_8_960_1_4.txt
+	sed '/^00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' out_8_8_32_1_4.txt > out_no_zeros_8_8_32_1_4.txt
+	sed '/^00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' ans_8_8_32_1_4.txt > ans_no_zeros_8_8_32_1_4.txt
 
 filter_output_tree_P8_L8 : data sim_tree_P8_L8
 	sed '/^0000000000000000000000000000000000000000000000000000000000000000$$/d' out_16_128_1_8.txt > out_no_zeros_16_128_1_8.txt
@@ -336,8 +337,8 @@ test_tree_P2_L8 : data compile_tree_P2_L8 sim_tree_P2_L8 filter_output_tree_P2_L
 		echo 'SUCESS! tree_P2_L8' 1>&2; \
 	fi
 
-test_tree_P4_L4 : data compile_tree_P4_L4 sim_tree_P4_L4 filter_output_tree_P4_L4 out_no_zeros_8_960_1_4.txt ans_no_zeros_8_960_1_4.txt
-	if [[ $$(diff -u out_no_zeros_8_960_1_4.txt ans_no_zeros_8_960_1_4.txt) ]]; then \
+test_tree_P4_L4 : data compile_tree_P4_L4 sim_tree_P4_L4 filter_output_tree_P4_L4
+	if [[ $$(diff -u out_no_zeros_8_8_32_1_4.txt ans_no_zeros_8_8_32_1_4.txt) ]]; then \
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P4_L4' 1>&2; \
 	else \
 		echo 'SUCESS! tree_P4_L4' 1>&2; \
