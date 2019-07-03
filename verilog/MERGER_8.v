@@ -1,5 +1,5 @@
 module MERGER_8 #(parameter DATA_WIDTH = 128,
-		  parameter DATA_WIDTH = 80) (input i_clk,
+		  parameter KEY_WIDTH = 80) (input i_clk,
 	      input [8*DATA_WIDTH-1:0] 	     i_fifo_1,
 	      input 		     i_fifo_1_empty,
 	      input [8*DATA_WIDTH-1:0] 	     i_fifo_2,
