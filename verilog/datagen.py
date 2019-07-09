@@ -37,8 +37,7 @@ output_dict = []
 for i in range(0, total_runs):
     run_input = []
     for leaf_index in range(0, leaf_cnt):
-        run_input += input_dict[(total_runs*elems_per_run_per_leaf)*leaf_index + i*elems_per_run_per_leaf:(total_runs*elems_per_run_per_leaf)*leaf_index + i*elems_per_run_per_leaf  + elems_per_run_per_leaf];
-        # print(str((total_runs*elems_per_run_per_leaf)*leaf_index + i*elems_per_run_per_leaf) + " - " + str((total_runs*elems_per_run_per_leaf)*leaf_index + i*elems_per_run_per_leaf  + elems_per_run_per_leaf))
+        run_input += input_dict[(total_runs*elems_per_run_per_leaf)*leaf_index + i*elems_per_run_per_leaf:(total_runs*elems_per_run_per_leaf)*leaf_index + i*elems_per_run_per_leaf  + elems_per_run_per_leaf];        
     output_dict += (sorted(run_input, key=lambda x: x[0]))
 
 
