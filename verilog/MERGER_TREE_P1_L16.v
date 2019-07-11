@@ -1,7 +1,7 @@
 `timescale 1 ns/10 ps
 
 
-module MERGER_TREE_P1 #(parameter L = 16, parameter DATA_WIDTH = 128) (input i_clk,
+module MERGER_TREE_P1_L16 #(parameter L = 16, parameter DATA_WIDTH = 128) (input i_clk,
 					   input [DATA_WIDTH*2*L-1:0]   i_fifo,
 					   input [2*L-1:0]      i_fifo_empty,
 					   input 	      i_fifo_out_ready,
