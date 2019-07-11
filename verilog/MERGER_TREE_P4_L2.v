@@ -33,7 +33,7 @@ module MERGER_TREE_P4_L2 #(parameter L = 2, DATA_WIDTH = 128) (input i_clk,
 			     .o_fifo_2_read(o_fifo_read[2*i+1]),
 			     .o_out_fifo_write(fifo_write_1[i]),
 			     .o_data(fifo_i_item_1[i]));
-	       COUPLER #(64) fifo(.i_clk(i_clk),
+	       COUPLER #(2*DATA_WIDTH) fifo(.i_clk(i_clk),
 			    .i_data(fifo_i_item_1[i]),
 			    .i_enq(fifo_write_1[i]),
 			    .i_deq(fifo_read_1[i]),
