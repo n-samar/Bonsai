@@ -6,16 +6,15 @@ module shift_right_logical_16E (Q, A0, A1, A2, CE, CLK, D);
    input   A0, A1, A2, CE, CLK, D;
    reg [7:0] data;
    assign Q = data[{A2, A1, A0}];
+
    initial begin
-      data[0] <= 0;
-      data[1] <= 0;
-      data[2] <= 0;
-      data[3] <= 0;
+      data[7] <= 0;
    end
+   
    always @(posedge CLK)
      begin
 	if (CE == 1'b1) begin
-	   {data[7:0]} <= {data[6:0], D};
+	   {data[6:0]} <= {data[5:0], D};
 	end
      end
 endmodule // shift_right_logical_16E
@@ -26,17 +25,15 @@ module shift_right_logical_32E (Q, A0, A1, A2, A3, A4, CE, CLK, D);
    input  A0, A1, A2, A3, A4, CE, CLK, D;
    reg [31:0] data;
    assign Q = data[{A4, A3, A2, A1, A0}];
+
    initial begin
-      data[0] <= 0;
-      data[1] <= 0;
-      data[2] <= 0;
-      data[3] <= 0;
+      data[31] <= 0;
    end
    
    always @(posedge CLK)
      begin
 	    if (CE == 1'b1) begin
-	       {data[31:0]} <= {data[30:0], D};
+	       {data[30:0]} <= {data[29:0], D};
 	    end
      end
 endmodule // shift_right_logical_32E
@@ -44,29 +41,26 @@ endmodule // shift_right_logical_32E
 module IFIFO32 #(
   parameter P_WIDTH         = 128
 ) (
-  input wire 		    i_clk,
-  input wire [P_WIDTH-1:0]  i_data,
+  input wire 		   i_clk,
+  input wire [P_WIDTH-1:0] i_data,
   output wire [P_WIDTH-1:0] o_data,
-  input wire 		    i_enq,
-  input wire 		    i_deq,
-  output wire 		    o_full,
-  output wire 		    o_available,
-  output 		    o_empty
+  input wire 		   i_enq,
+  input wire 		   i_deq,
+  output wire 		   o_full,
+  output wire 		   o_available,
+  output 		   o_empty
 );
 
   reg [4:0]  cnt =  0;
-  reg [4:0]  adr =  0;
+  wire [4:0]  adr =  cnt-1;
   assign o_available = (cnt <= 8);     
-  assign o_empty = (cnt<=0);
+  assign o_empty = (adr==31);
+
    
   always @(posedge i_clk) begin
-     if(cnt > 0 | ~i_deq) begin
-	adr     <=   adr + i_enq - i_deq;
-	cnt     <=   cnt + i_enq - i_deq;
-     end
-    // if(cnt>16) $display("%m invalid enq! cnt=%d", cnt);
+     cnt     <=   cnt + i_enq - i_deq;
   end
-  assign o_full = (cnt >= 29); // not verified this logic !!
+  assign o_full = (cnt >= 29);
   
   genvar i;
   generate
@@ -88,18 +82,15 @@ module IFIFO16 #(
   output wire 		    o_full,
   output wire 		    o_empty
 );
-   assign o_empty = (cnt<=0);
-   reg [3:0] 		    cnt = 0;
-   reg [3:0] 		    adr = 0;
-  
+
+   assign o_empty = (adr==7);
+   reg [2:0] 		    cnt = 0;
+   wire [2:0] 		    adr = cnt-1;
+
   always @(posedge i_clk) begin
-     if(cnt > 0 | ~i_deq) begin
-	adr     <=   adr + i_enq - i_deq;
-	cnt     <=   cnt + i_enq - i_deq;
-     end
-    // if(cnt>16) $display("%m invalid enq! cnt=%d", cnt);
+     cnt     <=   cnt + i_enq - i_deq;
   end
-  assign o_full = (cnt >= 6); // not verified this logic !!
+  assign o_full = (cnt >= 6);
   
   genvar i;
   generate

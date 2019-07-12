@@ -30,7 +30,7 @@ module COUPLER #(
                                .o_empty(in_empty));
 
    IFIFO16 #(2*P_WIDTH) out_fifo (.i_clk(i_clk),
-                                  .i_data(out_elem),
+                                  .i_data(out_elem), 
                                   .o_data(o_data),
                                   .i_enq(out_enq),
                                   .i_deq(i_deq),
@@ -58,7 +58,7 @@ module COUPLER #(
          else if (state == 1) begin
 	        if (first_elem != 0) begin
 	           in_deq <= 1;
-               second_elem <= in_elem;   
+		   second_elem <= in_elem;   
 	        end
 	        else begin
 	           in_deq <= (in_elem == 0);
@@ -67,16 +67,17 @@ module COUPLER #(
             state <= 0;  
             out_enq <= 1;            
          end
-      end 
+      end // if (~out_full & ~in_empty)
+      else if (in_empty & state == 1 & first_elem == 0) begin
+	 in_deq <= 0;
+	 second_elem <= 0;
+	 out_enq <= 1;
+	 state <= 0;	 
+      end      
       else begin
-	 if (~out_full & out_elem == 0) begin
-	    out_enq <= 1;
-	 end
-	 else begin
-	    out_enq <= 0;	    
-	 end
+	 out_enq <= 0;	    
          in_deq <= 0;         
-      end
+      end // else: !if(~out_full & ~in_empty)
    end
    
 endmodule

@@ -93,7 +93,7 @@ module MERGER_4 #(parameter DATA_WIDTH = 128,
 		.stall(stall), 
 		.switch_output(switch_output));
 
-   BITONIC_NETWORK_8 first_merger (.i_clk(i_clk),
+   BITONIC_NETWORK_8 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) first_merger (.i_clk(i_clk),
 				   .switch_output(switch_output),
 				   .stall(stall),
 				   .top_tuple(i_data_2_top),
@@ -105,7 +105,7 @@ module MERGER_4 #(parameter DATA_WIDTH = 128,
 				   .o_stall(stall_2),
 				   .o_top_tuple(o_data_2_top));
 
-   BITONIC_NETWORK_8 second_merger (.i_clk(i_clk),
+   BITONIC_NETWORK_8 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH))  second_merger (.i_clk(i_clk),
 				    .switch_output(switch_output_2),
 				    .stall(stall_2),
 				    .top_tuple(),

@@ -1,6 +1,6 @@
 `timescale 1 ns/10 ps
 
-module MERGER_TREE_P4_L4 #(parameter L = 4, DATA_WIDTH = 128) (input i_clk,
+module MERGER_TREE_P4_L4 #(parameter L = 4, DATA_WIDTH = 32, KEY_WIDTH = 32) (input i_clk,
 					   input [DATA_WIDTH*2*L-1:0] 	  i_fifo,
 					   input [2*L-1:0] 	  i_fifo_empty,
 					   input 		  i_fifo_out_ready,
@@ -28,7 +28,7 @@ module MERGER_TREE_P4_L4 #(parameter L = 4, DATA_WIDTH = 128) (input i_clk,
       for (level = L; level > 1; level = level/2) begin : IN
 	 for (i = 0; i < level; i=i+1) begin
 	    if (level == 4) begin
-	       MERGER_1 merger(.i_clk(i_clk),
+	       MERGER_1 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
 			     .i_fifo_1(i_fifo[DATA_WIDTH*2*i+DATA_WIDTH-1:DATA_WIDTH*2*i]),
 			     .i_fifo_1_empty(i_fifo_empty[2*i]),
 			     .i_fifo_2(i_fifo[DATA_WIDTH*2*i+DATA_WIDTH+DATA_WIDTH-1:DATA_WIDTH*2*i+DATA_WIDTH]),
@@ -47,7 +47,7 @@ module MERGER_TREE_P4_L4 #(parameter L = 4, DATA_WIDTH = 128) (input i_clk,
 			    .o_full(fifo_full_2[i]));	       
 	    end
 	    else if (level == 2) begin
-	       MERGER_2 merger(.i_clk(i_clk),
+	       MERGER_2 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
 			     .i_fifo_1(fifo_o_item_2[2*i]),
 			     .i_fifo_1_empty(fifo_empty_2[2*i]),
 			     .i_fifo_2(fifo_o_item_2[2*i+1]),
@@ -69,7 +69,7 @@ module MERGER_TREE_P4_L4 #(parameter L = 4, DATA_WIDTH = 128) (input i_clk,
       end
     endgenerate
    
-   MERGER_4 merger(.i_clk(i_clk),
+   MERGER_4 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
 		 .i_fifo_1(fifo_o_item_1[0]),
 		 .i_fifo_1_empty(fifo_empty_1[0]),
 		 .i_fifo_2(fifo_o_item_1[1]),

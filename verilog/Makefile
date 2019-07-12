@@ -226,8 +226,8 @@ filter_output_tree_P1_L8 : data sim_tree_P1_L8
 	sed '/^00000000$$/d' ans_16_128.txt > ans_no_zeros_16_128.txt
 
 filter_output_tree_P4_L4 : data sim_tree_P4_L4
-	sed '/^00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' out_8_8_32_1_4.txt > out_no_zeros_8_8_32_1_4.txt
-	sed '/^00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000$$/d' ans_8_8_32_1_4.txt > ans_no_zeros_8_8_32_1_4.txt
+	sed '/^00000000000000000000000000000000$$/d' out_8_4_4_1_4.txt > out_no_zeros_8_4_4_1_4.txt
+	sed '/^00000000000000000000000000000000$$/d' ans_8_4_4_1_4.txt > ans_no_zeros_8_4_4_1_4.txt
 
 filter_output_tree_P8_L8 : data sim_tree_P8_L8
 	sed '/^0000000000000000000000000000000000000000000000000000000000000000$$/d' out_16_128_1_8.txt > out_no_zeros_16_128_1_8.txt
@@ -338,7 +338,7 @@ test_tree_P2_L8 : data compile_tree_P2_L8 sim_tree_P2_L8 filter_output_tree_P2_L
 	fi
 
 test_tree_P4_L4 : data compile_tree_P4_L4 sim_tree_P4_L4 filter_output_tree_P4_L4
-	if [[ $$(diff -u out_no_zeros_8_8_32_1_4.txt ans_no_zeros_8_8_32_1_4.txt) ]]; then \
+	if [[ $$(diff -u out_no_zeros_8_4_4_1_4.txt ans_no_zeros_8_4_4_1_4.txt) ]]; then \
 		echo 'ERROR! OUTPUT MISMATCH FOR TEST TREE_P4_L4' 1>&2; \
 	else \
 		echo 'SUCESS! tree_P4_L4' 1>&2; \

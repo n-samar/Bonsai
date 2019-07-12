@@ -1,6 +1,6 @@
 `timescale 1 ns/10 ps
 
-module merger_tree_tb #(parameter DATA_WIDTH = 128);
+module merger_tree_tb #(parameter DATA_WIDTH = 32);
    reg [2*L-1:0] write_fifo;
    wire read_fifo_out;
    
@@ -17,8 +17,8 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128);
    parameter L = 4;      
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
-   parameter BURST_SIZE = 20;
-   parameter LEN_SEQ = 264;
+   parameter BURST_SIZE = 1;
+   parameter LEN_SEQ = 2*(2*4+2);
    integer 	  data_file;
    
    reg [31:0] 	  buffer_counter = 0;   
@@ -101,7 +101,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128);
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_8_8_32_1_4.txt", data, 0, LEAF_CNT*LEN_SEQ);      
+      $readmemh("data_8_4_4_1_4.txt", data, 0, LEAF_CNT*LEN_SEQ);      
    end
 
    integer l, z;
@@ -118,21 +118,30 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128);
          
 	 if (l == (buffer_counter/BURST_SIZE)%(LEAF_CNT)) begin
 	    if (available[l] | buffer_enq[l]) begin
-	       buffer_enq[l] <= 1;
 	       rdaddr[l] <= rdaddr[l] + (512/DATA_WIDTH);
 	       buffer_counter <= (buffer_counter + 1) % (BURST_SIZE*LEAF_CNT);
 	       if (rdaddr[l] < (l+1)*LEN_SEQ) begin
-		  buffer_in[l] <= {data[rdaddr[l]+3],
+		  buffer_in[l] <= {data[rdaddr[l]+15],
+				   data[rdaddr[l]+14],
+				   data[rdaddr[l]+13],
+				   data[rdaddr[l]+12],
+				   data[rdaddr[l]+11],
+				   data[rdaddr[l]+10],
+				   data[rdaddr[l]+9],
+				   data[rdaddr[l]+8],
+				   data[rdaddr[l]+7],
+				   data[rdaddr[l]+6],
+				   data[rdaddr[l]+5],
+				   data[rdaddr[l]+4],
+				   data[rdaddr[l]+3],
 				   data[rdaddr[l]+2],
 				   data[rdaddr[l]+1],
 				   data[rdaddr[l]+0]};
+		  buffer_enq[l] <= 1;		  
 	       end
 	       else begin
-		  buffer_in[l] <= {data[LEN_SEQ*LEAF_CNT-1],
-				   data[LEN_SEQ*LEAF_CNT-1],
-				   data[LEN_SEQ*LEAF_CNT-1],
-				   data[LEN_SEQ*LEAF_CNT-1]};	       
-	       end	       
+		  buffer_enq[l] <= 0;		  
+	       end
 	    end 
 	    else begin
 	       buffer_enq[l] <= 0;
@@ -151,137 +160,40 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128);
    integer x;
    always @ (posedge clk) begin
       for(x=0; x<LEAF_CNT; x=x+1) begin
-	 if (~buffer_empty[x]) begin
-	    in_fifo[x] <= {
-buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+31],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+30],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+29],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+28],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+27],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+26],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+25],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+24],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+23],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+22],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+21],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+20],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+19],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+18],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+17],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+16],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+15],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+14],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+13],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+12],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+11],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+10],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+9],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+8],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+7],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+6],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+5],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+4],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+3],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+2],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+1],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+0],
-buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+31],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+30],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+29],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+28],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+27],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+26],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+25],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+24],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+23],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+22],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+21],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+20],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+19],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+18],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+17],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+16],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+15],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+14],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+13],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+12],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+11],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+10],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+9],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+8],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+7],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+6],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+5],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+4],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+3],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+2],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+1],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+0],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+31],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+30],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+29],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+28],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+27],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+26],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+25],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+24],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+23],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+22],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+21],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+20],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+19],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+18],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+17],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+16],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+15],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+14],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+13],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+12],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+11],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+10],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+9],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+8],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+7],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+6],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+5],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+4],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+3],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+2],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+1],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+32+0],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+31],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+30],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+29],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+28],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+27],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+26],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+25],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+24],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+23],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+22],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+21],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+20],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+19],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+18],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+17],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+16],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+15],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+14],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+13],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+12],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+11],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+10],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+9],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+8],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+7],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+6],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+5],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+4],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+3],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+2],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+1],
-			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+0]			   
-			   };
+	 if (~buffer_empty[x] & buffer_out[x][DATA_WIDTH*buffer_ptr[x]+0] !== 1'bx) begin
+	    in_fifo[x] <= {buffer_out[x][DATA_WIDTH*buffer_ptr[x]+31],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+30],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+29],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+28],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+27],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+26],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+25],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+24],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+23],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+22],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+21],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+20],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+19],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+18],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+17],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+16],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+15],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+14],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+13],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+12],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+11],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+10],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+9],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+8],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+7],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+6],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+5],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+4],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+3],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+2],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+1],
+					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+0]			   
+					 };
 	 end
       end
    end   
@@ -308,12 +220,12 @@ buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+31],
    
    initial
      begin
-	    // $dumpfile("test_merger.vcd");
-	    // $dumpvars(0, merger_tree_tb);
+	    $dumpfile("test_merger.vcd");
+	    $dumpvars(0, merger_tree_tb);
      end
    
    initial begin
-      f = $fopen("out_8_8_32_1_4.txt", "w+");
+      f = $fopen("out_8_4_4_1_4.txt", "w+");
    end
 
    always @(posedge clk) begin
@@ -322,7 +234,7 @@ buffer_out[x][DATA_WIDTH*buffer_ptr[x]+64+31],
       end
       if(counter < (LEAF_CNT*LEN_SEQ+10000)/7) begin
 	     if(read_fifo_out) begin
-	        $fwrite(f, "%x\n", o_data);
+	        $fwrite(f, "%x\n", out_fifo_item);
 	     end
       end
       else if(counter == (LEAF_CNT*LEN_SEQ+10000)/7) begin

@@ -1,8 +1,8 @@
 import random
 
 leaf_cnt = 8
-elems_per_run_per_leaf = 32
-total_runs = 8
+elems_per_run_per_leaf = 4
+total_runs = 4
 elems_per_leaf = total_runs * elems_per_run_per_leaf
 N = leaf_cnt*elems_per_leaf
 output_elems_per_line = 4
@@ -17,8 +17,8 @@ ans_file = open("ans_" + str(leaf_cnt) + "_" + str(total_runs) + "_" + str(elems
 
 
 for i in range(0, N):
-    key = random.randint(0, 2**80)
-    value = random.randint(0, 2**48)
+    key = random.randint(0, 2**32)
+    value = random.randint(0, 2**0)
     input_dict.append((key, value))
 
 for i in range(0, total_runs):
@@ -27,11 +27,11 @@ for i in range(0, total_runs):
 
 for i in range(0, N):
     (key, value) = input_dict[(i/input_elems_per_line+1)*input_elems_per_line-i%input_elems_per_line-1]
-    input_file.write(format(value, '012x') + format(key, '020x'))
+    input_file.write(format(key, '08x'))
     if (i%input_elems_per_line == input_elems_per_line - 1):
         input_file.write('\n')
     if (i%elems_per_run_per_leaf == elems_per_run_per_leaf - 1):
-        input_file.write(input_elems_per_line*32*'0' + "\n")
+        input_file.write(input_elems_per_line*8*'0' + "\n")
 
 output_dict = []
 for i in range(0, total_runs):
@@ -45,11 +45,11 @@ for i in range(0, total_runs):
 for i in range(0, N):
     key = output_dict[(i/output_elems_per_line+1)*output_elems_per_line-i%output_elems_per_line-1][0]
     value = output_dict[(i/output_elems_per_line+1)*output_elems_per_line-i%output_elems_per_line-1][1]
-    ans_file.write(format(value, '012x') + format(key, '020x'))
+    ans_file.write(format(key, '08x'))
     if (i%output_elems_per_line == output_elems_per_line - 1):
         ans_file.write('\n')
     if (i%(elems_per_run_per_leaf*leaf_cnt) == elems_per_run_per_leaf*leaf_cnt - 1):
-        ans_file.write(output_elems_per_line*32*'0' + "\n")        
+        ans_file.write(output_elems_per_line*8*'0' + "\n")        
 
 ans_file.close()
 input_file.close()

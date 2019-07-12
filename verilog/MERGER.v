@@ -64,7 +64,7 @@ module MERGER_1 #(parameter DATA_WIDTH = 128,
    
    
    
-   IFIFO16 fifo_a(.i_clk(i_clk), 
+   IFIFO16 #(.P_WIDTH(DATA_WIDTH)) fifo_a(.i_clk(i_clk), 
 		  .i_data(i_fifo_1), 
 		  .o_data(fifo_a_out),
 		  .i_enq(i_write_a), 		  
@@ -72,7 +72,7 @@ module MERGER_1 #(parameter DATA_WIDTH = 128,
 		  .o_empty(fifo_a_empty), 
 		  .o_full(fifo_a_full));
 
-   IFIFO16 fifo_b(.i_clk(i_clk), 
+   IFIFO16 #(.P_WIDTH(DATA_WIDTH)) fifo_b(.i_clk(i_clk), 
 		  .i_data(i_fifo_2), 
 		  .o_data(fifo_b_out),
 		  .i_enq(i_write_b), 
@@ -80,7 +80,7 @@ module MERGER_1 #(parameter DATA_WIDTH = 128,
 		  .o_empty(fifo_b_empty), 
 		  .o_full(fifo_b_full));     
 
-   IFIFO16 fifo_c(.i_clk(i_clk), 
+   IFIFO16 #(.P_WIDTH(DATA_WIDTH)) fifo_c(.i_clk(i_clk), 
 		  .i_data(i_fifo_c), 
 		  .o_data(o_data),
 		  .i_enq(i_c_write), 
@@ -99,7 +99,7 @@ module MERGER_1 #(parameter DATA_WIDTH = 128,
 		.stall(stall), 
 		.switch_output(switch_output));
 
-   BITONIC_NETWORK_2 first_merger (.i_clk(i_clk),
+   BITONIC_NETWORK_2 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) first_merger (.i_clk(i_clk),
 				   .switch_output(switch_output),
 				   .stall(stall),
 				   .top_tuple(i_data_2_top),
@@ -111,9 +111,9 @@ module MERGER_1 #(parameter DATA_WIDTH = 128,
 				   .o_stall(stall_2),
 				   .o_top_tuple(o_data_2_top));
 
-   BITONIC_NETWORK_2 second_merger (.i_clk(i_clk),
+   BITONIC_NETWORK_2 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) second_merger (.i_clk(i_clk),
 				    .switch_output(switch_output_2),
-				    .stall(stall),
+				    .stall(stall_2),
 				    .top_tuple(),
 				    .i_elems_0(o_data_2_top),
 				    .i_elems_1(data_2_bottom),
