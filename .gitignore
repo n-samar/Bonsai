@@ -1,8 +1,11 @@
+vivado*
+hs_*
 verilog/#*
 verilog/.#*
 verilog/*~
 *~
 *.txt
+*.pyc
 *.txt~
 *.vcd
 *.vcd~

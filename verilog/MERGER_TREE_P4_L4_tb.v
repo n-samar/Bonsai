@@ -1,6 +1,6 @@
 `timescale 1 ns/10 ps
 
-module merger_tree_tb #(parameter DATA_WIDTH = 32);
+module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
    reg [2*L-1:0] write_fifo;
    wire read_fifo_out;
    
@@ -77,7 +77,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32);
 		    .o_empty(fifo_out_empty),
 		    .o_full(fifo_out_full));
 
-   MERGER_TREE_P4_L4 dut (.i_clk(clk),
+   MERGER_TREE_P4_L4 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) dut (.i_clk(clk),
 			  .i_fifo({out_fifo[7], out_fifo[6], out_fifo[5], out_fifo[4], 
 				   out_fifo[3], out_fifo[2], out_fifo[1], out_fifo[0]}),
 			  .i_fifo_empty(fifo_empty),			  
