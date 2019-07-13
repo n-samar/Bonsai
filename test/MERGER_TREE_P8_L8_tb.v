@@ -35,7 +35,7 @@ module merger_tree_tb;
    genvar fifo_index;
    generate
       for (fifo_index = 0; fifo_index < 2*L; fifo_index = fifo_index + 1) begin : IN
-	 FIFO_EMPTY fifo(.i_clk(clk),
+	     FIFO_EMPTY #(.DATA_WIDTH(DATA_WIDTH)) fifo(.i_clk(clk),
 			 .i_item(in_fifo[fifo_index] ),
 			 .i_write(write_fifo[fifo_index]),
 			 .o_item(out_fifo[fifo_index]),
@@ -47,7 +47,7 @@ module merger_tree_tb;
       end // block: IN
    endgenerate
 
-   IFIFO16 #(256) fifo_out(.i_clk(clk),
+   IFIFO16 #(8*DATA_WIDTH) fifo_out(.i_clk(clk),
 			   .i_data(o_data),
 			   .i_enq(o_out_fifo_write),
 			   .o_data(out_fifo_item),
@@ -130,9 +130,9 @@ module merger_tree_tb;
    end
 
    always @(posedge clk) begin
-      if(counter < LEAF_CNT*LEN_SEQ+2000) begin
+      if(counter < LEAF_CNT*LEN_SEQ/7+2000) begin
 	 if(read_fifo_out) begin
-	    $fwrite(f, "%x\n", o_data);
+	    $fwrite(f, "%x\n", out_fifo_item);
 	 end
       end
       else if(counter == LEAF_CNT*LEN_SEQ+2000) begin

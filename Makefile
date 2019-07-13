@@ -11,7 +11,7 @@ merger_1 : MERGER.v MERGER_tb.v BITONIC_NETWORK.v FIFO.v
 	iverilog -o merger FIFO.v MERGER.v CONTROL.v BITONIC_NETWORK.v  MERGER_tb.v
 
 datagen :
-	gcc -o datagen datagen.c
+	gcc -o datagen test/datagen.c
 
 chunk_data : datagen
 	./datagen 4096 9 1 1; \
@@ -20,7 +20,7 @@ chunk_data : datagen
 	./datagen 32 4096 1 1;
 
 data : datagen
-	python datagen.py \
+	python test/datagen.py \
 	./datagen 2 $(LIST_INPUT_SIZE) 1; \
 	./datagen 16 $(LIST_INPUT_SIZE) 1; \
 	./datagen 32 $(LIST_INPUT_SIZE) 1; \
@@ -124,8 +124,8 @@ compile_tree_P32_L128 : COUPLER.v FIFO.v MERGER.v MERGER_2.v MERGER_4.v MERGER_8
 compile_tree_P4_L4 : FIFO.v MERGER.v MERGER_4.v MERGER_2.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v MERGER_TREE_P4_L4.v MERGER_TREE_P4_L4_tb.v COUPLER.v
 	$(VERILOG) -o tree_P4_L4 COUPLER.v FIFO.v MERGER.v MERGER_4.v MERGER_2.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v MERGER_TREE_P4_L4.v MERGER_TREE_P4_L4_tb.v
 
-compile_tree_P8_L8 : FIFO.v MERGER.v MERGER_8.v MERGER_4.v MERGER_2.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v BITONIC_NETWORK_16.v MERGER_TREE_P8_L8.v MERGER_TREE_P8_L8_tb.v COUPLER.v
-	$(VERILOG) -o tree_P8_L8 COUPLER.v FIFO.v MERGER.v MERGER_8.v MERGER_4.v MERGER_2.v CONTROL.v BITONIC_NETWORK.v BITONIC_NETWORK_4.v BITONIC_NETWORK_8.v BITONIC_NETWORK_16.v MERGER_TREE_P8_L8.v MERGER_TREE_P8_L8_tb.v
+compile_tree_P8_L8 : src/FIFO.v src/MERGER.v src/MERGER_8.v src/MERGER_4.v src/MERGER_2.v src/CONTROL.v src/BITONIC_NETWORK.v src/BITONIC_NETWORK_4.v src/BITONIC_NETWORK_8.v src/BITONIC_NETWORK_16.v src/MERGER_TREE_P8_L8_32b.v test/MERGER_TREE_P8_L8_tb.v src/COUPLER.v
+	$(VERILOG) -o tree_P8_L8 src/COUPLER.v src/FIFO.v src/MERGER.v src/MERGER_8.v src/MERGER_4.v src/MERGER_2.v src/CONTROL.v src/BITONIC_NETWORK.v src/BITONIC_NETWORK_4.v src/BITONIC_NETWORK_8.v src/BITONIC_NETWORK_16.v src/MERGER_TREE_P8_L8_32b.v test/MERGER_TREE_P8_L8_tb.v
 
 sim_coupler : compile_coupler
 	$(VVP) coupler
