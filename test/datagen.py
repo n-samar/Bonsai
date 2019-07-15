@@ -11,10 +11,12 @@ parser.add_argument('--runs', type=int, help="number of `runs'")
 parser.add_argument('--elems_per_run', type=int, help="number of elements per run per leaf")
 parser.add_argument('--o_elems_per_line', type=int, help="number of output elements per line")
 parser.add_argument('--i_elems_per_line', type=int, help="number of input elements per line")
+parser.add_argument('--suff', type=str, help="suffix for the ans_*.txt and data_*.txt files")
 
 args = parser.parse_args()
 seed_val = args.seed
 
+suff = args.suff
 leaf_cnt = args.leaf_count
 elems_per_run_per_leaf = args.elems_per_run
 total_runs = args.runs
@@ -30,8 +32,8 @@ value_bits = args.value_bits
 random.seed(seed_val)
 input_dict = []
 
-input_file = open("data_" + str(leaf_cnt) + "_" + str(total_runs) + "_" + str(elems_per_run_per_leaf) + "_" + str(input_elems_per_line) + "_" + str(output_elems_per_line) + str(key_bits + value_bits) + "b.txt", "w+")
-ans_file = open("ans_" + str(leaf_cnt) + "_" + str(total_runs) + "_" + str(elems_per_run_per_leaf) + "_" + str(input_elems_per_line) + "_" + str(output_elems_per_line) + str(key_bits + value_bits) + "b.txt", "w+")
+input_file = open("data_" + suff + ".txt", "w+")
+ans_file = open("ans_" + suff + ".txt", "w+")
 
 
 for i in range(0, N):

@@ -1,7 +1,7 @@
 `timescale 1 ns/10 ps
 
 
-module MERGER_TREE_P8_L8 #(parameter L = 8, parameter DATA_WIDTH = 128) (input i_clk,
+module MERGER_TREE_P8_L8 #(parameter L = 8, parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80) (input i_clk,
 					   input [DATA_WIDTH*2*L-1:0]   i_fifo,
 					   input [2*L-1:0]      i_fifo_empty,
 					   input 	      i_fifo_out_ready,
@@ -37,7 +37,7 @@ module MERGER_TREE_P8_L8 #(parameter L = 8, parameter DATA_WIDTH = 128) (input i
       for (level = L; level > 1; level = level/2) begin : IN
 	 for (i = 0; i < level; i=i+1) begin
 	    if (level == 8) begin
-	       MERGER_1 merger(.i_clk(i_clk),
+	       MERGER_1 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
 			     .i_fifo_1(i_fifo[DATA_WIDTH*2*i+DATA_WIDTH-1:DATA_WIDTH*2*i]),
 			     .i_fifo_1_empty(i_fifo_empty[2*i]),
 			     .i_fifo_2(i_fifo[DATA_WIDTH*2*i+DATA_WIDTH+DATA_WIDTH-1:DATA_WIDTH*2*i+DATA_WIDTH]),
@@ -47,7 +47,7 @@ module MERGER_TREE_P8_L8 #(parameter L = 8, parameter DATA_WIDTH = 128) (input i
 			     .o_fifo_2_read(o_fifo_read[2*i+1]),
 			     .o_out_fifo_write(fifo_write_3[i]),
 			     .o_data(fifo_i_item_3[i]));
-	       COUPLER fifo(.i_clk(i_clk),
+	       COUPLER #(DATA_WIDTH) fifo(.i_clk(i_clk),
 			    .i_data(fifo_i_item_3[i]),
 			    .i_enq(fifo_write_3[i]),
 			    .i_deq(fifo_read_3[i]),
@@ -56,7 +56,7 @@ module MERGER_TREE_P8_L8 #(parameter L = 8, parameter DATA_WIDTH = 128) (input i
 			    .o_full(fifo_full_3[i]));	       
 	    end
 	    else if (level == 4) begin
-	       MERGER_2 merger(.i_clk(i_clk),
+	       MERGER_2 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
 			     .i_fifo_1(fifo_o_item_3[2*i]),
 			     .i_fifo_1_empty(fifo_empty_3[2*i]),
 			     .i_fifo_2(fifo_o_item_3[2*i+1]),
@@ -75,7 +75,7 @@ module MERGER_TREE_P8_L8 #(parameter L = 8, parameter DATA_WIDTH = 128) (input i
 				  .o_full(fifo_full_2[i]));
 	    end
 	    else if (level == 2) begin
-	       MERGER_4 merger(.i_clk(i_clk),
+	       MERGER_4 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
 			     .i_fifo_1(fifo_o_item_2[2*i]),
 			     .i_fifo_1_empty(fifo_empty_2[2*i]),
 			     .i_fifo_2(fifo_o_item_2[2*i+1]),
@@ -97,7 +97,7 @@ module MERGER_TREE_P8_L8 #(parameter L = 8, parameter DATA_WIDTH = 128) (input i
       end
     endgenerate
    
-   MERGER_8 merger(.i_clk(i_clk),
+   MERGER_8 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
 		   .i_fifo_1(fifo_o_item_1[0]),
 		   .i_fifo_1_empty(fifo_empty_1[0]),
 		   .i_fifo_2(fifo_o_item_1[1]),

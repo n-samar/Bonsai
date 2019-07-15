@@ -102,7 +102,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_8_4_4_1_4.txt", data, 0, LEAF_CNT*LEN_SEQ);      
+      $readmemh("data_P4_L4_32b.txt", data, 0, LEAF_CNT*LEN_SEQ);      
    end
 
    integer l, z;
@@ -226,7 +226,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
      end
    
    initial begin
-      f = $fopen("out_8_4_4_1_4.txt", "w+");
+      f = $fopen("out_P4_L4_32b.txt", "w+");
    end
 
    always @(posedge clk) begin
