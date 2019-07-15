@@ -10,11 +10,10 @@ verilog/*~
 *.txt~
 *.vcd
 *.vcd~
+_coupler*
+_merger*
 object
-merger*
 tree_*
 P4_L4/*
-merger*
 a.out
-coupler*
 tree_*
