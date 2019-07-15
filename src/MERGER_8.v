@@ -44,7 +44,7 @@ module MERGER_8 #(parameter DATA_WIDTH = 128,
    assign a_min_zero = (fifo_a_out[DATA_WIDTH-1:0] == 0);
    assign b_min_zero = (fifo_b_out[DATA_WIDTH-1:0] == 0);
    assign a_lte_b = (fifo_a_out[KEY_WIDTH-1:0] <= fifo_b_out[KEY_WIDTH-1:0]);
-
+   
    assign o_fifo_1_read = ~i_fifo_1_empty & (~fifo_a_full);
    assign i_write_a = ~i_fifo_1_empty & (~fifo_a_full);
    assign i_write_b = ~i_fifo_2_empty & (~fifo_b_full);
