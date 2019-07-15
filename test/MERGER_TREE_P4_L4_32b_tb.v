@@ -8,12 +8,13 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
    wire [2*L-1:0] fifo_full;
    reg [DATA_WIDTH-1:0] 	  in_fifo [0:2*L-1];
    wire       fifo_out_full, fifo_out_empty;
-   wire [4*DATA_WIDTH-1:0] o_data;
+   wire [P*DATA_WIDTH-1:0] o_data;
    reg 	       clk;
-   wire [4*DATA_WIDTH-1:0] out_fifo_item;
+   wire [P*DATA_WIDTH-1:0] out_fifo_item;
    wire [2*L-1:0] fifo_empty;
    wire [2*L-1:0] fifo_read;
 
+   parameter P = 4;
    parameter L = 4;      
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
@@ -69,7 +70,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
       end // block: IN
    endgenerate
 
-   IFIFO16 #(4*DATA_WIDTH) fifo_out(.i_clk(clk),
+   IFIFO16 #(P*DATA_WIDTH) fifo_out(.i_clk(clk),
 		    .i_data(o_data),
 		    .i_enq(o_out_fifo_write),
 		    .o_data(out_fifo_item),
@@ -162,38 +163,38 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
       for(x=0; x<LEAF_CNT; x=x+1) begin
 	 if (~buffer_empty[x] & buffer_out[x][DATA_WIDTH*buffer_ptr[x]+0] !== 1'bx) begin
 	    in_fifo[x] <= {buffer_out[x][DATA_WIDTH*buffer_ptr[x]+31],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+30],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+29],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+28],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+27],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+26],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+25],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+24],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+23],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+22],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+21],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+20],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+19],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+18],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+17],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+16],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+15],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+14],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+13],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+12],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+11],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+10],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+9],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+8],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+7],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+6],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+5],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+4],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+3],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+2],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+1],
-					 buffer_out[x][DATA_WIDTH*buffer_ptr[x]+0]			   
-					 };
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+30],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+29],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+28],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+27],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+26],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+25],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+24],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+23],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+22],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+21],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+20],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+19],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+18],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+17],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+16],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+15],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+14],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+13],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+12],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+11],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+10],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+9],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+8],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+7],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+6],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+5],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+4],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+3],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+2],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+1],
+			   buffer_out[x][DATA_WIDTH*buffer_ptr[x]+0]			   
+			   };
 	 end
       end
    end   
