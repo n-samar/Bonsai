@@ -94,7 +94,6 @@ test_tree_P4_L64_32b : src/FIFO.v src/MERGER.v src/MERGER_4.v src/MERGER_2.v src
 		echo 'SUCESS! tree_P4_L64_32b' 1>&2; \
 	fi
 
-# Tested until here!!!
 
 test_tree_P4_L64_128b : src/FIFO.v src/MERGER.v src/MERGER_8.v src/MERGER_4.v src/MERGER_2.v src/CONTROL.v src/BITONIC_NETWORK.v src/BITONIC_NETWORK_4.v src/BITONIC_NETWORK_8.v src/BITONIC_NETWORK_16.v src/MERGER_TREE_P4_L64.v test/MERGER_TREE_P4_L64_tb.v src/COUPLER.v test/datagen.py
 	python test/datagen.py --seed=1 --key_bits=80 --value_bits=48 --leaf_count=128 --runs=1 --elems_per_run=7 --o_elems_per_line=4 --i_elems_per_line=1 --suff="P4_L64_128b";
