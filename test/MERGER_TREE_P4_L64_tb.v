@@ -359,12 +359,12 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
       if (counter%100 == 0) begin
 	 $display("counter: %d, (total: %d)", counter, (LEAF_CNT*LEN_SEQ+10000)/7); 
       end
-      if(counter < (LEAF_CNT*LEN_SEQ+10000)/7/25) begin
+      if(counter < (LEAF_CNT*LEN_SEQ+10000)/7) begin
 	 if(read_fifo_out) begin
 	    $fwrite(f, "%x\n", out_fifo_item);
 	 end
       end
-      else if(counter == (LEAF_CNT*LEN_SEQ+10000)/7/25) begin
+      else if(counter == (LEAF_CNT*LEN_SEQ+10000)/7) begin
 	 $fclose(f);
 	 $finish;
       end
