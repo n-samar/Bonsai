@@ -74,13 +74,14 @@ module MERGER_16 #(parameter DATA_WIDTH = 128,
 			.o_empty(fifo_b_empty), 
 			.o_full(fifo_b_full));     
 
-   IFIFO16 #(16*DATA_WIDTH) fifo_c(.i_clk(i_clk), 
-			.i_data(i_fifo_c), 
-			.o_data(o_data),
-			.i_enq(i_c_write), 
-			.i_deq(i_c_read),		  
-			.o_empty(fifo_c_empty), 
-			.o_full(fifo_c_full));
+   IFIFO32 #(16*DATA_WIDTH) fifo_c(.i_clk(i_clk), 
+				   .i_data(i_fifo_c), 
+				   .o_data(o_data),
+				   .i_enq(i_c_write), 
+				   .i_deq(i_c_read),		  
+				   .o_empty(),
+				   .o_available(fifo_c_empty),
+				   .o_full(fifo_c_full));
 
    CONTROL ctrl(.i_clk(i_clk), 
 		.i_fifo_out_full(!i_fifo_out_ready_clocked), 
