@@ -8,7 +8,7 @@ module shift_right_logical_16E (Q, A0, A1, A2, CE, CLK, D);
    assign Q = data[{A2, A1, A0}];
 
    initial begin
-      data[7] <= 1;
+      data[7] <= 0;
    end
    
    always @(posedge CLK)
@@ -27,7 +27,7 @@ module shift_right_logical_32E (Q, A0, A1, A2, A3, A4, CE, CLK, D);
    assign Q = data[{A4, A3, A2, A1, A0}];
 
    initial begin
-      data[31] <= 1;
+      data[31] <= 0;
    end
    
    always @(posedge CLK)
