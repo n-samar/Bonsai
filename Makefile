@@ -133,5 +133,5 @@ test_tree_P8_L32_128b : src/FIFO.v src/MERGER.v src/MERGER_8.v src/MERGER_4.v sr
 	fi
 
 
-test_all : test_tree_P4_L4_32b test_tree_P4_L4_32b test_tree_P8_L8_128b test_tree_P4_L16_32b test_tree_P4_L16_128b test_tree_P4_L64_32b test_tree_P4_L64_128b test_tree_P8_L32_32b test_tree_P8_L32_128b
+test_all : test_tree_P4_L4_32b test_tree_P4_L4_128b test_tree_P8_L8_32b test_tree_P8_L8_128b test_tree_P4_L16_32b test_tree_P4_L16_128b test_tree_P4_L64_32b test_tree_P4_L64_128b test_tree_P8_L32_32b test_tree_P8_L32_128b
 	echo "All tests run." 1>&2;
