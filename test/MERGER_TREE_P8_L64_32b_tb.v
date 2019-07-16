@@ -76,7 +76,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
 		                    .o_data(out_fifo_item),
 		                    .i_deq(read_fifo_out),
 		                    .o_empty(fifo_out_empty),
-     .o_full(fifo_out_full));
+				    .o_full(fifo_out_full));
 
    MERGER_TREE_P8_L64 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) dut (.i_clk(clk),
 			                                                     .i_fifo({out_fifo[31+32+64],  out_fifo[30+32+64],  out_fifo[29+32+64],  out_fifo[28+32+64],  
