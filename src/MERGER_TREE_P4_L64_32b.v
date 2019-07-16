@@ -1,59 +1,59 @@
 `timescale 1 ns/10 ps
 
 
-module MERGER_TREE_P4_L64 #(parameter L = 64, parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80) (input i_clk,
-					                                                                                 input [DATA_WIDTH*2*L-1:0]     i_fifo,
-					                                                                                 input [2*L-1:0]                i_fifo_empty,
-					                                                                                 input                          i_fifo_out_ready,
-					                                                                                 output [2*L-1:0]               o_fifo_read, 
-					                                                                                 output                         o_out_fifo_write,
-					                                                                                 output wire [4*DATA_WIDTH-1:0] o_data);
+module MERGER_TREE_P4_L64 #(parameter L = 64, parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32) (input i_clk,
+					                                                                                input [DATA_WIDTH*2*L-1:0]     i_fifo,
+					                                                                                input [2*L-1:0]                i_fifo_empty,
+					                                                                                input                          i_fifo_out_ready,
+					                                                                                output [2*L-1:0]               o_fifo_read, 
+					                                                                                output                         o_out_fifo_write,
+					                                                                                output wire [4*DATA_WIDTH-1:0] o_data);
    parameter log_L = 6;
 
-   wire [DATA_WIDTH-1:0]                                                                                                            fifo_o_item_6 [63:0];
-   wire [DATA_WIDTH-1:0]                                                                                                            fifo_i_item_6 [63:0];   
-   wire [63:0]                                                                                                                      fifo_read_6;
-   wire [63:0]                                                                                                                      fifo_write_6;
-   wire [63:0]                                                                                                                      fifo_empty_6;
-   wire [63:0]                                                                                                                      fifo_full_6;
+   wire [DATA_WIDTH-1:0]                                                                                                           fifo_o_item_6 [63:0];
+   wire [DATA_WIDTH-1:0]                                                                                                           fifo_i_item_6 [63:0];   
+   wire [63:0]                                                                                                                     fifo_read_6;
+   wire [63:0]                                                                                                                     fifo_write_6;
+   wire [63:0]                                                                                                                     fifo_empty_6;
+   wire [63:0]                                                                                                                     fifo_full_6;
    
-   wire [DATA_WIDTH-1:0]                                                                                                            fifo_o_item_5 [31:0];
-   wire [DATA_WIDTH-1:0]                                                                                                            fifo_i_item_5 [31:0];   
-   wire [31:0]                                                                                                                      fifo_read_5;
-   wire [31:0]                                                                                                                      fifo_write_5;
-   wire [31:0]                                                                                                                      fifo_empty_5;
-   wire [31:0]                                                                                                                      fifo_full_5;
+   wire [DATA_WIDTH-1:0]                                                                                                           fifo_o_item_5 [31:0];
+   wire [DATA_WIDTH-1:0]                                                                                                           fifo_i_item_5 [31:0];   
+   wire [31:0]                                                                                                                     fifo_read_5;
+   wire [31:0]                                                                                                                     fifo_write_5;
+   wire [31:0]                                                                                                                     fifo_empty_5;
+   wire [31:0]                                                                                                                     fifo_full_5;
    
-   wire [DATA_WIDTH-1:0]                                                                                                            fifo_o_item_4 [15:0];
-   wire [DATA_WIDTH-1:0]                                                                                                            fifo_i_item_4 [15:0];   
-   wire [15:0]                                                                                                                      fifo_read_4;
-   wire [15:0]                                                                                                                      fifo_write_4;
-   wire [15:0]                                                                                                                      fifo_empty_4;
-   wire [15:0]                                                                                                                      fifo_full_4;
+   wire [DATA_WIDTH-1:0]                                                                                                           fifo_o_item_4 [15:0];
+   wire [DATA_WIDTH-1:0]                                                                                                           fifo_i_item_4 [15:0];   
+   wire [15:0]                                                                                                                     fifo_read_4;
+   wire [15:0]                                                                                                                     fifo_write_4;
+   wire [15:0]                                                                                                                     fifo_empty_4;
+   wire [15:0]                                                                                                                     fifo_full_4;
 
-   wire [DATA_WIDTH-1:0]                                                                                                            fifo_o_item_3 [7:0];
-   wire [DATA_WIDTH-1:0]                                                                                                            fifo_i_item_3 [7:0];   
-   wire [7:0]                                                                                                                       fifo_read_3;
-   wire [7:0]                                                                                                                       fifo_write_3;
-   wire [7:0]                                                                                                                       fifo_empty_3;
-   wire [7:0]                                                                                                                       fifo_full_3;      
+   wire [DATA_WIDTH-1:0]                                                                                                           fifo_o_item_3 [7:0];
+   wire [DATA_WIDTH-1:0]                                                                                                           fifo_i_item_3 [7:0];   
+   wire [7:0]                                                                                                                      fifo_read_3;
+   wire [7:0]                                                                                                                      fifo_write_3;
+   wire [7:0]                                                                                                                      fifo_empty_3;
+   wire [7:0]                                                                                                                      fifo_full_3;      
 
-   wire [2*DATA_WIDTH-1:0]                                                                                                          fifo_o_item_2 [3:0];
-   wire [DATA_WIDTH-1:0]                                                                                                            fifo_i_item_2 [3:0];   
-   wire [3:0]                                                                                                                       fifo_read_2;
-   wire [3:0]                                                                                                                       fifo_write_2;
-   wire [3:0]                                                                                                                       fifo_empty_2;
-   wire [3:0]                                                                                                                       fifo_full_2;
+   wire [2*DATA_WIDTH-1:0]                                                                                                         fifo_o_item_2 [3:0];
+   wire [DATA_WIDTH-1:0]                                                                                                           fifo_i_item_2 [3:0];   
+   wire [3:0]                                                                                                                      fifo_read_2;
+   wire [3:0]                                                                                                                      fifo_write_2;
+   wire [3:0]                                                                                                                      fifo_empty_2;
+   wire [3:0]                                                                                                                      fifo_full_2;
 
-   wire [4*DATA_WIDTH-1:0]                                                                                                          fifo_o_item_1 [1:0];
-   wire [2*DATA_WIDTH-1:0]                                                                                                          fifo_i_item_1 [1:0];   
-   wire [1:0]                                                                                                                       fifo_read_1;
-   wire [1:0]                                                                                                                       fifo_write_1;
-   wire [1:0]                                                                                                                       fifo_empty_1;
-   wire [1:0]                                                                                                                       fifo_full_1;
+   wire [4*DATA_WIDTH-1:0]                                                                                                         fifo_o_item_1 [1:0];
+   wire [2*DATA_WIDTH-1:0]                                                                                                         fifo_i_item_1 [1:0];   
+   wire [1:0]                                                                                                                      fifo_read_1;
+   wire [1:0]                                                                                                                      fifo_write_1;
+   wire [1:0]                                                                                                                      fifo_empty_1;
+   wire [1:0]                                                                                                                      fifo_full_1;
 
    
-   genvar                                                                                                                           level, i;   
+   genvar                                                                                                                          level, i;   
    generate
       for (level = L; level > 1; level = level/2) begin : GEN
 	     for (i = 0; i < level; i=i+1) begin : GENN

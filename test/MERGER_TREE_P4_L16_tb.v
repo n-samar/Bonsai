@@ -15,7 +15,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
    wire [2*L-1:0]          fifo_read;
 
    parameter P = 4;
-   parameter L = 4;      
+   parameter L = 16;      
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
    parameter BURST_SIZE = 1;
@@ -78,14 +78,20 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
 		                            .o_empty(fifo_out_empty),
 		                            .o_full(fifo_out_full));
 
-   MERGER_TREE_P4_L4 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) dut (.i_clk(clk),
-			                                                                .i_fifo({out_fifo[7], out_fifo[6], out_fifo[5], out_fifo[4], 
-				                                                                     out_fifo[3], out_fifo[2], out_fifo[1], out_fifo[0]}),
-			                                                                .i_fifo_empty(fifo_empty),			  
-			                                                                .i_fifo_out_ready(~fifo_out_full | read_fifo_out),
-			                                                                .o_fifo_read(fifo_read),		  
-			                                                                .o_out_fifo_write(o_out_fifo_write),
-			                                                                .o_data(o_data));	       
+   MERGER_TREE_P4_L16 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) dut (.i_clk(clk),
+			                                                                 .i_fifo({out_fifo[31], out_fifo[30], out_fifo[29], out_fifo[28], 
+				                                                                      out_fifo[27], out_fifo[26], out_fifo[25], out_fifo[24],
+                                                                                      out_fifo[23], out_fifo[22], out_fifo[21], out_fifo[20], 
+				                                                                      out_fifo[19], out_fifo[18], out_fifo[17], out_fifo[16],
+                                                                                      out_fifo[15], out_fifo[14], out_fifo[13], out_fifo[12], 
+				                                                                      out_fifo[11], out_fifo[10], out_fifo[9], out_fifo[8],
+                                                                                      out_fifo[7], out_fifo[6], out_fifo[5], out_fifo[4], 
+				                                                                      out_fifo[3], out_fifo[2], out_fifo[1], out_fifo[0]}),
+			                                                                 .i_fifo_empty(fifo_empty),			  
+			                                                                 .i_fifo_out_ready(~fifo_out_full | read_fifo_out),
+			                                                                 .o_fifo_read(fifo_read),		  
+			                                                                 .o_out_fifo_write(o_out_fifo_write),
+			                                                                 .o_data(o_data));	       
 
    integer ind;
    
@@ -102,7 +108,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_P4_L4_128b.txt", data, 0, LEAF_CNT*LEN_SEQ-1);      
+      $readmemh("data_P4_L16_128b.txt", data, 0, LEAF_CNT*LEN_SEQ-1);      
    end
 
    integer l, z;
@@ -322,7 +328,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
      end
    
    initial begin
-      f = $fopen("out_P4_L4_128b.txt", "w+");
+      f = $fopen("out_P4_L16_128b.txt", "w+");
    end
 
    always @(posedge clk) begin
