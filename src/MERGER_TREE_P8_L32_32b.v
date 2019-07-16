@@ -45,7 +45,7 @@ module MERGER_TREE_P8_L32 #(parameter L = 32, parameter DATA_WIDTH = 32, KEY_WID
    genvar 														 level, i;   
    generate
       for (level = L; level > 1; level = level/2) begin : IN
-	 for (i = 0; i < level; i=i+1) begin
+	 for (i = 0; i < level; i=i+1) begin : IN_2
 	    if (level == 32) begin
 	       MERGER_1 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
 										 .i_fifo_1(i_fifo[DATA_WIDTH*2*i+DATA_WIDTH-1:DATA_WIDTH*2*i]),
