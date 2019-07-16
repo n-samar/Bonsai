@@ -74,13 +74,14 @@ module MERGER_2 #(parameter DATA_WIDTH = 128,
 			.o_empty(fifo_b_empty), 
 			.o_full(fifo_b_full));     
 
-   IFIFO16 #(2*DATA_WIDTH) fifo_c(.i_clk(i_clk), 
-			.i_data(i_fifo_c), 
-			.o_data(o_data),
-			.i_enq(i_c_write), 
-			.i_deq(i_c_read),		  
-			.o_empty(fifo_c_empty), 
-			.o_full(fifo_c_full));
+   IFIFO32 #(2*DATA_WIDTH) fifo_c(.i_clk(i_clk), 
+				  .i_data(i_fifo_c), 
+				  .o_data(o_data),
+				  .i_enq(i_c_write), 
+				  .i_deq(i_c_read),		  
+				  .o_empty(),
+				  .o_available(fifo_c_empty),
+				  .o_full(fifo_c_full));
 
    CONTROL ctrl(.i_clk(i_clk), 
 		.i_fifo_out_full(!i_fifo_out_ready_clocked), 
@@ -136,7 +137,6 @@ module MERGER_2 #(parameter DATA_WIDTH = 128,
 	      R_B <= fifo_b_out;	      
 	   end
 	end // if (~stall)
-	
      end // always @ (posedge i_clk)
 
    /* Advance the pipelined data stage LAST */
@@ -146,8 +146,9 @@ module MERGER_2 #(parameter DATA_WIDTH = 128,
 	   if (~switch_output_3) begin
 	      i_fifo_c <= data_3_smaller;
 	   end
-	   else
+	   else begin
 	     i_fifo_c <= data_3_bigger;
+	   end
 	   i_c_write <= 1'b1;	
 	end // if (~stall_3)
 	else

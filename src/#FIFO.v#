@@ -32,9 +32,9 @@ module shift_right_logical_32E (Q, A0, A1, A2, A3, A4, CE, CLK, D);
    
    always @(posedge CLK)
      begin
-	    if (CE == 1'b1) begin
-	       {data[30:0]} <= {data[29:0], D};
-	    end
+	if (CE == 1'b1) begin
+	   {data[30:0]} <= {data[29:0], D};
+	end
      end
 endmodule // shift_right_logical_32E
 
