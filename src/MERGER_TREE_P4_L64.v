@@ -8,8 +8,6 @@ module MERGER_TREE_P4_L64 #(parameter L = 64, parameter DATA_WIDTH = 128, parame
 					                                                                                 output [2*L-1:0]               o_fifo_read, 
 					                                                                                 output                         o_out_fifo_write,
 					                                                                                 output wire [4*DATA_WIDTH-1:0] o_data);
-   parameter log_L = 6;
-
    wire [DATA_WIDTH-1:0]                                                                                                            fifo_o_item_6 [63:0];
    wire [DATA_WIDTH-1:0]                                                                                                            fifo_i_item_6 [63:0];   
    wire [63:0]                                                                                                                      fifo_read_6;
