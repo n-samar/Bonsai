@@ -58,7 +58,7 @@ module COUPLER #(
          else if (state == 1) begin
 	        if (first_elem != 0) begin
 	           in_deq <= 1;
-		   second_elem <= in_elem;   
+		       second_elem <= in_elem;   
 	        end
 	        else begin
 	           in_deq <= (in_elem == 0);
@@ -69,13 +69,13 @@ module COUPLER #(
          end
       end // if (~out_full & ~in_empty)
       else if (in_empty & state == 1 & first_elem == 0) begin
-	 in_deq <= 0;
-	 second_elem <= 0;
-	 out_enq <= 1;
-	 state <= 0;	 
+	     in_deq <= 0;
+	     second_elem <= 0;
+	     out_enq <= 1;
+	     state <= 0;	 
       end      
       else begin
-	 out_enq <= 0;	    
+	     out_enq <= 0;	    
          in_deq <= 0;         
       end // else: !if(~out_full & ~in_empty)
    end

@@ -14,9 +14,8 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
    wire [2*L-1:0] fifo_empty;
    wire [2*L-1:0] fifo_read;
 
-
-   parameter P = 8;
-   parameter L = 8;      
+   parameter P = 4;
+   parameter L = 4;      
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
    parameter BURST_SIZE = 1;
@@ -79,10 +78,8 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
 		    .o_empty(fifo_out_empty),
 		    .o_full(fifo_out_full));
 
-   MERGER_TREE_P8_L8 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) dut (.i_clk(clk),
-			  .i_fifo({out_fifo[15], out_fifo[14], out_fifo[13], out_fifo[12], 
-				   out_fifo[11], out_fifo[10], out_fifo[9], out_fifo[8],
-				   out_fifo[7], out_fifo[6], out_fifo[5], out_fifo[4], 
+   MERGER_TREE_P4_L4 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) dut (.i_clk(clk),
+			  .i_fifo({out_fifo[7], out_fifo[6], out_fifo[5], out_fifo[4], 
 				   out_fifo[3], out_fifo[2], out_fifo[1], out_fifo[0]}),
 			  .i_fifo_empty(fifo_empty),			  
 			  .i_fifo_out_ready(~fifo_out_full | read_fifo_out),
@@ -105,7 +102,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_P8_L8_128b.txt", data, 0, LEAF_CNT*LEN_SEQ-1);      
+      $readmemh("data_P4_L4_128b.txt", data, 0, LEAF_CNT*LEN_SEQ-1);      
    end
 
    integer l, z;
@@ -162,10 +159,10 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
 
 
    integer x;
-      always @ (posedge clk) begin
-         for(x=0; x<LEAF_CNT; x=x+1) begin
-	        if (~buffer_empty[x] & buffer_out[x][DATA_WIDTH*buffer_ptr[x]+0] !== 1'bx) begin
-	           in_fifo[x] <= {buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+31],
+   always @ (posedge clk) begin
+      for(x=0; x<LEAF_CNT; x=x+1) begin
+	 if (~buffer_empty[x] & buffer_out[x][DATA_WIDTH*buffer_ptr[x]+0] !== 1'bx) begin
+	    in_fifo[x] <= {buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+31],
 			                  buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+30],
 			                  buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+29],
 			                  buffer_out[x][DATA_WIDTH*buffer_ptr[x]+96+28],
@@ -294,25 +291,25 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
 			                  buffer_out[x][DATA_WIDTH*buffer_ptr[x]+1],
 			                  buffer_out[x][DATA_WIDTH*buffer_ptr[x]+0]			   
 		                      };
-	        end
-         end
-      end   
+	 end
+      end
+   end   
 
    integer b;   
    initial
      begin
-	    for (j=0; j<LEAF_CNT; j=j+1) begin
-	       rdaddr[j] = j*LEN_SEQ;
-	       write_fifo[j] <= 0;
-	       countdown[j] = 20;
-	       in_fifo[j] <= 0;
-	       buffer_ptr[j] <= 0;
-	       in_fifo[j] <= 0;
-	       buffer_enq[j] <= 0;
-	       buffer_deq[j] <= 0;
-	       buffer_in[j] <= 0;
-	    end
-	    clk <= 0;
+	for (j=0; j<LEAF_CNT; j=j+1) begin
+	   rdaddr[j] = j*LEN_SEQ;
+	   write_fifo[j] <= 0;
+	   countdown[j] = 20;
+	   in_fifo[j] <= 0;
+	   buffer_ptr[j] <= 0;
+	   in_fifo[j] <= 0;
+	   buffer_enq[j] <= 0;
+	   buffer_deq[j] <= 0;
+	   buffer_in[j] <= 0;
+	end
+	clk <= 0;
      end
 
    always
@@ -325,22 +322,21 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
      end
    
    initial begin
-      f = $fopen("out_P8_L8_128b.txt", "w+");
+      f = $fopen("out_P4_L4_128b.txt", "w+");
    end
 
    always @(posedge clk) begin
       if (counter%100 == 0) begin
-	     $display("counter: %d, (total: %d)", counter, (LEAF_CNT*LEN_SEQ+10000)/7); 
+	 $display("counter: %d, (total: %d)", counter, (LEAF_CNT*LEN_SEQ+10000)/7); 
       end
-      if(counter < (LEAF_CNT*LEN_SEQ+10000)/28) begin
+      if(counter < (LEAF_CNT*LEN_SEQ+10000)/7) begin
 	     if(read_fifo_out) begin
 	        $fwrite(f, "%x\n", out_fifo_item);
 	     end
       end
-      else if(counter == (LEAF_CNT*LEN_SEQ+10000)/28) begin
+      else if(counter == (LEAF_CNT*LEN_SEQ+10000)/7) begin
 	     $fclose(f);
 	     $finish;
       end
    end
 endmodule // merger_tb
-
