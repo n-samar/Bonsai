@@ -1,6 +1,3 @@
-`timescale 1 ns/10 ps
-
-
 module MERGER_TREE_P8_L32 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_WIDTH = 80) (input i_clk,
 											  input [DATA_WIDTH*2*L-1:0] 	 i_fifo,
 											  input [2*L-1:0] 		 i_fifo_empty,
@@ -48,14 +45,14 @@ module MERGER_TREE_P8_L32 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_WI
    genvar 														 level, i;   
    generate
       for (level = L; level > 1; level = level/2) begin : IN
-	 for (i = 0; i < level; i=i+1) begin
+	 for (i = 0; i < level; i=i+1) begin : IN_2
 	    if (level == 32) begin
 	       MERGER_1 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
 										 .i_fifo_1(i_fifo[DATA_WIDTH*2*i+DATA_WIDTH-1:DATA_WIDTH*2*i]),
 										 .i_fifo_1_empty(i_fifo_empty[2*i]),
 										 .i_fifo_2(i_fifo[DATA_WIDTH*2*i+DATA_WIDTH+DATA_WIDTH-1:DATA_WIDTH*2*i+DATA_WIDTH]),
 										 .i_fifo_2_empty(i_fifo_empty[2*i+1]),
-										 .i_fifo_out_ready(~fifo_full_5[i] | fifo_read_5[i]),
+										 .i_fifo_out_ready(~fifo_full_5[i]),
 										 .o_fifo_1_read(o_fifo_read[2*i]),
 										 .o_fifo_2_read(o_fifo_read[2*i+1]),
 										 .o_out_fifo_write(fifo_write_5[i]),
@@ -74,7 +71,7 @@ module MERGER_TREE_P8_L32 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_WI
 										 .i_fifo_1_empty(fifo_empty_5[2*i]),
 										 .i_fifo_2(fifo_o_item_5[2*i+1]),
 										 .i_fifo_2_empty(fifo_empty_5[2*i+1]),
-										 .i_fifo_out_ready(~fifo_full_4[i] | fifo_read_4[i]),
+										 .i_fifo_out_ready(~fifo_full_4[i]),
 										 .o_fifo_1_read(fifo_read_5[2*i]),
 										 .o_fifo_2_read(fifo_read_5[2*i+1]),
 										 .o_out_fifo_write(fifo_write_4[i]),
@@ -93,7 +90,7 @@ module MERGER_TREE_P8_L32 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_WI
 										 .i_fifo_1_empty(fifo_empty_4[2*i]),
 										 .i_fifo_2(fifo_o_item_4[2*i+1]),
 										 .i_fifo_2_empty(fifo_empty_4[2*i+1]),
-										 .i_fifo_out_ready(~fifo_full_3[i] | fifo_read_3[i]),
+										 .i_fifo_out_ready(~fifo_full_3[i]),
 										 .o_fifo_1_read(fifo_read_4[2*i]),
 										 .o_fifo_2_read(fifo_read_4[2*i+1]),
 										 .o_out_fifo_write(fifo_write_3[i]),
@@ -112,7 +109,7 @@ module MERGER_TREE_P8_L32 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_WI
 										 .i_fifo_1_empty(fifo_empty_3[2*i]),
 										 .i_fifo_2(fifo_o_item_3[2*i+1]),
 										 .i_fifo_2_empty(fifo_empty_3[2*i+1]),
-										 .i_fifo_out_ready(~fifo_full_2[i] | fifo_read_2[i]),
+										 .i_fifo_out_ready(~fifo_full_2[i]),
 										 .o_fifo_1_read(fifo_read_3[2*i]),
 										 .o_fifo_2_read(fifo_read_3[2*i+1]),
 										 .o_out_fifo_write(fifo_write_2[i]),
@@ -131,7 +128,7 @@ module MERGER_TREE_P8_L32 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_WI
 										 .i_fifo_1_empty(fifo_empty_2[2*i]),
 										 .i_fifo_2(fifo_o_item_2[2*i+1]),
 										 .i_fifo_2_empty(fifo_empty_2[2*i+1]),
-										 .i_fifo_out_ready(~fifo_full_1[i] | fifo_read_1[i]),
+										 .i_fifo_out_ready(~fifo_full_1[i]),
 										 .o_fifo_1_read(fifo_read_2[2*i]),
 										 .o_fifo_2_read(fifo_read_2[2*i+1]),
 										 .o_out_fifo_write(fifo_write_1[i]),
