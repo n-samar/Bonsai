@@ -155,7 +155,7 @@ module MERGER_1 #(parameter DATA_WIDTH = 128,
 	   end
 	   else
 	     i_fifo_c <= data_3_bigger;
-	   i_c_write <= 1'b1;	   
+	   i_c_write <= ~fifo_c_full;	   
 	end // if (~stall_3)
 	else
 	  i_c_write <= 1'b0;
