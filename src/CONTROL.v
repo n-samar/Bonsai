@@ -7,9 +7,9 @@ module CONTROL(input i_clk,
 	       input  i_a_lte_b,
 	       input  i_a_empty,
 	       input  i_b_empty,
-	       output reg select_A,
+	       output select_A,
 	       output stall,
-	       output reg switch_output
+	       output switch_output
 	       );
    
    parameter NOMINAL = 3'b001;
@@ -21,34 +21,37 @@ module CONTROL(input i_clk,
    parameter period = 4;
    
    reg [2:0] 	      state;
-   reg [2:0] 	      new_state;
+   reg [2:0] 	      next_state;
    reg                ready;
    
 
+   // Next-state logic
    always @(*) begin
-      new_state <= (state == TOGGLE) ? (((~i_a_min_zero & ~i_b_min_zero) ? NOMINAL : TOGGLE)) :
-		      (state == DONE_A) ? ((i_b_min_zero ? TOGGLE : DONE_A)) :
-		      (state == DONE_B) ? ((i_a_min_zero ? TOGGLE : DONE_B)) :
-		      (state == NOMINAL) ? (i_a_min_zero ? DONE_A :
-					    (i_b_min_zero ? DONE_B : NOMINAL)) :
-		      FINISHED;
+      next_state <= (state == TOGGLE) ? (((~i_a_min_zero & ~i_b_min_zero) ? NOMINAL : TOGGLE)) :
+		   (state == DONE_A) ? ((i_b_min_zero ? TOGGLE : DONE_A)) :
+		   (state == DONE_B) ? ((i_a_min_zero ? TOGGLE : DONE_B)) :
+		   (state == NOMINAL) ? (i_a_min_zero ? DONE_A :
+					 (i_b_min_zero ? DONE_B : NOMINAL)) :
+		   FINISHED;
    end
-   
+
+   // Outputs
    assign stall = (i_fifo_out_full) | ((state == NOMINAL) & (i_a_empty | i_b_empty)) | (state == DONE_A & i_b_empty) | (state == DONE_B & i_a_empty) | (state == TOGGLE & (i_a_empty | ~i_a_min_zero) & (i_b_empty | ~i_b_min_zero) & (i_a_min_zero | i_b_min_zero));
-   
+   assign switch_output = (next_state == TOGGLE & state != TOGGLE);
+   assign select_A = (next_state == NOMINAL & i_a_lte_b) | (next_state == DONE_B) | (next_state == TOGGLE & i_a_min_zero & ~i_a_empty);
+
    initial
      begin
 	ready <= 0;
 	state <= 3'b000;
-	select_A <= 1'b0;
-	switch_output <= 1'b0;
+	// select_A <= 1'b0;
+	// switch_output <= 1'b0;
      end
 
-   always @(negedge i_clk) begin
+   // Memory element
+   always @(posedge i_clk) begin
       if (~stall) begin
-	     state <= new_state;
-	     switch_output <= (new_state == TOGGLE & state != TOGGLE);
-	     select_A <= (new_state == NOMINAL & i_a_lte_b) | (new_state == DONE_B) | (new_state == TOGGLE & i_a_min_zero & ~i_a_empty);
+	 state <= next_state;
       end
    end
 endmodule
