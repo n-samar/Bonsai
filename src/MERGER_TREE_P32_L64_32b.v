@@ -173,7 +173,7 @@ module MERGER_TREE_P32_L64 #(parameter L = 64, parameter DATA_WIDTH = 32, KEY_WI
       end
    endgenerate
    
-   MERGER_32 merger #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) (.i_clk(i_clk),
+   MERGER_32 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger (.i_clk(i_clk),
 		    .i_fifo_1(fifo_o_item_1[0]),
 		    .i_fifo_1_empty(fifo_empty_1[0]),
 		    .i_fifo_2(fifo_o_item_1[1]),
