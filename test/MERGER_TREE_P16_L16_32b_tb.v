@@ -78,7 +78,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
 		                            .o_empty(fifo_out_empty),
 		                            .o_full(fifo_out_full));
 
-   MERGER_TREE_P16_L32 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) dut (.i_clk(clk),
+   MERGER_TREE_P16_L16 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) dut (.i_clk(clk),
 			                                                                .i_fifo({out_fifo[31], out_fifo[30], out_fifo[29], out_fifo[28], 
 				                                                                     out_fifo[27], out_fifo[26], out_fifo[25], out_fifo[24],
                                                                                      out_fifo[23], out_fifo[22], out_fifo[21], out_fifo[20], 
@@ -108,7 +108,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
    end // always @ (negedge clk)
 
    initial begin
-      $readmemh("data_P16_L32_32b.txt", data, 0, LEAF_CNT*LEN_SEQ-1);      
+      $readmemh("data_P16_L16_32b.txt", data, 0, LEAF_CNT*LEN_SEQ-1);      
    end
 
    integer l, z;
@@ -232,7 +232,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
      end
    
    initial begin
-      f = $fopen("out_P16_L32_32b.txt", "w+");
+      f = $fopen("out_P16_L16_32b.txt", "w+");
    end
 
    always @(posedge clk) begin
