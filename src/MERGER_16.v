@@ -16,7 +16,7 @@ module MERGER_16 #(parameter DATA_WIDTH = 128,
    wire 			     stall;
    reg [16*DATA_WIDTH-1:0] 		     R_A;
    reg [16*DATA_WIDTH-1:0] 		     R_B;
-   wire 			     fifo_a_empty, fifo_b_empty, fifo_c_empty, fifo_a_full, fifo_b_full, fifo_c_full;
+   wire 			     fifo_a_empty, fifo_b_empty, fifo_c_empty, fifo_a_full, fifo_b_full, fifo_c_available;
    wire 			     overrun_a, overrun_b, overrun_c, underrun_a, underrun_b, underrun_c;
    reg 				     i_c_write; 			 
    reg [16*DATA_WIDTH-1:0] 		     i_fifo_c;
@@ -74,13 +74,14 @@ module MERGER_16 #(parameter DATA_WIDTH = 128,
 			.o_empty(fifo_b_empty), 
 			.o_full(fifo_b_full));     
 
-   IFIFO16 #(16*DATA_WIDTH) fifo_c(.i_clk(i_clk), 
+   IFIFO32 #(16*DATA_WIDTH) fifo_c(.i_clk(i_clk), 
 			.i_data(i_fifo_c), 
 			.o_data(o_data),
 			.i_enq(i_c_write), 
-			.i_deq(i_c_read),		  
-			.o_empty(fifo_c_empty), 
-			.o_full(fifo_c_full));
+			.i_deq(i_c_read),
+			.o_empty(fifo_c_empty),
+			.o_available(fifo_c_available),
+			.o_full());
 
    CONTROL ctrl(.i_clk(i_clk), 
 		.i_fifo_out_full(!i_fifo_out_ready_clocked), 
@@ -148,7 +149,7 @@ module MERGER_16 #(parameter DATA_WIDTH = 128,
 	   end
 	   else
 	     i_fifo_c <= data_3_bigger;
-	   i_c_write <= ~fifo_c_full;	
+	   i_c_write <= fifo_c_available;	
 	end // if (~stall_3)
 	else
 	  i_c_write <= 1'b0;
