@@ -44,7 +44,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 128, parameter KEY_WIDTH = 80);
    wire [511:0] 	   buffer_out [0:LEAF_CNT-1];
 
    
-
+   // This value should be set by the AXI Controller in the hardware implementation
    assign read_fifo_out = ~fifo_out_empty;
    
    
