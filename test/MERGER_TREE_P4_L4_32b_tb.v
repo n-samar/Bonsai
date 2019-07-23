@@ -19,7 +19,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
    parameter period = 4;   
    parameter LEAF_CNT = 2*L;
    parameter BURST_SIZE = 1;
-   parameter LEN_SEQ = 2*(2*4+2);
+   parameter LEN_SEQ = 2*(2*100+2);
    integer                 data_file;
    
    reg [31:0]              buffer_counter = 0;   
@@ -45,7 +45,7 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
 
    
    // This value should be set by the AXI Controller in the hardware implementation
-   assign read_fifo_out = ~fifo_out_empty;
+   assign read_fifo_out = ~fifo_out_empty & (counter%100<30);
    
    
    genvar                  fifo_index;
@@ -233,12 +233,12 @@ module merger_tree_tb #(parameter DATA_WIDTH = 32, parameter KEY_WIDTH = 32);
       if (counter%100 == 0) begin
 	     $display("counter: %d, (total: %d)", counter, (LEAF_CNT*LEN_SEQ+10000)/7); 
       end
-      if(counter < (LEAF_CNT*LEN_SEQ+10000)/7) begin
+      if(counter < (LEAF_CNT*LEN_SEQ+10000)/2) begin
 	     if(read_fifo_out) begin
 	        $fwrite(f, "%x\n", out_fifo_item);
 	     end
       end
-      else if(counter == (LEAF_CNT*LEN_SEQ+10000)/7) begin
+      else if(counter == (LEAF_CNT*LEN_SEQ+10000)/2) begin
 	     $fclose(f);
 	     $finish;
       end

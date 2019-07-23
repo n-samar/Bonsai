@@ -42,7 +42,6 @@ module MERGER_32 #(parameter DATA_WIDTH = 128,
    
    parameter period = 4;
 
-   assign i_c_write = ~stall_3;	   
    assign a_min_zero = (fifo_a_out[32*DATA_WIDTH-1:0] == 0);
    assign b_min_zero = (fifo_b_out[32*DATA_WIDTH-1:0] == 0);
    assign a_lte_b = (fifo_a_out[KEY_WIDTH-1:0] <= fifo_b_out[KEY_WIDTH-1:0]);
@@ -124,7 +123,8 @@ module MERGER_32 #(parameter DATA_WIDTH = 128,
       R_A <= 0;
       R_B <= 0;
       i_data_2_top <= 0;
-      i_fifo_c <= 0;      
+      i_fifo_c <= 0;
+      i_c_write <= 0;
    end
    
    /* We must wait for the control logic to finish and fifos FIFO_A and FIFO_B to update */	   
@@ -146,12 +146,13 @@ module MERGER_32 #(parameter DATA_WIDTH = 128,
    /* Advance the pipelined data stage LAST */
    always @(posedge i_clk)
      begin
-	if (~stall_3) begin
-	   if (~switch_output_3) begin
-	      i_fifo_c <= data_3_smaller;
-	   end
-	   else
-	     i_fifo_c <= data_3_bigger;
-	end // if (~stall_3)
+        i_c_write <= ~stall_3;	           
+	    if (~stall_3) begin
+	       if (~switch_output_3) begin
+	          i_fifo_c <= data_3_smaller;
+	       end
+	       else
+	         i_fifo_c <= data_3_bigger;
+	    end // if (~stall_3)
      end
-   endmodule // MERGER_32
+endmodule // MERGER_32

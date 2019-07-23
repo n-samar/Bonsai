@@ -18,7 +18,7 @@ module MERGER_4 #(parameter DATA_WIDTH = 128,
    reg [4*DATA_WIDTH-1:0] 						    R_B;
    wire 								    fifo_a_empty, fifo_b_empty, fifo_c_empty, fifo_a_full, fifo_b_full, fifo_c_available;
    wire 								    overrun_a, overrun_b, overrun_c, underrun_a, underrun_b, underrun_c;
-   wire 									    i_c_write; 			 
+   reg 									    i_c_write; 			 
    reg [4*DATA_WIDTH-1:0] 						    i_fifo_c;
    wire [4*DATA_WIDTH-1:0] 						    fifo_a_out;
    wire [4*DATA_WIDTH-1:0] 						    fifo_b_out;
@@ -41,7 +41,6 @@ module MERGER_4 #(parameter DATA_WIDTH = 128,
    
    parameter period = 4;
 
-   assign i_c_write = ~stall_3;	   
    assign a_min_zero = (fifo_a_out[DATA_WIDTH-1:0] == 0);
    assign b_min_zero = (fifo_b_out[DATA_WIDTH-1:0] == 0);
    assign a_lte_b = (fifo_a_out[KEY_WIDTH-1:0] <= fifo_b_out[KEY_WIDTH-1:0]);
@@ -122,7 +121,8 @@ module MERGER_4 #(parameter DATA_WIDTH = 128,
       R_A <= 0;
       R_B <= 0;
       i_data_2_top <= 0;
-      i_fifo_c <= 0;      
+      i_fifo_c <= 0;
+      i_c_write <= 0;
    end
    
    /* We must wait for the control logic to finish and fifos FIFO_A and FIFO_B to update */	   
@@ -143,7 +143,8 @@ module MERGER_4 #(parameter DATA_WIDTH = 128,
 
    /* Advance the pipelined data stage LAST */
    always @(posedge i_clk)
-     begin	
+     begin
+        i_c_write <= ~stall_3;	           
 	if (~stall_3) begin
 	   if (~switch_output_3) begin
 	      i_fifo_c <= data_3_smaller;
