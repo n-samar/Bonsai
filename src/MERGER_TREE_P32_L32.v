@@ -1,7 +1,7 @@
 `timescale 1 ns/10 ps
 
 
-module MERGER_TREE_P32_L64 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_WIDTH = 80) (input i_clk,
+module MERGER_TREE_P32_L32 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_WIDTH = 80) (input i_clk,
 											    input [DATA_WIDTH*2*L-1:0] 	    i_fifo,
 											    input [2*L-1:0] 		    i_fifo_empty,
 											    input 			    i_fifo_out_ready,
