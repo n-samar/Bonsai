@@ -81,7 +81,11 @@ module BITONIC_NETWORK_64  #(parameter DATA_WIDTH = 128,
 
       stall_5 <= 1;
       switch_output_5 <= 0;
-      top_tuple_5 <= 0;            
+      top_tuple_5 <= 0;
+
+      o_elems_0 <= 0;
+      o_elems_1 <= 0;      
+      o_stall <= 0;      
    end
 
    genvar i, j;

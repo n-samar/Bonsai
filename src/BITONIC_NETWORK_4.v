@@ -30,6 +30,8 @@ module BITONIC_NETWORK_4 #(parameter DATA_WIDTH = 128,
       o_elems_1 <= 0;
       o_switch_output <= 0;
       o_top_tuple <= 0;
+
+      o_stall <= 0;      
    end
 
    /* step 1 */
