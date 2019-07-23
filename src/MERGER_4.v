@@ -1,4 +1,4 @@
-Smodule MERGER_4 #(parameter DATA_WIDTH = 128,
+module MERGER_4 #(parameter DATA_WIDTH = 128,
 		  parameter KEY_WIDTH = 80) (input i_clk,
 					     input [4*DATA_WIDTH-1:0] 	    i_fifo_1,
 					     input 			    i_fifo_1_empty,
@@ -121,7 +121,8 @@ Smodule MERGER_4 #(parameter DATA_WIDTH = 128,
       R_A <= 0;
       R_B <= 0;
       i_data_2_top <= 0;
-      i_fifo_c <= 0;      
+      i_fifo_c <= 0;
+      i_c_write <= 0;
    end
    
    /* We must wait for the control logic to finish and fifos FIFO_A and FIFO_B to update */	   

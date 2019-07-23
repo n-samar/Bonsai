@@ -14,7 +14,7 @@ module MERGER_1 #(parameter DATA_WIDTH = 128,
 	      output wire [DATA_WIDTH-1:0] o_data);
 
    wire 			 i_write_a, i_write_b;
-   reg               i_c_read;
+   wire               i_c_read;
    wire 			 select_A;
    wire 			 stall;
    reg [DATA_WIDTH-1:0] 			 R_A;

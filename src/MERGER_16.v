@@ -53,7 +53,6 @@ module MERGER_16 #(parameter DATA_WIDTH = 128,
    assign i_c_read = i_fifo_out_ready_clocked & ~fifo_c_empty;   
    
    initial begin
-      i_c_write <= 0;
       i_fifo_out_ready_clocked <= 0; 
    end
 
@@ -122,7 +121,8 @@ module MERGER_16 #(parameter DATA_WIDTH = 128,
       R_A <= 0;
       R_B <= 0;
       i_data_2_top <= 0;
-      i_fifo_c <= 0;      
+      i_fifo_c <= 0;
+      i_c_write <= 0;      
    end
    
    /* We must wait for the control logic to finish and fifos FIFO_A and FIFO_B to update */	   
