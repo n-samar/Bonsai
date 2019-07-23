@@ -34,10 +34,11 @@ module BITONIC_NETWORK_8 #(parameter DATA_WIDTH = 128,
       elems_2_0 <= 0;
       elems_2_1 <= 0;
 
+      o_elems_0 <= 0;
+      o_elems_1 <= 0;
+      
       top_tuple_2 <= 0;
 
-      o_elems_0 <= 0;
-      o_elems_1 <= 0;      
       o_stall <= 0;      
    end
 

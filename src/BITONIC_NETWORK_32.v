@@ -7,6 +7,12 @@ module CAS #(parameter DATA_WIDTH = 128,
             input [DATA_WIDTH-1:0]  i_elems_1,
             output reg [DATA_WIDTH-1:0] o_elems_0,
             output reg [DATA_WIDTH-1:0] o_elems_1);
+
+   initial begin
+      o_elems_0 <= 0;
+      o_elems_1 <= 0;      
+   end
+   
    always @(posedge i_clk) begin
       if (~stall) begin
          if (i_elems_0[KEY_WIDTH-1:0] > i_elems_1[KEY_WIDTH-1:0]) begin
@@ -74,8 +80,6 @@ module BITONIC_NETWORK_32 #(parameter DATA_WIDTH = 128,
       switch_output_4 <= 0;
       top_tuple_4 <= 0;
 
-      o_elems_0 <= 0;
-      o_elems_1 <= 0;      
       o_stall <= 0;      
    end
 

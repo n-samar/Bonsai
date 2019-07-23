@@ -18,7 +18,7 @@ module MERGER_8 #(parameter DATA_WIDTH = 128,
    reg [8*DATA_WIDTH-1:0] 						    R_B;
    wire 								    fifo_a_empty, fifo_b_empty, fifo_c_empty, fifo_a_full, fifo_b_full, fifo_c_available;
    wire 								    overrun_a, overrun_b, overrun_c, underrun_a, underrun_b, underrun_c;
-   write 									    i_c_write; 			 
+   wire 									    i_c_write; 			 
    reg [8*DATA_WIDTH-1:0] 						    i_fifo_c;
    wire [8*DATA_WIDTH-1:0] 						    fifo_a_out;
    wire [8*DATA_WIDTH-1:0] 						    fifo_b_out;
