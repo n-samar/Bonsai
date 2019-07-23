@@ -220,7 +220,7 @@ test_tree_P16_L64_32b : src/FIFO.v src/MERGER_16.v src/MERGER.v src/MERGER_4.v s
 
 
 test_tree_P16_L64_128b : src/FIFO.v src/MERGER.v src/MERGER_16.v src/MERGER_8.v src/MERGER_4.v src/MERGER_2.v src/CONTROL.v src/BITONIC_NETWORK.v src/BITONIC_NETWORK_4.v src/BITONIC_NETWORK_32.v src/BITONIC_NETWORK_8.v src/BITONIC_NETWORK_16.v src/MERGER_TREE_P16_L64.v test/MERGER_TREE_P16_L64_tb.v src/COUPLER.v test/datagen.py
-	python test/datagen.py --seed=1 --key_bits=80 --value_bits=48 --leaf_count=128 --runs=1 --elems_per_run=7 --o_elems_per_line=16 --i_elems_per_line=1 --suff="P16_L64_128b";
+	python test/datagen.py --seed=1 --key_bits=80 --value_bits=48 --leaf_count=128 --runs=1 --elems_per_run=15 --o_elems_per_line=16 --i_elems_per_line=1 --suff="P16_L64_128b";
 	$(VERILOG) -o tree_P16_L64 src/COUPLER.v src/FIFO.v src/MERGER.v src/MERGER_16.v  src/MERGER_8.v src/MERGER_4.v src/MERGER_2.v src/CONTROL.v src/BITONIC_NETWORK.v src/BITONIC_NETWORK_32.v src/BITONIC_NETWORK_4.v src/BITONIC_NETWORK_8.v src/BITONIC_NETWORK_16.v src/MERGER_TREE_P16_L64.v test/MERGER_TREE_P16_L64_tb.v;
 	$(VVP) tree_P16_L64;	
 	sed '/^0*$$/d' out_P16_L64_128b.txt > out_no_zeros_P16_L64_128b.txt;
