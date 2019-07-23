@@ -9,13 +9,6 @@ module MERGER_TREE_P32_L32 #(parameter L = 32, parameter DATA_WIDTH = 32, KEY_WI
 											   output 			   o_out_fifo_write,
 											   output wire [32*DATA_WIDTH-1:0] o_data);
 
-   wire [DATA_WIDTH-1:0] 											    fifo_o_item_6 [63:0];
-   wire [DATA_WIDTH-1:0] 											    fifo_i_item_6 [63:0];   
-   wire [63:0] 													    fifo_read_6;
-   wire [63:0] 													    fifo_write_6;
-   wire [63:0] 													    fifo_empty_6;
-   wire [63:0] 													    fifo_full_6;
-   
    wire [2*DATA_WIDTH-1:0] 											    fifo_o_item_5 [31:0];
    wire [DATA_WIDTH-1:0] 											    fifo_i_item_5 [31:0];   
    wire [31:0] 													    fifo_read_5;
@@ -57,13 +50,13 @@ module MERGER_TREE_P32_L32 #(parameter L = 32, parameter DATA_WIDTH = 32, KEY_WI
 	 for (i = 0; i < level; i=i+1) begin : GENN
 	    if (level == 32) begin
 	       MERGER_1 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
-										 .i_fifo_1(fifo_o_item_6[2*i]),
-										 .i_fifo_1_empty(fifo_empty_6[2*i]),
-										 .i_fifo_2(fifo_o_item_6[2*i+1]),
-										 .i_fifo_2_empty(fifo_empty_6[2*i+1]),
+										 .i_fifo_1(i_fifo[32*2*i+31:32*2*i]),
+										 .i_fifo_1_empty(i_fifo_empty[2*i]),
+										 .i_fifo_2(i_fifo[32*2*i+32+31:32*2*i+32]),
+										 .i_fifo_2_empty(i_fifo_empty[2*i+1]),
 										 .i_fifo_out_ready(~fifo_full_5[i]),
-										 .o_fifo_1_read(fifo_read_6[2*i]),
-										 .o_fifo_2_read(fifo_read_6[2*i+1]),
+										 .o_fifo_1_read(o_fifo_read[2*i]),
+										 .o_fifo_2_read(o_fifo_read[2*i+1]),
 										 .o_out_fifo_write(fifo_write_5[i]),
 										 .o_data(fifo_i_item_5[i]));
 	       COUPLER #(DATA_WIDTH) fifo(.i_clk(i_clk),
