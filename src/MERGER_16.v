@@ -143,15 +143,13 @@ module MERGER_16 #(parameter DATA_WIDTH = 128,
    /* Advance the pipelined data stage LAST */
    always @(posedge i_clk)
      begin	
+	i_c_write <= ~stall_3;	
 	if (~stall_3) begin
 	   if (~switch_output_3) begin
 	      i_fifo_c <= data_3_smaller;
 	   end
 	   else
 	     i_fifo_c <= data_3_bigger;
-	   i_c_write <= fifo_c_available;	
 	end // if (~stall_3)
-	else
-	  i_c_write <= 1'b0;
      end
    endmodule // MERGER_16
