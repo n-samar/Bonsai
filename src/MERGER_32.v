@@ -9,7 +9,7 @@ module MERGER_32 #(parameter DATA_WIDTH = 128,
 	      output 		     o_fifo_1_read,
 	      output 		     o_fifo_2_read,
 	      output 		     o_out_fifo_write,
-	      output wire [32*DATA_WIDTH-1:0] o_data);
+	      output wire [32*DATA_WIDTH-1:0] o_data); 
 
    wire 			     i_write_a, i_write_b;
    wire 			     i_c_read;
@@ -19,7 +19,7 @@ module MERGER_32 #(parameter DATA_WIDTH = 128,
    reg [32*DATA_WIDTH-1:0] 		     R_B;
    wire 			     fifo_a_empty, fifo_b_empty, fifo_c_empty, fifo_a_full, fifo_b_full, fifo_c_available;
    wire 			     overrun_a, overrun_b, overrun_c, underrun_a, underrun_b, underrun_c;
-   wire 				     i_c_write; 			 
+   reg 				     i_c_write; 			 
    reg [32*DATA_WIDTH-1:0] 		     i_fifo_c;
    wire [32*DATA_WIDTH-1:0] 		     fifo_a_out;
    wire [32*DATA_WIDTH-1:0] 		     fifo_b_out;
