@@ -1,13 +1,13 @@
 `timescale 1 ns/10 ps
 
 
-module MERGER_TREE_P32_L64 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_WIDTH = 80) (input i_clk,
-											    input [DATA_WIDTH*2*L-1:0] 	    i_fifo,
-											    input [2*L-1:0] 		    i_fifo_empty,
-											    input 			    i_fifo_out_ready,
-											    output [2*L-1:0] 		    o_fifo_read, 
-											    output 			    o_out_fifo_write,
-											    output wire [32*DATA_WIDTH-1:0] o_data);
+module MERGER_TREE_P32_L64 #(parameter L = 32, parameter DATA_WIDTH = 32, KEY_WIDTH = 32) (input i_clk,
+											   input [DATA_WIDTH*2*L-1:0] 	   i_fifo,
+											   input [2*L-1:0] 		   i_fifo_empty,
+											   input 			   i_fifo_out_ready,
+											   output [2*L-1:0] 		   o_fifo_read, 
+											   output 			   o_out_fifo_write,
+											   output wire [32*DATA_WIDTH-1:0] o_data);
 
    wire [DATA_WIDTH-1:0] 											    fifo_o_item_6 [63:0];
    wire [DATA_WIDTH-1:0] 											    fifo_i_item_6 [63:0];   
@@ -154,7 +154,7 @@ module MERGER_TREE_P32_L64 #(parameter L = 32, parameter DATA_WIDTH = 128, KEY_W
       end
    endgenerate
    
-   MERGER_32 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger(.i_clk(i_clk),
+   MERGER_32 #(.DATA_WIDTH(DATA_WIDTH), .KEY_WIDTH(KEY_WIDTH)) merger (.i_clk(i_clk),
 		    .i_fifo_1(fifo_o_item_1[0]),
 		    .i_fifo_1_empty(fifo_empty_1[0]),
 		    .i_fifo_2(fifo_o_item_1[1]),
