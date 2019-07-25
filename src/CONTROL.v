@@ -29,24 +29,24 @@ module CONTROL(input i_clk,
    always @(*) begin
       case(state)
 	TOGGLE: if (~i_a_min_zero & ~i_b_min_zero) begin
-	   next_state <= NOMINAL;
+	   next_state <= stall ? TOGGLE : NOMINAL;
 	end else begin
-	   next_state <= TOGGLE;
+	   next_state <= stall ? TOGGLE : TOGGLE;
 	end
 	DONE_A: if (i_b_min_zero) begin
-	   next_state <= TOGGLE;
+	   next_state <= stall ? DONE_A : TOGGLE;
 	end else begin
 	   next_state <= DONE_A;
 	end
 	DONE_B: if (i_a_min_zero) begin
-	   next_state <= TOGGLE;
+	   next_state <= stall ? DONE_B : TOGGLE;
 	end else begin
 	   next_state <= DONE_B;
 	end
 	NOMINAL: if (i_a_min_zero) begin
-	   next_state <= DONE_A;
+	   next_state <= stall ? NOMINAL : DONE_A;
 	end else if (i_b_min_zero) begin
-	   next_state <= DONE_B;
+	   next_state <= stall ? NOMINAL : DONE_B;
 	end else begin
 	   next_state <= NOMINAL;
 	end
@@ -76,8 +76,6 @@ module CONTROL(input i_clk,
 
    // Memory element
    always @(posedge i_clk) begin
-      if (~stall) begin
 	 state <= next_state;
-      end
    end
 endmodule

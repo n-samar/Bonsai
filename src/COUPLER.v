@@ -11,14 +11,17 @@ module COUPLER #(
 		    output 			o_full,
 		    output 			o_empty
 		    );
-   
+
+   reg 						next_state;
    reg 						state;
    reg [P_WIDTH-1:0] 				first_elem;
    reg [P_WIDTH-1:0] 				second_elem;
+   reg [P_WIDTH-1:0] 				first_elem_clocked;
+   reg [P_WIDTH-1:0] 				second_elem_clocked;
    wire [2*P_WIDTH-1:0] 			out_elem;
    wire [P_WIDTH-1:0] 				in_elem;
-   reg 						in_deq, out_enq;
-   
+   wire 					in_deq, out_enq;
+   wire 					first_is_zero;
    
    
    IFIFO16 #(P_WIDTH) in_fifo (.i_clk(i_clk),
@@ -39,45 +42,39 @@ module COUPLER #(
    
    assign out_elem = {second_elem, first_elem};
    
+   assign in_deq = (~out_full & ~in_empty & ~(first_is_zero & in_elem != 0));
+   assign out_enq = (~out_full & ~in_empty & state == 1);
+   assign first_is_zero = (first_elem == 0);
+
    initial begin
-      in_deq <= 0;
-      out_enq <= 0;
       state <= 0;
+      first_elem_clocked <= 0;
+      second_elem_clocked <= 0;
       first_elem <= 0;
-      second_elem <= 0;      
+      second_elem <= 0;            
    end
-   
-   always @(negedge i_clk) begin
-      if (~out_full & ~in_empty) begin
-         if (state == 0) begin
-            in_deq <= 1;	    
-            out_enq <= 0;            
-            first_elem <= in_elem;
-            state <= 1;
-         end
-         else if (state == 1) begin
-	    if (first_elem != 0) begin
-	       in_deq <= 1;
-	       second_elem <= in_elem;   
-	    end
-	    else begin
-	       in_deq <= (in_elem == 0);
-	       second_elem <= 0;	       
-	    end	      
-            state <= 0;  
-            out_enq <= 1;            
-         end
-      end // if (~out_full & ~in_empty)
-      else if (in_empty & state == 1 & first_elem == 0) begin
-	 in_deq <= 0;
-	 second_elem <= 0;
-	 out_enq <= 1;
-	 state <= 0;	 
-      end      
-      else begin
-	 out_enq <= 0;	    
-         in_deq <= 0;         
-      end // else: !if(~out_full & ~in_empty)
+
+   // State
+   always @(posedge i_clk) begin
+      state <= next_state;
+      first_elem_clocked <= first_elem;
+      second_elem_clocked <= second_elem;      
+   end
+
+   // Outputs
+   always @(*) begin
+      case(state)
+	0: begin
+	   next_state <= (~out_full & ~in_empty) ? 1 : 0;
+           first_elem <= in_elem;
+	   second_elem <= second_elem_clocked;	   
+	end
+	1: begin
+	   next_state <= (~out_full & ~in_empty) ? 0 : 1;	   
+	   first_elem <= first_elem_clocked;	    
+	   second_elem <= first_is_zero ? 0 : in_elem;	   
+	end
+      endcase
    end
    
 endmodule
