@@ -70,7 +70,7 @@ module COUPLER #(
 	   second_elem <= second_elem_clocked;	   
 	end
 	1: begin
-	   next_state <= (~out_full & ~in_empty) ? 0 : 1;	   
+	   next_state <= ((~out_full & ~in_empty) | (state == 1 & first_is_zero)) ? 0 : 1;	   
 	   first_elem <= first_elem_clocked;	    
 	   second_elem <= first_is_zero ? 0 : in_elem;	   
 	end
