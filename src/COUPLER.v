@@ -43,7 +43,7 @@ module COUPLER #(
    assign out_elem = {second_elem, first_elem};
    
    assign in_deq = (~out_full & ~in_empty & ~(first_is_zero & in_elem != 0));
-   assign out_enq = (~out_full & ~in_empty & state == 1);
+   assign out_enq = (~out_full & ~in_empty & state == 1) | (state == 1 & first_is_zero);
    assign first_is_zero = (first_elem == 0);
 
    initial begin
