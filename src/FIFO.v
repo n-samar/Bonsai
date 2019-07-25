@@ -51,16 +51,15 @@ module IFIFO32 #(
   output 		   o_empty
 );
 
-  reg [4:0]  cnt =  0;
-  wire [4:0]  adr =  cnt-1;
-  assign o_available = (cnt <= 8);     
+  reg [4:0]  adr =  5'b11111;
+  assign o_available = (adr<=7 | adr == 31);     
   assign o_empty = (adr==31);
 
    
   always @(posedge i_clk) begin
-     cnt     <=   cnt + i_enq - i_deq;
+     adr     <=   adr + i_enq - i_deq;
   end
-  assign o_full = (cnt >= 29);
+  assign o_full = (adr == 29 | adr == 30);
   
   genvar i;
   generate
@@ -72,34 +71,33 @@ module IFIFO32 #(
 endmodule
 
 module IFIFO16 #(
-  parameter P_WIDTH         = 128
-) (
-  input wire 		    i_clk,
-  input wire [P_WIDTH-1:0]  i_data,
-  output wire [P_WIDTH-1:0] o_data,
-  input wire 		    i_enq,
-  input wire 		    i_deq,
-  output wire 		    o_full,
-  output wire 		    o_empty
-);
+		 parameter P_WIDTH         = 128
+		 ) (
+		    input wire 		      i_clk,
+		    input wire [P_WIDTH-1:0]  i_data,
+		    output wire [P_WIDTH-1:0] o_data,
+		    input wire 		      i_enq,
+		    input wire 		      i_deq,
+		    output wire 	      o_full,
+		    output wire 	      o_empty
+		    );
 
-   assign o_empty = (adr==7);
-   reg [2:0] 		    cnt = 0;
-   wire [2:0] 		    adr = cnt-1;
+   assign o_empty = (adr == 7);
+   reg [2:0] 				      adr = 3'b111;
 
-  always @(posedge i_clk) begin
-     cnt     <=   cnt + i_enq - i_deq;
-  end
+   always @(posedge i_clk) begin
+      adr <= adr + i_enq - i_deq;
+   end
    
-   assign o_full = (cnt >= 6);
-  
-  genvar i;
-  generate
-    for (i=0; i<P_WIDTH; i=i+1) begin : FIFO
-       shift_right_logical_16E fifo16(.CLK(i_clk), .CE(i_enq), .D(i_data[i]), .Q(o_data[i]),
-                    .A0(adr[0]),  .A1(adr[1]), .A2(adr[2]));
-    end
-  endgenerate
+   assign o_full = (adr == 5 | adr == 6);
+   
+   genvar i;
+   generate
+      for (i=0; i<P_WIDTH; i=i+1) begin : FIFO
+	 shift_right_logical_16E fifo16(.CLK(i_clk), .CE(i_enq), .D(i_data[i]), .Q(o_data[i]),
+					.A0(adr[0]),  .A1(adr[1]), .A2(adr[2]));
+      end
+   endgenerate
 endmodule
 
 module FIFO(
