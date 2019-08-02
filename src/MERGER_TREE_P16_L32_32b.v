@@ -10,13 +10,6 @@ module MERGER_TREE_P16_L32 #(parameter L = 32, parameter DATA_WIDTH = 32, parame
 					                                                                                output wire [16*DATA_WIDTH-1:0] o_data);
    parameter log_L = 6;
 
-   wire [DATA_WIDTH-1:0]                                                                                                           fifo_o_item_6 [63:0];
-   wire [DATA_WIDTH-1:0]                                                                                                           fifo_i_item_6 [63:0];   
-   wire [63:0]                                                                                                                     fifo_read_6;
-   wire [63:0]                                                                                                                     fifo_write_6;
-   wire [63:0]                                                                                                                     fifo_empty_6;
-   wire [63:0]                                                                                                                     fifo_full_6;
-   
    wire [DATA_WIDTH-1:0]                                                                                                           fifo_o_item_5 [31:0];
    wire [DATA_WIDTH-1:0]                                                                                                           fifo_i_item_5 [31:0];   
    wire [31:0]                                                                                                                     fifo_read_5;
